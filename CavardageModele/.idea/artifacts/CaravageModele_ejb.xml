@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ejb-jar" name="CaravageModele:ejb">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="CavardageModele-1.0-SNAPSHOT.jar">
+      <element id="artifact" artifact-name="CaravageModele:ejb exploded" />
+    </root>
+  </artifact>
+</component>
