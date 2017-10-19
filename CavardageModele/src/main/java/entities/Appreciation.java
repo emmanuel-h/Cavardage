@@ -3,6 +3,7 @@ package entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Appreciation {
@@ -11,6 +12,15 @@ public class Appreciation {
     private int idAppreciation;
     private int note;
     private String commentaire;
+
+    @ManyToOne
+    private Trajet noteTrajet;
+
+    @ManyToOne
+    private Utilisateur donneNote;
+
+    @ManyToOne
+    private Utilisateur estNote;
 
     public Appreciation() {
     }

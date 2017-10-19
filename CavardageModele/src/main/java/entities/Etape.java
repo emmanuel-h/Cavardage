@@ -1,8 +1,7 @@
 package entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Etape {
@@ -10,6 +9,13 @@ public class Etape {
     @Id @GeneratedValue
     private int idEtape;
     private String nomVille;
+
+    @ManyToOne
+    //@JoinColumn(name = "idVille")
+    private Ville villeEtape;
+
+    @ManyToMany
+    private List<Trajet> listeTrajet;
 
     public Etape() {
     }

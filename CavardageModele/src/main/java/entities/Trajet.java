@@ -1,8 +1,9 @@
 package entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.sun.org.glassfish.gmbal.ManagedObject;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Trajet {
@@ -11,6 +12,22 @@ public class Trajet {
     private int idTrajet;
     private String date;
     private String heure;
+
+    @ManyToOne
+    //@JoinColumn(name = "idVille")
+    private Ville villeDepart;
+    @ManyToOne
+    //@JoinColumn(name = "idVille")
+    private Ville villeArrivee;
+
+    @OneToMany(mappedBy = "trajetReservation")
+    private List<Reservation> listeReservation;
+
+    @ManyToOne
+    private Vehicule vehiculeTrajet;
+
+    @ManyToMany(mappedBy = "listeTrajet")
+    private List<Etape> listeEtape;
 
     public Trajet() {
     }

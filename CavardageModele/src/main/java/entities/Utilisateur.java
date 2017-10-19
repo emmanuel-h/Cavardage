@@ -1,7 +1,7 @@
 package entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Utilisateur {
@@ -10,6 +10,22 @@ public class Utilisateur {
     private String login;
     private String nom;
     private String motDePasse;
+
+    @ManyToOne
+    //@JoinColumn(name = "idRole")
+    private Role roleUtilisateur;
+
+    @OneToMany
+    private List<Vehicule> listeVehicule;
+
+    @OneToMany(mappedBy = "utilisateurReservation")
+    private List<Reservation> listeReservation;
+
+    @OneToMany(mappedBy = "donneNote")
+    private Appreciation note;
+
+    @OneToMany(mappedBy = "estNote")
+    private Appreciation estNote;
 
     public Utilisateur() {
     }

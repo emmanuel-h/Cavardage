@@ -1,8 +1,7 @@
 package entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Vehicule {
@@ -11,6 +10,13 @@ public class Vehicule {
     private int idVehicule;
     private String modele;
     private int nombrePlaces;
+
+    @ManyToOne
+    //@JoinColumn(name="idGabarit")
+    private Gabarit gabarit;
+
+    @OneToMany(mappedBy = "vehiculeTrajet")
+    private List<Trajet> listeTrajet;
 
     public Vehicule() {
     }
