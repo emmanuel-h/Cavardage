@@ -58,4 +58,44 @@ public class Trajet {
     public void setHeure(String heure) {
         this.heure = heure;
     }
+
+    public Ville getVilleDepart() {
+        return villeDepart;
+    }
+
+    public void setVilleDepart(Ville villeDepart) {
+        this.villeDepart = villeDepart;
+    }
+
+    public Ville getVilleArrivee() {
+        return villeArrivee;
+    }
+
+    public void setVilleArrivee(Ville villeArrivee) {
+        this.villeArrivee = villeArrivee;
+    }
+
+    public List<Reservation> getListeReservation() {
+        return listeReservation;
+    }
+
+    public void setListeReservation(List<Reservation> listeReservation) {
+        this.listeReservation = listeReservation;
+    }
+
+    public Vehicule getVehiculeTrajet() {
+        return vehiculeTrajet;
+    }
+
+    public void setVehiculeTrajet(Vehicule vehiculeTrajet) {
+        this.vehiculeTrajet = vehiculeTrajet;
+    }
+
+    public List<Etape> getListeEtape() {
+        return listeEtape;
+    }
+
+    public void setListeEtape(List<Etape> listeEtape) {
+        this.listeEtape = listeEtape;
+    }
 }

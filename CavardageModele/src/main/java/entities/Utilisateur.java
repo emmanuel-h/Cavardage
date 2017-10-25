@@ -59,4 +59,44 @@ public class Utilisateur {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
+
+    public Role getRoleUtilisateur() {
+        return roleUtilisateur;
+    }
+
+    public void setRoleUtilisateur(Role roleUtilisateur) {
+        this.roleUtilisateur = roleUtilisateur;
+    }
+
+    public List<Vehicule> getListeVehicule() {
+        return listeVehicule;
+    }
+
+    public void setListeVehicule(List<Vehicule> listeVehicule) {
+        this.listeVehicule = listeVehicule;
+    }
+
+    public List<Reservation> getListeReservation() {
+        return listeReservation;
+    }
+
+    public void setListeReservation(List<Reservation> listeReservation) {
+        this.listeReservation = listeReservation;
+    }
+
+    public Appreciation getNote() {
+        return note;
+    }
+
+    public void setNote(Appreciation note) {
+        this.note = note;
+    }
+
+    public Appreciation getEstNote() {
+        return estNote;
+    }
+
+    public void setEstNote(Appreciation estNote) {
+        this.estNote = estNote;
+    }
 }
