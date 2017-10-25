@@ -1,3 +1,6 @@
 CavardageModele/.idea/
 Cavardage/.idea/
 *.class
+*.jar
+.idea/
+*.lst
