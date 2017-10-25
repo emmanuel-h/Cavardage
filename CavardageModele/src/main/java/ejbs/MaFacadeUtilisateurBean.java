@@ -1,6 +1,7 @@
 package ejbs;
 
 import entities.*;
+import exceptions.DivisionParZeroException;
 import exceptions.UtilisateurNonInscritException;
 import exceptions.VilleNonTrouvee;
 
@@ -8,7 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
+import java.util.*;
 
 @Stateless(name = "UtilisateurBean")
 public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
@@ -66,7 +67,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public List<Appreciation> avoirNotesTrajet(String login, int idTrajet) {
+    public List<Appreciation> avoirNotesTrajet(int idTrajet) {
         Query q = em.createQuery("FROM Appreciation a WHERE a.noteTrajet:=trajet");
         q.setParameter("trajet",idTrajet);
         List<Appreciation> appreciationListe = q.getResultList();
@@ -75,17 +76,62 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @Override
     public List<Appreciation> avoirNotesTotal(String login) {
-        return null;
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        List<Appreciation> appreciationListe = utilisateur.getEstNote();
+        return appreciationListe;
     }
 
     @Override
-    public float moyenneNotes(String login) {
-        return 0;
+    public float moyenneNotes(String login) throws DivisionParZeroException{
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        List<Appreciation> appreciations = utilisateur.getNote();
+        int notes=0;
+        for (Appreciation appreciation:appreciations) {
+            notes+=appreciation.getNote();
+        }
+        int moyenne = 0;
+        if(appreciations.size() == 0){
+            throw new DivisionParZeroException();
+        } else {
+            moyenne = notes / appreciations.size();
+            return moyenne;
+        }
     }
 
     @Override
-    public Trajet proposerTrajet(String login, String villeDepart, String villeArrivee, List<String> etapes, String date) {
-        return null;
+    public Trajet proposerTrajet(int idVilleDepart, int idVilleArrivee, Map<Integer,Integer> villesPrix, String date, String heure, int idVehicule) {
+        Vehicule vehicule = em.find(Vehicule.class,idVehicule);
+        Ville depart = em.find(Ville.class,idVilleDepart);
+        Ville arrivee = em.find(Ville.class,idVilleArrivee);
+        Trajet trajet = new Trajet();
+
+        // Liste des étapes
+        List<Etape> etapeListe = new ArrayList<>();
+        Etape etape;
+        // On récupère tous les id des villes
+        Set etapes = villesPrix.keySet();
+        int etapeId;
+        Iterator<Integer> it = etapes.iterator();
+        // On itère sur tous les id de villes-étapes
+        while(it.hasNext()){
+            etapeId = it.next();
+            //On crée chaque nouvelle étape
+            etape = new Etape();
+            etape.setTrajet(trajet);
+            etape.setPrix(villesPrix.get(etapeId));
+            Ville ville = em.find(Ville.class,etapeId);
+            etape.setVilleEtape(ville);
+            etapeListe.add(etape);
+        }
+
+        // On ajoute tous les élement du trajet
+        trajet.setListeEtape(etapeListe);
+        trajet.setDate(date);
+        trajet.setHeure(heure);
+        trajet.setVehiculeTrajet(vehicule);
+        trajet.setVilleDepart(depart);
+        trajet.setVilleArrivee(arrivee);
+        return trajet;
     }
 
     @Override

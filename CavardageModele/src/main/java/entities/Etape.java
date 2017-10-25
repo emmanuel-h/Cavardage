@@ -8,19 +8,15 @@ public class Etape {
 
     @Id @GeneratedValue
     private int idEtape;
-    private String nomVille;
+    private int prix;
 
     @ManyToOne
     private Ville villeEtape;
 
-    @ManyToMany
-    private List<Trajet> listeTrajet;
+    @ManyToOne
+    private Trajet trajet;
 
     public Etape() {
-    }
-
-    public Etape(String nomVille) {
-        this.nomVille = nomVille;
     }
 
     public int getIdEtape() {
@@ -31,14 +27,6 @@ public class Etape {
         this.idEtape = idEtape;
     }
 
-    public String getNomVille() {
-        return nomVille;
-    }
-
-    public void setNomVille(String nomVille) {
-        this.nomVille = nomVille;
-    }
-
     public Ville getVilleEtape() {
         return villeEtape;
     }
@@ -47,11 +35,19 @@ public class Etape {
         this.villeEtape = villeEtape;
     }
 
-    public List<Trajet> getListeTrajet() {
-        return listeTrajet;
+    public Trajet getTrajet() {
+        return trajet;
     }
 
-    public void setListeTrajet(List<Trajet> listeTrajet) {
-        this.listeTrajet = listeTrajet;
+    public void setTrajet(Trajet trajet) {
+        this.trajet = trajet;
+    }
+
+    public int getPrix() {
+        return prix;
+    }
+
+    public void setPrix(int prix) {
+        this.prix = prix;
     }
 }
