@@ -1,4 +1,5 @@
 CavardageModele/.idea/
+**/target/
 Cavardage/.idea/
 *.class
 *.jar
