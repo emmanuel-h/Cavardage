@@ -30,30 +30,6 @@ public class Appreciation {
         this.commentaire = commentaire;
     }
 
-    public Trajet getNoteTrajet() {
-        return noteTrajet;
-    }
-
-    public void setNoteTrajet(Trajet noteTrajet) {
-        this.noteTrajet = noteTrajet;
-    }
-
-    public Utilisateur getDonneNote() {
-        return donneNote;
-    }
-
-    public void setDonneNote(Utilisateur donneNote) {
-        this.donneNote = donneNote;
-    }
-
-    public Utilisateur getEstNote() {
-        return estNote;
-    }
-
-    public void setEstNote(Utilisateur estNote) {
-        this.estNote = estNote;
-    }
-
     public int getIdAppreciation() {
         return idAppreciation;
     }

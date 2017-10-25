@@ -22,10 +22,10 @@ public class Utilisateur {
     private List<Reservation> listeReservation;
 
     @OneToMany(mappedBy = "donneNote")
-    private Appreciation note;
+    private List<Appreciation> note;
 
     @OneToMany(mappedBy = "estNote")
-    private Appreciation estNote;
+    private List<Appreciation> estNote;
 
     public Utilisateur() {
     }
@@ -84,19 +84,19 @@ public class Utilisateur {
         this.listeReservation = listeReservation;
     }
 
-    public Appreciation getNote() {
+    public List<Appreciation> getNote() {
         return note;
     }
 
-    public void setNote(Appreciation note) {
+    public void setNote(List<Appreciation> note) {
         this.note = note;
     }
 
-    public Appreciation getEstNote() {
+    public List<Appreciation> getEstNote() {
         return estNote;
     }
 
-    public void setEstNote(Appreciation estNote) {
+    public void setEstNote(List<Appreciation> estNote) {
         this.estNote = estNote;
     }
 }
