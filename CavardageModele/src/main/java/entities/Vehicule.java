@@ -10,6 +10,7 @@ public class Vehicule {
     private int idVehicule;
     private String modele;
     private int nombrePlaces;
+    private String nom;
 
     @ManyToOne
     private Gabarit gabarit;
@@ -63,5 +64,13 @@ public class Vehicule {
 
     public void setListeTrajet(List<Trajet> listeTrajet) {
         this.listeTrajet = listeTrajet;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 }

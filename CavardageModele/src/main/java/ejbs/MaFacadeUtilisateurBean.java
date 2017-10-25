@@ -7,6 +7,7 @@ import exceptions.VilleNonTrouvee;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Stateless(name = "UtilisateurBean")
@@ -41,23 +42,35 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         } else {
             reservation.setDescendA(null);
         }
-
+        em.persist(reservation);
         return reservation;
     }
 
     @Override
-    public boolean faireCommentaire(String login, int idTrajet) {
-        return false;
-    }
-
-    @Override
-    public boolean donnerNote(String login, int idTrajet) {
-        return false;
+    public Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note) {
+        Utilisateur donneNote = em.find(Utilisateur.class,login);
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+        int idVehicule = trajet.getVehiculeTrajet().getIdVehicule();
+        // Le faire sur la bonne table
+        Query q = em.createQuery("FROM Personne p WHERE p.Vehicule:=vehicule");
+        q.setParameter("vehicule", idVehicule);
+        Utilisateur estNote = (Utilisateur) q.getSingleResult();
+        Appreciation appreciation = new Appreciation();
+        appreciation.setCommentaire(commentaire);
+        appreciation.setNote(note);
+        appreciation.setDonneNote(donneNote);
+        appreciation.setNoteTrajet(trajet);
+        appreciation.setEstNote(estNote);
+        em.persist(appreciation);
+        return appreciation;
     }
 
     @Override
     public List<Appreciation> avoirNotesTrajet(String login, int idTrajet) {
-        return null;
+        Query q = em.createQuery("FROM Appreciation a WHERE a.noteTrajet:=trajet");
+        q.setParameter("trajet",idTrajet);
+        List<Appreciation> appreciationListe = q.getResultList();
+        return appreciationListe;
     }
 
     @Override

@@ -13,8 +13,7 @@ import java.util.List;
 public interface MaFacadeUtilisateur {
 
     Reservation reserverPlace(String login, int idTrajet, int nbPlaces, int idVilleArrivee) throws VilleNonTrouvee;
-    boolean faireCommentaire(String login, int idTrajet);
-    boolean donnerNote(String login, int idTrajet);
+    Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note);
     List<Appreciation> avoirNotesTrajet(String login, int idTrajet);
     List<Appreciation> avoirNotesTotal(String login);
     float moyenneNotes(String login);
