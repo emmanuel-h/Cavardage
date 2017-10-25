@@ -1,7 +1,5 @@
 package entities;
 
-import com.sun.org.glassfish.gmbal.ManagedObject;
-
 import javax.persistence.*;
 import java.util.List;
 
