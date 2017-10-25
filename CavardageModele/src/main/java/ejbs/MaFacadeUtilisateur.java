@@ -3,5 +3,5 @@ package ejbs;
 import javax.ejb.Local;
 
 @Local
-public interface MaFacade {
+public interface MaFacadeUtilisateur {
 }
