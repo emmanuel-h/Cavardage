@@ -39,4 +39,20 @@ public class Etape {
     public void setNomVille(String nomVille) {
         this.nomVille = nomVille;
     }
+
+    public Ville getVilleEtape() {
+        return villeEtape;
+    }
+
+    public void setVilleEtape(Ville villeEtape) {
+        this.villeEtape = villeEtape;
+    }
+
+    public List<Trajet> getListeTrajet() {
+        return listeTrajet;
+    }
+
+    public void setListeTrajet(List<Trajet> listeTrajet) {
+        this.listeTrajet = listeTrajet;
+    }
 }

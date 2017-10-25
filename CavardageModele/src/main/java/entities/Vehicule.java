@@ -49,4 +49,20 @@ public class Vehicule {
     public void setNombrePlaces(int nombrePlaces) {
         this.nombrePlaces = nombrePlaces;
     }
+
+    public Gabarit getGabarit() {
+        return gabarit;
+    }
+
+    public void setGabarit(Gabarit gabarit) {
+        this.gabarit = gabarit;
+    }
+
+    public List<Trajet> getListeTrajet() {
+        return listeTrajet;
+    }
+
+    public void setListeTrajet(List<Trajet> listeTrajet) {
+        this.listeTrajet = listeTrajet;
+    }
 }
