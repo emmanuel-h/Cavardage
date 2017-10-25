@@ -11,7 +11,6 @@ public class Etape {
     private String nomVille;
 
     @ManyToOne
-    //@JoinColumn(name = "idVille")
     private Ville villeEtape;
 
     @ManyToMany

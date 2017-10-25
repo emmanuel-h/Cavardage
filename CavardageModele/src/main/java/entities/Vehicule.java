@@ -12,7 +12,6 @@ public class Vehicule {
     private int nombrePlaces;
 
     @ManyToOne
-    //@JoinColumn(name="idGabarit")
     private Gabarit gabarit;
 
     @OneToMany(mappedBy = "vehiculeTrajet")

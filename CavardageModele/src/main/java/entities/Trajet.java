@@ -12,10 +12,8 @@ public class Trajet {
     private String heure;
 
     @ManyToOne
-    //@JoinColumn(name = "idVille")
     private Ville villeDepart;
     @ManyToOne
-    //@JoinColumn(name = "idVille")
     private Ville villeArrivee;
 
     @OneToMany(mappedBy = "trajetReservation")

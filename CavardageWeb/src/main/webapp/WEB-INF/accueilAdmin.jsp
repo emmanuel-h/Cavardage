@@ -24,10 +24,10 @@
 
         <div class="col-lg-9">
             <c:if test="${gestionVille}">
-
+                <jsp:include page="gestionVille.jsp"></jsp:include>
             </c:if>
             <c:if test="${gestionGabarit}">
-
+                <jsp:include page="gestionGabarit.jsp"></jsp:include>
             </c:if>
         </div>
     </div>

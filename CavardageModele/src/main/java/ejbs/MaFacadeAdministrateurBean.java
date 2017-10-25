@@ -5,6 +5,8 @@ import entities.Ville;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Stateless(name = "AdministrateurBean")
 public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
@@ -30,6 +32,32 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             return true;
         }
         return false;
+    }
+
+    public List<String> getListeVilles(){
+        Query q = em.createNamedQuery("selectAllVilles");
+        List<Ville> listeTemp = q.getResultList();
+        if(!listeTemp.isEmpty()){
+            List<String> listeVilles = new ArrayList<>();
+            for(Ville v : listeTemp){
+                listeVilles.add(v.getNomVille());
+            }
+            return listeVilles;
+        }
+        return null;
+    }
+
+    public List<String> getListeGabarits(){
+        Query q = em.createNamedQuery("selectAllGabarits");
+        List<Gabarit> listeTemp = q.getResultList();
+        if(!listeTemp.isEmpty()){
+            List<String> listeGabarits = new ArrayList<>();
+            for(Gabarit g : listeTemp){
+                listeGabarits.add(g.getType());
+            }
+            return listeGabarits;
+        }
+        return null;
     }
 
     public boolean supprimerVille(String nomVille){

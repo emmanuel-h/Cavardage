@@ -12,7 +12,6 @@ public class Utilisateur {
     private String motDePasse;
 
     @ManyToOne
-    //@JoinColumn(name = "idRole")
     private Role roleUtilisateur;
 
     @OneToMany
