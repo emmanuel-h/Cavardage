@@ -16,7 +16,7 @@
 
     <div class="container">
         <div class="col-lg-3">
-            <form action="ControleurAdmin">
+            <form method="post" action="ControleurAdmin">
                 <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererVille">Gérer les villes</button>
                 <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
             </form>
@@ -24,6 +24,9 @@
 
         <div class="col-lg-9">
             <c:if test="${gestionVille}">
+
+            </c:if>
+            <c:if test="${gestionGabarit}">
 
             </c:if>
         </div>
