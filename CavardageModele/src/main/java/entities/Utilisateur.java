@@ -98,4 +98,8 @@ public class Utilisateur {
     public void setEstNote(List<Appreciation> estNote) {
         this.estNote = estNote;
     }
+
+    public void ajouterVehicule(Vehicule vehicule){
+        this.listeVehicule.add(vehicule);
+    }
 }

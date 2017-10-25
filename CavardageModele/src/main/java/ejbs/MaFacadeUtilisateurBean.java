@@ -89,7 +89,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         for (Appreciation appreciation:appreciations) {
             notes+=appreciation.getNote();
         }
-        int moyenne = 0;
+        int moyenne;
         if(appreciations.size() == 0){
             throw new DivisionParZeroException();
         } else {
@@ -121,6 +121,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             etape.setPrix(villesPrix.get(etapeId));
             Ville ville = em.find(Ville.class,etapeId);
             etape.setVilleEtape(ville);
+            em.persist(etape);
             etapeListe.add(etape);
         }
 
@@ -131,12 +132,23 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         trajet.setVehiculeTrajet(vehicule);
         trajet.setVilleDepart(depart);
         trajet.setVilleArrivee(arrivee);
+        em.persist(trajet);
         return trajet;
     }
 
     @Override
     public Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces) {
-        return null;
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        Gabarit gabarit = em.find(Gabarit.class,idGabarit);
+        Vehicule vehicule = new Vehicule();
+        vehicule.setGabarit(gabarit);
+        vehicule.setModele(modele);
+        vehicule.setNom(nomVehicule);
+        vehicule.setNombrePlaces(nbPlaces);
+        utilisateur.ajouterVehicule(vehicule);
+        em.persist(vehicule);
+        em.persist(utilisateur);
+        return vehicule;
     }
 
     @Override
