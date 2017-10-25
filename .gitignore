@@ -6,3 +6,4 @@ Cavardage/.idea/
 .idea/
 *.lst
 *.iml
+!**/bootstrap.jsp.jar
