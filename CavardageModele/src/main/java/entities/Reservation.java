@@ -11,6 +11,7 @@ public class Reservation {
     @Id @GeneratedValue
     private int IdReservation;
     private String statut;
+    private int nbPlace;
 
     @ManyToOne
     private Etape descendA;
@@ -42,5 +43,37 @@ public class Reservation {
 
     public void setStatut(String statut) {
         this.statut = statut;
+    }
+
+    public Etape getDescendA() {
+        return descendA;
+    }
+
+    public void setDescendA(Etape descendA) {
+        this.descendA = descendA;
+    }
+
+    public Trajet getTrajetReservation() {
+        return trajetReservation;
+    }
+
+    public void setTrajetReservation(Trajet trajetReservation) {
+        this.trajetReservation = trajetReservation;
+    }
+
+    public Utilisateur getUtilisateurReservation() {
+        return utilisateurReservation;
+    }
+
+    public void setUtilisateurReservation(Utilisateur utilisateurReservation) {
+        this.utilisateurReservation = utilisateurReservation;
+    }
+
+    public int getNbPlace() {
+        return nbPlace;
+    }
+
+    public void setNbPlace(int nbPlace) {
+        this.nbPlace = nbPlace;
     }
 }

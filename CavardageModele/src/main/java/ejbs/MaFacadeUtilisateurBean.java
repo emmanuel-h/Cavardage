@@ -1,16 +1,48 @@
 package ejbs;
 
-import entities.Trajet;
-import entities.Vehicule;
+import entities.*;
+import exceptions.UtilisateurNonInscritException;
+import exceptions.VilleNonTrouvee;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Stateless
+@Stateless(name = "UtilisateurBean")
 public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
+
+    @PersistenceContext(unitName = "monUnite")
+    EntityManager em;
+
     @Override
-    public boolean reserverPlace(String login, int idTrajet, int nbPlaces) {
-        return false;
+    public Reservation reserverPlace(String login, int idTrajet, int nbPlaces, int idVilleArrivee) throws VilleNonTrouvee {
+        Utilisateur utilisateur = em.find(Utilisateur.class, login);
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+        List<Etape> etapes = trajet.getListeEtape();
+        Reservation reservation = new Reservation();
+        reservation.setStatut("attente");
+        reservation.setNbPlace(nbPlaces);
+        reservation.setTrajetReservation(trajet);
+        reservation.setUtilisateurReservation(utilisateur);
+
+        // Teste si la ville d'arrivée est une étape
+        if(trajet.getVilleArrivee().getIdVille() != idVilleArrivee) {
+            Etape arrivee = null;
+            for (Etape etape : etapes) {
+                if (etape.getIdEtape() == idVilleArrivee) {
+                    arrivee = etape;
+                }
+            }
+            if(null == arrivee){
+                throw new VilleNonTrouvee();
+            }
+            reservation.setDescendA(arrivee);
+        } else {
+            reservation.setDescendA(null);
+        }
+
+        return reservation;
     }
 
     @Override
@@ -21,6 +53,21 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @Override
     public boolean donnerNote(String login, int idTrajet) {
         return false;
+    }
+
+    @Override
+    public List<Appreciation> avoirNotesTrajet(String login, int idTrajet) {
+        return null;
+    }
+
+    @Override
+    public List<Appreciation> avoirNotesTotal(String login) {
+        return null;
+    }
+
+    @Override
+    public float moyenneNotes(String login) {
+        return 0;
     }
 
     @Override
@@ -39,8 +86,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public boolean avoirReservations(String login, int idTrajet) {
-        return false;
+    public List<Reservation> avoirReservations(String login, int idTrajet) {
+        return null;
     }
 
     @Override
