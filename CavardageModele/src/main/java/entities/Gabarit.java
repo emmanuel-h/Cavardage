@@ -1,9 +1,10 @@
 package entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@NamedQueries({
+        @NamedQuery(name = "selectGabarit", query = "SELECT Gabarit AS g FROM Gabarit where g.type=:gabarit")
+})
 @Entity
 public class Gabarit {
 
