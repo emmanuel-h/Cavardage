@@ -164,8 +164,19 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             return false;
         }
         trajet.setStatut("annule");
-        Notification notification = new Notification();
-        
+        Notification notification;
+        String messageNotification = ("Le trajet "+trajet.getVilleDepart()+" - "+trajet.getVilleArrivee() + " du "+trajet.getDate()+" a été annulé");
+
+        //Trouver tous les passagers et leur envoyer la notification
+        Utilisateur passager;
+        for(Reservation reservation : trajet.getListeReservation()){
+            if(reservation.getStatut().equals("enAttente") || reservation.getStatut().equals("accepte")){
+                passager = reservation.getUtilisateurReservation();
+                notification = new Notification();
+                notification.setMessage(messageNotification);
+                passager.ajouterNotification(notification);
+            }
+        }
         return true;
     }
 

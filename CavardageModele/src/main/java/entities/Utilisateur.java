@@ -110,8 +110,12 @@ public class Utilisateur {
         this.notifications = notifications;
     }
 
-    public void ajouterVehicule(Vehicule vehicule){
-        this.listeVehicule.add(vehicule);
+    public boolean ajouterVehicule(Vehicule vehicule){
+        if(this.listeVehicule.contains(vehicule)){
+            return false;
+        } else {
+            this.listeVehicule.add(vehicule);
+        }
     }
 
     public boolean possedeVehicule(Vehicule vehicule){
@@ -121,5 +125,13 @@ public class Utilisateur {
             }
         }
         return false;
+    }
+
+    public boolean ajouterNotification(Notification notification){
+        if(this.notifications.contains(notification)){
+            return false;
+        } else {
+            this.notifications.add(notification);
+        }
     }
 }

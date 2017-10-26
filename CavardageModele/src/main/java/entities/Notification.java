@@ -29,4 +29,19 @@ public class Notification {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false;
+        if(((Notification)o).getMessage().equals(this.message)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
