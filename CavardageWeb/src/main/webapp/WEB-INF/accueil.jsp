@@ -51,7 +51,22 @@
         <input type="date" name="date"/>
         <button type="submit" name="afaire" value="rechercherTrajet">Rechercher</button>
     </form>
-
+    <form action="ControleurAnonyme" method="post">
+        <ul class="list-group">
+            <c:forEach items="${listeTrajetRecherche}" var="trajet">
+                <li class="list-group-item">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>${trajet.villeDepart}</td>
+                            <td>${trajet.villeArrive}</td>
+                            <td>${trajet.date}</td>
+                            <td>${trajet.heure}h</td>
+                        </tr>
+                    </table>
+                </li>
+            </c:forEach>
+        </ul>
+    </form>
 </div>
 
 <div>
