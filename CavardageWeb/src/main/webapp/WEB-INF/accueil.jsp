@@ -17,13 +17,17 @@
 
 <hr>
 
+<p>Bonjour ${utilisateur.nom}</p>
+
 <div>
-    <label>Login:</label>
-    <input type="text" name="login"/>
-    <label>Mot de passe:</label>
-    <input type="text" name="mdp"/>
-    <input type="submit" name="afaire" value="connexion">Connexion</input>
-    <input type="submit" name="afaire" value="inscription">Inscription</input>
+    <form method="post" action="ControleurAnonyme" >
+        <label>Login:</label>
+        <input type="text" name="login"/>
+        <label>Mot de passe:</label>
+        <input type="text" name="mdp"/>
+        <button type="submit" name="afaire" value="connexion">Connexion</button>
+        <button type="submit" name="afaire" value="inscription">Inscription</button>
+    </form>
 </div>
 
 

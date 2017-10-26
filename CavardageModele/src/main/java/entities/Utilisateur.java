@@ -12,6 +12,7 @@ public class Utilisateur {
     private String motDePasse;
 
     @ManyToOne
+    @JoinColumn(name = "IDROLE")
     private Role roleUtilisateur;
 
     @OneToMany
@@ -135,5 +136,14 @@ public class Utilisateur {
             this.notifications.add(notification);
             return true;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "login='" + login + '\'' +
+                ", nom='" + nom + '\'' +
+                ", roleUtilisateur=" + roleUtilisateur +
+                '}';
     }
 }

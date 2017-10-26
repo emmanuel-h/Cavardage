@@ -5,12 +5,31 @@ import entities.Utilisateur;
 public class UtilisateurDTO {
 
     private String login;
+    private String nom;
     private String role;
 
 
     public UtilisateurDTO(Utilisateur utilisateur) {
         login=utilisateur.getLogin();
+        nom = utilisateur.getNom();
         role=utilisateur.getRoleUtilisateur().getMessage();
+    }
+
+    @Override
+    public String toString() {
+        return "UtilisateurDTO{" +
+                "login='" + login + '\'' +
+                ", nom='" + nom + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public String getLogin() {
