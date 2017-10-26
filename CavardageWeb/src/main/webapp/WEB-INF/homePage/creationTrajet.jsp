@@ -19,13 +19,13 @@
     <input type="text" name="villeArrivee">
     A partir de :<br>
     <input type="date" name="date">
-    Choix du véhicule :
+    Choix du véhicule :<br>
     <select name="vehicule">
     <c:forEach items="${listeVehicules}" var="vehicule">
         <option value="vehicule.idVehicule"> ${vehicule.nom} </option>
     </c:forEach>
     </select>
-    Ajouter une étape :
+    Ajouter une étape :<br>
     <input type="text" name="etape">
     <button type="submit" name="afaire" value=ajouterEtape">Ajouter étape</button>
 

@@ -230,35 +230,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return utilisateur.supprimerNotification(notification);
     }
 
-    private Utilisateur trouverUtilisateur(Vehicule vehicule){
-        Query q = em.createQuery("FROM Utilisateur u WHERE u.Vehicule:=vehicule");
-        q.setParameter("vehicule", vehicule.getIdVehicule());
-        Utilisateur utilisateur = (Utilisateur) q.getSingleResult();
-        return utilisateur;
-    }
-
-    private boolean verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
-        Vehicule vehicule = trajet.getVehiculeTrajet();
-        if(!utilisateur.possedeVehicule(vehicule)) {
-            throw new PasConducteurException();
-        } else {
-            return true;
-        }
-    }
-
-    private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException{
-        Utilisateur utilisateur = em.find(Utilisateur.class,login);
-        verifierUtilisateurEstConducteur(utilisateur,reservation.getTrajetReservation());
-        reservation.setStatut(statut);
-        Utilisateur passager = reservation.getUtilisateurReservation();
-        Notification notification = new Notification();
-        notification.setMessage(messageNotification);
-        passager.ajouterNotification(notification);
-        em.persist(notification);
-        em.persist(passager);
-    }
-
-
+    @Override
     public List<HistoriqueDTO> historiqueUtilisateur(String login){
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         List<HistoriqueDTO> listeHisto = new ArrayList<>();
@@ -288,5 +260,40 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         listeHisto.add(hist2);
 
         return listeHisto;
+    }
+
+    @Override
+    public List<Gabarit> listeGabarits(){
+        Query q = em.createQuery("FROM Gabarit g");
+        List<Gabarit> gabaritListe = q.getResultList();
+        return gabaritListe;
+    }
+
+    private Utilisateur trouverUtilisateur(Vehicule vehicule){
+        Query q = em.createQuery("FROM Utilisateur u WHERE u.Vehicule:=vehicule");
+        q.setParameter("vehicule", vehicule.getIdVehicule());
+        Utilisateur utilisateur = (Utilisateur) q.getSingleResult();
+        return utilisateur;
+    }
+
+    private boolean verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
+        Vehicule vehicule = trajet.getVehiculeTrajet();
+        if(!utilisateur.possedeVehicule(vehicule)) {
+            throw new PasConducteurException();
+        } else {
+            return true;
+        }
+    }
+
+    private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException{
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        verifierUtilisateurEstConducteur(utilisateur,reservation.getTrajetReservation());
+        reservation.setStatut(statut);
+        Utilisateur passager = reservation.getUtilisateurReservation();
+        Notification notification = new Notification();
+        notification.setMessage(messageNotification);
+        passager.ajouterNotification(notification);
+        em.persist(notification);
+        em.persist(passager);
     }
 }

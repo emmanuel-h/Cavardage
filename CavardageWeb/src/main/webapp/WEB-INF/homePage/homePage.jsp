@@ -14,6 +14,7 @@
 <form action="ControleurUtilisateur" method="post">
     <button type="submit" name="afaire" value="creerTrajet">Création d'un trajet</button>
     <button type="submit" name="afaire" value="voirHistorique">Votre historique</button>
+    <button type="submit" name="afaire" value="voirVehicules">Vos véhicules</button>
 </form>
 </body>
 </html>

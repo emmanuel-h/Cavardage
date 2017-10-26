@@ -2,6 +2,8 @@ package servlets;
 
 import dtos.HistoriqueDTO;
 import ejbs.MaFacadeUtilisateur;
+import entities.Gabarit;
+import entities.Vehicule;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -40,6 +42,11 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "voirHistorique":
                     voirHistorique(request,response);
                     break;
+                case "voirVehicules":
+                    voirVehicules(request,response);
+                    break;
+                case "enregistrerVehicule":
+                    enregistrerVehicule(request,response);
                 default :
                     //display homepage
             }
@@ -47,6 +54,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void creerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 
     private void voirHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,5 +63,16 @@ public class ControleurUtilisateur extends HttpServlet {
         request.setAttribute("listeHistorique", listeHistorique);
         request.getRequestDispatcher("/WEB-INF/homePage/historique.jsp").forward(request, response);
     }
+
+    private void voirVehicules(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Gabarit> listeGabarit = maFacade.listeGabarits();
+        request.setAttribute("listeGabarits",listeGabarit);
+        request.getRequestDispatcher("/WEB-INF/homePage/vehicules.jsp").forward(request, response);
+    }
+
+    private void enregistrerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
 
 }
