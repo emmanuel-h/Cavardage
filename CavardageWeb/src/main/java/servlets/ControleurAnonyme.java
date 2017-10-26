@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("ControleurAnonyme")
 public class ControleurAnonyme extends HttpServlet {
@@ -37,17 +38,7 @@ public class ControleurAnonyme extends HttpServlet {
             switch (test){
                 case "connexion":
                     System.out.println("connexion");
-                    login = request.getParameter("login");
-                    mdp = request.getParameter("mdp");
-                    try {
-                        UtilisateurDTO utilisateurDTO = ejb.connexion(login, mdp);
-                        request.getSession().setAttribute("utilisateur",utilisateurDTO);
-                        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp")
-                                .forward(request, response);
-                    }catch (UtilisateurNonInscritException exception){
-                        request.getRequestDispatcher("/WEB-INF/accueil.jsp")
-                                .forward(request, response);
-                    }
+                    connexion(request,response);
                     break;
                 case "inscription":
                     System.out.println("inscription");
@@ -64,6 +55,33 @@ public class ControleurAnonyme extends HttpServlet {
         }
     }
 
+
+    private void setListeVilles(HttpServletRequest request){
+        List<String> listeVilles = ejb.getListeVille();
+        request.setAttribute("listeVilles",listeVilles);
+    }
+
+
+    public void connexion(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+        String login,mdp;
+        login = request.getParameter("login");
+        mdp = request.getParameter("mdp");
+        try {
+            UtilisateurDTO utilisateurDTO = ejb.connexion(login, mdp);
+            request.getSession().setAttribute("utilisateur",utilisateurDTO);
+            if(utilisateurDTO.getRole().equals("utilisateur")) {
+                request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);;
+            }else {
+                request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);;
+            }
+        }catch (UtilisateurNonInscritException exception){
+            request.getRequestDispatcher("/WEB-INF/accueil.jsp")
+                    .forward(request, response);
+        }
+    }
+
+
+
     public void inscription(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         String login,mdp,nom,mdp_confirmer;
         login = request.getParameter("login");
@@ -72,9 +90,9 @@ public class ControleurAnonyme extends HttpServlet {
         mdp_confirmer = request.getParameter("mdp_confirmer");
         if(mdp.equals(mdp_confirmer)) {
             try {
-                UtilisateurDTO utilisateurDTO = ejb.inscription(login, nom, mdp);
-                if(utilisateurDTO != null) {
-                    request.getSession().setAttribute("utilisateur", utilisateurDTO);
+                boolean succesInscription=ejb.inscription(login, nom, mdp);
+                if(succesInscription) {
+                    request.getSession().setAttribute("utilisateur", login);
                     request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp")
                             .forward(request, response);
                 }else{

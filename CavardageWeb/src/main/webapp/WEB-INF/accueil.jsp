@@ -24,21 +24,38 @@
         <label>Login:</label>
         <input type="text" name="login"/>
         <label>Mot de passe:</label>
-        <input type="text" name="mdp"/>
-        <c:if test="${utilisateur==null}">
-            <button type="submit" name="afaire" value="connexion">Connexion</button>
-        </c:if>
-        <c:if test="${utilisateur==null}">
-            <button type="submit" name="afaire" value="inscription">Inscription</button>
-        </c:if>
-        <c:if test="${utilisateur!=null}">
-            <button type="submit" name="afaire" value="homepage">Profil</button>
-        </c:if>
+        <input type="password" name="mdp"/>
+        <button type="submit" name="afaire" value="connexion">Connexion</button>
+        <button type="submit" name="afaire" value="inscription">Inscription</button>
+
+    </form>
+</div>
+<div>
+    <form action="ControleurAnonyme" method="post">
+        <h2>Recherche d'un trajet:</h2>
+        <label>Ville de départ:</label>
+        <c:forEach items="${listeVilles}" var="ville">
+            <option value="${ville}"/>
+        </c:forEach>
+        <label>Ville d'arrivée:</label>
+        <c:forEach items="${listeVilles}" var="ville">
+            <option value="${ville}"/>
+        </c:forEach>
+        <label>Date:</label>
+        <input type="date" name="date"/>
+        <button type="submit" name="afaire" value="rechercherTrajet">Rechercher</button>
+    </form>
+
+</div>
+
+<div>
+    <form action="ControleurAnonyme" method="post">
+
     </form>
 </div>
 
 
-
+</datalist>
 
 </body>
 </html>

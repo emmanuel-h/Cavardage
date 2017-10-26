@@ -37,7 +37,12 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public UtilisateurDTO inscription(String login,String nom, String mdp) throws LoginExistantException {
+    public List<String> getListeVille() {
+        return null;
+    }
+
+    @Override
+    public boolean inscription(String login,String nom, String mdp) throws LoginExistantException {
         Query query = em.createQuery("From Utilisateur u where u.login=:login ");
         query.setParameter("login", login);
         List<Utilisateur> u = query.getResultList();
@@ -47,13 +52,10 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
             List<Role> r = query.getResultList();
             if(!r.isEmpty()) {
                 Utilisateur new_u = new Utilisateur(login, nom, mdp,r.get(0));
-                System.out.println(new_u.toString());
                 em.persist(new_u);
-                UtilisateurDTO dto = new UtilisateurDTO(new_u);
-                System.out.println(dto.toString());
-                return dto;
+                return true;
             }
-            return null;
+            return false;
         } else {
             throw new LoginExistantException();
         }
