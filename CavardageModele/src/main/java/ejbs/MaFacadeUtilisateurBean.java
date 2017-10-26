@@ -1,5 +1,6 @@
 package ejbs;
 
+import dtos.HistoriqueDTO;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
@@ -255,5 +256,29 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         passager.ajouterNotification(notification);
         em.persist(notification);
         em.persist(passager);
+    }
+
+    public List<HistoriqueDTO> historiqueUtilisateur(String login){
+        Utilisateur utilisateur = em.find(Utilisateur.class, login);
+        List<HistoriqueDTO> listeHisto = new ArrayList<>();
+        for(Vehicule v : utilisateur.getListeVehicule()){
+            for(Trajet t : v.getListeTrajet()){
+                if(t.getStatut().equals("fini")){
+                    HistoriqueDTO hist = new HistoriqueDTO(t.getIdTrajet(), v.getNom(), 0,
+                            "conducteur", t.getVilleDepart().getNomVille(),
+                            t.getVilleArrivee().getNomVille(), t.getDate());
+                    listeHisto.add(hist);
+                }
+            }
+        }
+        for(Reservation v : utilisateur.getListeReservation()){
+            if(v.getTrajetReservation().getStatut().equals("fini") && v.getStatut().equals("accepte")){
+                Trajet t = v.getTrajetReservation();
+                HistoriqueDTO hist = new HistoriqueDTO(t.getIdTrajet(), "", v.getNbPlace(),
+                        "passager", t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille(), t.getDate());
+                listeHisto.add(hist);
+            }
+        }
+        return listeHisto;
     }
 }
