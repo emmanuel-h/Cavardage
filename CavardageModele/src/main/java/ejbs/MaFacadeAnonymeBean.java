@@ -42,12 +42,18 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
         query.setParameter("login", login);
         List<Utilisateur> u = query.getResultList();
         if (u.size() == 0) {
-            Utilisateur new_u = new Utilisateur(login, nom, mdp,new Role("utilisateur"));
-            System.out.println(new_u.toString());
-            em.persist(new_u);
-            UtilisateurDTO dto = new UtilisateurDTO(new_u);
-            System.out.println(dto.toString());
-            return dto;
+            query = em.createQuery("From Role u where u.message=:message ");
+            query.setParameter("message", "utilisateur");
+            List<Role> r = query.getResultList();
+            if(r.size()>0) {
+                Utilisateur new_u = new Utilisateur(login, nom, mdp,r.get(0));
+                System.out.println(new_u.toString());
+                em.persist(new_u);
+                UtilisateurDTO dto = new UtilisateurDTO(new_u);
+                System.out.println(dto.toString());
+                return dto;
+            }
+            return null;
         } else {
             throw new LoginExistantException();
         }

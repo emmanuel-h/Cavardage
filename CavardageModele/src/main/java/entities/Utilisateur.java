@@ -42,7 +42,7 @@ public class Utilisateur {
     public Utilisateur(String login, String nom, String mdp, Role roleUtilisateur) {
         this.login = login;
         this.nom = nom;
-        this.motDePasse = motDePasse;
+        this.motDePasse = mdp;
         this.roleUtilisateur= roleUtilisateur;
     }
 
