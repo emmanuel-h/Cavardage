@@ -21,8 +21,12 @@
     <div class="container">
         <div class="col-lg-3">
             <form method="post" action="ControleurAdmin">
-                <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererVille">Gérer les villes</button>
-                <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererVille">Gérer les villes</button>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
+                </div>
             </form>
         </div>
 

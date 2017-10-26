@@ -1,6 +1,7 @@
 package ejbs;
 
 import dtos.HistoriqueDTO;
+import dtos.VehiculeDTO;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
@@ -163,6 +164,24 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
+    public boolean supprimerVehicule(int idVehicule){
+        Vehicule v = em.find(Vehicule.class, idVehicule);
+        em.remove(v);
+        return true;
+    }
+
+    @Override
+    public List<VehiculeDTO> listeVehicules(String login){
+        Utilisateur utilisateur = em.find(Utilisateur.class, login);
+        List<VehiculeDTO> listeVehicules = new ArrayList<>();
+        for(Vehicule v : utilisateur.getListeVehicule()){
+            VehiculeDTO vDTO = new VehiculeDTO(v.getIdVehicule(), v.getModele(), v.getNom(), v.getGabarit().getType(), v.getNombrePlaces());
+            listeVehicules.add(vDTO);
+        }
+        return listeVehicules;
+    }
+
+    @Override
     public boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
@@ -288,5 +307,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         listeHisto.add(hist2);
 
         return listeHisto;
+    }
+
+    public List<Gabarit> getListeGabarits(){
+        Query q = em.createQuery("From Gabarit g");
+        List<Gabarit> listeTemp = q.getResultList();
+        if(!listeTemp.isEmpty()){
+            return listeTemp;
+        }
+        return new ArrayList<>();
     }
 }

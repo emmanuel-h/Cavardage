@@ -1,10 +1,8 @@
 package ejbs;
 
 import dtos.HistoriqueDTO;
-import entities.Appreciation;
-import entities.Reservation;
-import entities.Trajet;
-import entities.Vehicule;
+import dtos.VehiculeDTO;
+import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
 import exceptions.VilleNonTrouvee;
@@ -23,10 +21,13 @@ public interface MaFacadeUtilisateur {
     float moyenneNotes(String login) throws DivisionParZeroException;
     Trajet proposerTrajet(int idVilleDepart, int idVilleArrivee, Map<Integer,Integer> villesPrix, String date, String heure, int idVehicule, int prix);
     Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces);
+    boolean supprimerVehicule(int idVehicule);
+    List<VehiculeDTO> listeVehicules(String login);
     boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException;
     List<Reservation> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException;
     boolean refuserReservation(String login, int idReservation) throws PasConducteurException;
     boolean accepterReservation(String login, int idReservation) throws PasConducteurException;
     boolean supprimerNotification(String login, int idNotification);
     List<HistoriqueDTO> historiqueUtilisateur(String login);
+    List<Gabarit> getListeGabarits();
 }
