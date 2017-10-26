@@ -19,7 +19,7 @@ public interface MaFacadeUtilisateur {
     List<Appreciation> avoirNotesTrajet(int idTrajet);
     List<Appreciation> avoirNotesTotal(String login);
     float moyenneNotes(String login) throws DivisionParZeroException;
-    Trajet proposerTrajet(int idVilleDepart, int idVilleArrivee, Map<Integer,Integer> villesPrix, String date, String heure, int idVehicule);
+    Trajet proposerTrajet(int idVilleDepart, int idVilleArrivee, Map<Integer,Integer> villesPrix, String date, String heure, int idVehicule, int prix);
     Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces);
     boolean annulerTrajet(String login, int idTrajet);
     List<Reservation> avoirReservations(String login, int idTrajet);

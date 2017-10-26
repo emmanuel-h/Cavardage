@@ -73,4 +73,14 @@ public class Vehicule {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Vehicule){
+            if(((Vehicule) o).getIdVehicule() == idVehicule){
+                return true;
+            }
+        }
+        return false;
+    }
 }

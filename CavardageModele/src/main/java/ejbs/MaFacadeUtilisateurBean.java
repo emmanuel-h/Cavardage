@@ -99,7 +99,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public Trajet proposerTrajet(int idVilleDepart, int idVilleArrivee, Map<Integer,Integer> villesPrix, String date, String heure, int idVehicule) {
+    public Trajet proposerTrajet(int idVilleDepart, int idVilleArrivee, Map<Integer,Integer> villesPrix, String date, String heure, int idVehicule, int prix) {
         Vehicule vehicule = em.find(Vehicule.class,idVehicule);
         Ville depart = em.find(Ville.class,idVilleDepart);
         Ville arrivee = em.find(Ville.class,idVilleArrivee);
@@ -132,6 +132,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         trajet.setVehiculeTrajet(vehicule);
         trajet.setVilleDepart(depart);
         trajet.setVilleArrivee(arrivee);
+        trajet.setPrix(prix);
+        trajet.setStatut("aVenir");
         em.persist(trajet);
         return trajet;
     }
@@ -153,7 +155,18 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @Override
     public boolean annulerTrajet(String login, int idTrajet) {
-        return false;
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+
+        // On vérifie que c'est bien l'utilisateur qui a créé le trajet
+        Vehicule vehicule = trajet.getVehiculeTrajet();
+        if(!utilisateur.possedeVehicule(vehicule)) {
+            return false;
+        }
+        trajet.setStatut("annule");
+        Notification notification = new Notification();
+        
+        return true;
     }
 
     @Override

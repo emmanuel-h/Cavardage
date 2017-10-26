@@ -10,6 +10,9 @@ public class Trajet {
     private int idTrajet;
     private String date;
     private String heure;
+    // aVenir, fini, annule
+    private String statut;
+    private int prix;
 
     @ManyToOne
     private Ville villeDepart;
@@ -95,5 +98,21 @@ public class Trajet {
 
     public void setListeEtape(List<Etape> listeEtape) {
         this.listeEtape = listeEtape;
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
+
+    public int getPrix() {
+        return prix;
+    }
+
+    public void setPrix(int prix) {
+        this.prix = prix;
     }
 }

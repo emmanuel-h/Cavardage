@@ -26,6 +26,9 @@ public class Utilisateur {
     @OneToMany(mappedBy = "estNote")
     private List<Appreciation> estNote;
 
+    @OneToMany
+    private List<Notification> notifications;
+
     public Utilisateur() {
     }
 
@@ -99,7 +102,24 @@ public class Utilisateur {
         this.estNote = estNote;
     }
 
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
     public void ajouterVehicule(Vehicule vehicule){
         this.listeVehicule.add(vehicule);
+    }
+
+    public boolean possedeVehicule(Vehicule vehicule){
+        for(Vehicule vehiculeTest : listeVehicule){
+            if(vehicule.equals(vehiculeTest)){
+                return true;
+            }
+        }
+        return false;
     }
 }
