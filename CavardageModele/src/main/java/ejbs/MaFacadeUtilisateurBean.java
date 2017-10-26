@@ -2,7 +2,7 @@ package ejbs;
 
 import entities.*;
 import exceptions.DivisionParZeroException;
-import exceptions.UtilisateurNonInscritException;
+import exceptions.PasConducteurException;
 import exceptions.VilleNonTrouvee;
 
 import javax.ejb.Stateless;
@@ -23,7 +23,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Trajet trajet = em.find(Trajet.class,idTrajet);
         List<Etape> etapes = trajet.getListeEtape();
         Reservation reservation = new Reservation();
-        reservation.setStatut("attente");
+        reservation.setStatut("enAttente");
         reservation.setNbPlace(nbPlaces);
         reservation.setTrajetReservation(trajet);
         reservation.setUtilisateurReservation(utilisateur);
@@ -44,6 +44,15 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             reservation.setDescendA(null);
         }
         em.persist(reservation);
+
+        Vehicule vehicule = trajet.getVehiculeTrajet();
+        Utilisateur conducteur = trouverUtilisateur(vehicule);
+        Notification notification = new Notification();
+        String messageNotification = "Une nouvelle réservation est arrivée pour le trajet "+trajet.getVilleDepart().getNomVille()+" - "+trajet.getVilleArrivee().getNomVille();
+        notification.setMessage(messageNotification);
+        conducteur.ajouterNotification(notification);
+        em.persist(notification);
+        em.persist(conducteur);
         return reservation;
     }
 
@@ -51,11 +60,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note) {
         Utilisateur donneNote = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
-        int idVehicule = trajet.getVehiculeTrajet().getIdVehicule();
+
         // Le faire sur la bonne table
-        Query q = em.createQuery("FROM Personne p WHERE p.Vehicule:=vehicule");
-        q.setParameter("vehicule", idVehicule);
-        Utilisateur estNote = (Utilisateur) q.getSingleResult();
+        Vehicule vehicule = trajet.getVehiculeTrajet();
+        Utilisateur estNote = trouverUtilisateur(vehicule);
         Appreciation appreciation = new Appreciation();
         appreciation.setCommentaire(commentaire);
         appreciation.setNote(note);
@@ -154,15 +162,13 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public boolean annulerTrajet(String login, int idTrajet) {
+    public boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
 
         // On vérifie que c'est bien l'utilisateur qui a créé le trajet
-        Vehicule vehicule = trajet.getVehiculeTrajet();
-        if(!utilisateur.possedeVehicule(vehicule)) {
-            return false;
-        }
+        verifierUtilisateurEstConducteur(utilisateur,trajet);
+
         trajet.setStatut("annule");
         Notification notification;
         String messageNotification = ("Le trajet "+trajet.getVilleDepart()+" - "+trajet.getVilleArrivee() + " du "+trajet.getDate()+" a été annulé");
@@ -175,14 +181,27 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 notification = new Notification();
                 notification.setMessage(messageNotification);
                 passager.ajouterNotification(notification);
+                em.persist(notification);
+                em.persist(passager);
             }
         }
         return true;
     }
 
     @Override
-    public List<Reservation> avoirReservations(String login, int idTrajet) {
-        return null;
+    public List<Reservation> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException {
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+
+        verifierUtilisateurEstConducteur(utilisateur,trajet);
+
+        List<Reservation> reservationListe = new ArrayList<>();
+        for(Reservation reservation : trajet.getListeReservation()){
+            if(reservation.getStatut().equals("enAttente")){
+                reservationListe.add(reservation);
+            }
+        }
+        return reservationListe;
     }
 
     @Override
@@ -193,5 +212,26 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @Override
     public boolean accepterReservation(String login, int idreservation) {
         return false;
+    }
+
+    @Override
+    public boolean supprimerNotification(String login, int idNotification) {
+        return false;
+    }
+
+    private Utilisateur trouverUtilisateur(Vehicule vehicule){
+        Query q = em.createQuery("FROM Utilisateur u WHERE u.Vehicule:=vehicule");
+        q.setParameter("vehicule", vehicule.getIdVehicule());
+        Utilisateur utilisateur = (Utilisateur) q.getSingleResult();
+        return utilisateur;
+    }
+
+    private boolean verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
+        Vehicule vehicule = trajet.getVehiculeTrajet();
+        if(!utilisateur.possedeVehicule(vehicule)) {
+            throw new PasConducteurException();
+        } else {
+            return true;
+        }
     }
 }
