@@ -1,5 +1,6 @@
 package ejbs;
 
+import dtos.HistoriqueDTO;
 import entities.Appreciation;
 import entities.Reservation;
 import entities.Trajet;
@@ -27,4 +28,5 @@ public interface MaFacadeUtilisateur {
     boolean refuserReservation(String login, int idReservation) throws PasConducteurException;
     boolean accepterReservation(String login, int idReservation) throws PasConducteurException;
     boolean supprimerNotification(String login, int idNotification);
+    List<HistoriqueDTO> historiqueUtilisateur(String login);
 }

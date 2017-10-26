@@ -1,5 +1,6 @@
 package servlets;
 
+import dtos.HistoriqueDTO;
 import ejbs.MaFacadeUtilisateur;
 
 import javax.ejb.EJB;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("ControleurUtilisateur")
 public class ControleurUtilisateur extends HttpServlet {
@@ -48,6 +50,10 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void voirHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login =(String) request.getSession().getAttribute("utilisateur");
+        List<HistoriqueDTO> listeHistorique = maFacade.historiqueUtilisateur(login);
+        request.setAttribute("listeHistorique", listeHistorique);
+        request.getRequestDispatcher("/WEB-INF/homePahe/historique.jsp").forward(request, response);
     }
 
 }
