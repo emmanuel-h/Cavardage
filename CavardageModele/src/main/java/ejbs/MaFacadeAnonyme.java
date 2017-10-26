@@ -12,7 +12,7 @@ import java.util.List;
 public interface MaFacadeAnonyme {
 
     public UtilisateurDTO connexion(String login, String mdp) throws UtilisateurNonInscritException;
-    public UtilisateurDTO inspcription(String login,String nom,String mdp) throws LoginExistantException;
+    public UtilisateurDTO inscription(String login,String nom,String mdp) throws LoginExistantException;
     public List<TrajetDTO> rechercheTrajet(String villeDepart, String villeArrive, String date);
     public List<TrajetDTO> dernierAjout();
 }

@@ -30,22 +30,22 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
         query.setParameter("login",login);
         query.setParameter("mdp",mdp);
         List<Utilisateur> p = query.getResultList();
-        if(p.size()>0) {
+        if(!p.isEmpty()) {
             return new UtilisateurDTO(p.get(0));
         }
         return null;
     }
 
     @Override
-    public UtilisateurDTO inspcription(String login,String nom, String mdp) throws LoginExistantException {
+    public UtilisateurDTO inscription(String login,String nom, String mdp) throws LoginExistantException {
         Query query = em.createQuery("From Utilisateur u where u.login=:login ");
         query.setParameter("login", login);
         List<Utilisateur> u = query.getResultList();
-        if (u.size() == 0) {
+        if (u.isEmpty()) {
             query = em.createQuery("From Role u where u.message=:message ");
             query.setParameter("message", "utilisateur");
             List<Role> r = query.getResultList();
-            if(r.size()>0) {
+            if(!r.isEmpty()) {
                 Utilisateur new_u = new Utilisateur(login, nom, mdp,r.get(0));
                 System.out.println(new_u.toString());
                 em.persist(new_u);

@@ -42,7 +42,7 @@ public class ControleurAnonyme extends HttpServlet {
                     try {
                         UtilisateurDTO utilisateurDTO = ejb.connexion(login, mdp);
                         request.getSession().setAttribute("utilisateur",utilisateurDTO);
-                        request.getRequestDispatcher("/WEB-INF/accueil.jsp")
+                        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp")
                                 .forward(request, response);
                     }catch (UtilisateurNonInscritException exception){
                         request.getRequestDispatcher("/WEB-INF/accueil.jsp")
@@ -55,30 +55,7 @@ public class ControleurAnonyme extends HttpServlet {
                             .forward(request, response);
                     break;
                 case "inscrire":
-                    login = request.getParameter("login");
-                    nom = request.getParameter("nom");
-                    mdp = request.getParameter("mdp");
-                    mdp_confirmer = request.getParameter("mdp_confirmer");
-                    if(mdp.equals(mdp_confirmer)) {
-                        try {
-                            UtilisateurDTO utilisateurDTO = ejb.inspcription(login, nom, mdp);
-                            if(utilisateurDTO != null) {
-                                request.getSession().setAttribute("utilisateur", utilisateurDTO);
-                                request.getRequestDispatcher("/WEB-INF/accueil.jsp")
-                                        .forward(request, response);
-                            }else{
-                                request.getRequestDispatcher("/WEB-INF/inscription.jsp")
-                                        .forward(request, response);
-                            }
-                        }catch(LoginExistantException e){
-                            request.getRequestDispatcher("/WEB-INF/inscription.jsp")
-                                    .forward(request, response);
-                        }
-                    }else{
-                        request.getRequestDispatcher("/WEB-INF/inscription.jsp")
-                                .forward(request, response);
-                    }
-
+                    inscription(request,response);
                     break;
                 default:
                     System.out.println("default");
@@ -86,4 +63,33 @@ public class ControleurAnonyme extends HttpServlet {
             }
         }
     }
+
+    public void inscription(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+        String login,mdp,nom,mdp_confirmer;
+        login = request.getParameter("login");
+        nom = request.getParameter("nom");
+        mdp = request.getParameter("mdp");
+        mdp_confirmer = request.getParameter("mdp_confirmer");
+        if(mdp.equals(mdp_confirmer)) {
+            try {
+                UtilisateurDTO utilisateurDTO = ejb.inscription(login, nom, mdp);
+                if(utilisateurDTO != null) {
+                    request.getSession().setAttribute("utilisateur", utilisateurDTO);
+                    request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp")
+                            .forward(request, response);
+                }else{
+                    request.getRequestDispatcher("/WEB-INF/inscription.jsp")
+                            .forward(request, response);
+                }
+            }catch(LoginExistantException e){
+                request.getRequestDispatcher("/WEB-INF/inscription.jsp")
+                        .forward(request, response);
+            }
+        }else{
+            request.getRequestDispatcher("/WEB-INF/inscription.jsp")
+                    .forward(request, response);
+        }
+    }
+
+
 }

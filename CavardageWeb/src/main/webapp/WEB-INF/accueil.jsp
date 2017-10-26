@@ -25,8 +25,15 @@
         <input type="text" name="login"/>
         <label>Mot de passe:</label>
         <input type="text" name="mdp"/>
-        <button type="submit" name="afaire" value="connexion">Connexion</button>
-        <button type="submit" name="afaire" value="inscription">Inscription</button>
+        <c:if test="${utilisateur==null}">
+            <button type="submit" name="afaire" value="connexion">Connexion</button>
+        </c:if>
+        <c:if test="${utilisateur==null}">
+            <button type="submit" name="afaire" value="inscription">Inscription</button>
+        </c:if>
+        <c:if test="${utilisateur!=null}">
+            <button type="submit" name="afaire" value="homepage">Profil</button>
+        </c:if>
     </form>
 </div>
 

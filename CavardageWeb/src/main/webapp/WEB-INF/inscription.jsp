@@ -15,7 +15,7 @@
     <form action="ControleurAnonyme" method="post">
         <label>Login:</label>
         <input type="text" name="login"/>
-        <label>Nom::</label>
+        <label>Nom:</label>
         <input type="text" name="nom"/>
         <label>Mot de passe:</label>
         <input type="password" name="mdp"/>
