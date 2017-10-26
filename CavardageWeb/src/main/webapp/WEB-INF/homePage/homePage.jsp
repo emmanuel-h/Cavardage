@@ -8,9 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>HomePage</title>
 </head>
 <body>
-
+<form action="ControleurUtilisateur" method="post">
+    <button type="submit" name="afaire" value="creerTrajet">Création d'un trajet</button>
+    <button type="submit" name="afaire" value="voirHistorique">Votre historique</button>
+</form>
 </body>
 </html>
