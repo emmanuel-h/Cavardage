@@ -31,18 +31,15 @@ public class ControleurAnonyme extends HttpServlet {
         String login,mdp,nom,mdp_confirmer;
         System.out.println(test);
         if(null == test){
-            System.out.println("null");
+            setListeVilles(request);
             request.getRequestDispatcher("/WEB-INF/accueil.jsp")
                     .forward(request, response);
         }else{
             switch (test){
                 case "connexion":
-                    System.out.println("connexion");
                     connexion(request,response);
                     break;
-                case "inscription":
-                    System.out.println("inscription");
-                    request.getRequestDispatcher("/WEB-INF/inscription.jsp")
+                case "inscription": request.getRequestDispatcher("/WEB-INF/inscription.jsp")
                             .forward(request, response);
                     break;
                 case "inscrire":
@@ -68,7 +65,7 @@ public class ControleurAnonyme extends HttpServlet {
         mdp = request.getParameter("mdp");
         try {
             UtilisateurDTO utilisateurDTO = ejb.connexion(login, mdp);
-            request.getSession().setAttribute("utilisateur",utilisateurDTO);
+            request.getSession().setAttribute("utilisateur",login);
             if(utilisateurDTO.getRole().equals("utilisateur")) {
                 request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);;
             }else {
