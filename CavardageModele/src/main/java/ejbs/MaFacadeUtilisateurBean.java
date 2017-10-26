@@ -205,18 +205,28 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public boolean refuserReservation(String login, int idReservation) {
-        return false;
+    public boolean refuserReservation(String login, int idReservation) throws PasConducteurException {
+        Reservation reservation = em.find(Reservation.class,idReservation);
+        String statut="refuse";
+        String messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getDescendA().getVilleEtape().getNomVille()+" a été refusée";
+        gererReservation(login,reservation,messageNotification,statut);
+        return true;
     }
 
     @Override
-    public boolean accepterReservation(String login, int idreservation) {
-        return false;
+    public boolean accepterReservation(String login, int idReservation) throws PasConducteurException{
+        Reservation reservation = em.find(Reservation.class,idReservation);
+        String messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getDescendA().getVilleEtape().getNomVille()+" a été acceptée";
+        String statut="accepte";
+        gererReservation(login,reservation,messageNotification,statut);
+        return true;
     }
 
     @Override
     public boolean supprimerNotification(String login, int idNotification) {
-        return false;
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        Notification notification = em.find(Notification.class,idNotification);
+        return utilisateur.supprimerNotification(notification);
     }
 
     private Utilisateur trouverUtilisateur(Vehicule vehicule){
@@ -233,5 +243,17 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         } else {
             return true;
         }
+    }
+
+    private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException{
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        verifierUtilisateurEstConducteur(utilisateur,reservation.getTrajetReservation());
+        reservation.setStatut(statut);
+        Utilisateur passager = reservation.getUtilisateurReservation();
+        Notification notification = new Notification();
+        notification.setMessage(messageNotification);
+        passager.ajouterNotification(notification);
+        em.persist(notification);
+        em.persist(passager);
     }
 }

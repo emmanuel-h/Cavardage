@@ -145,6 +145,15 @@ public class Utilisateur {
         }
     }
 
+    public boolean supprimerNotification(Notification notification){
+        if(!notifications.contains(notification)){
+            return false;
+        } else {
+            notifications.remove(notification);
+            return true;
+        }
+    }
+
     @Override
     public String toString() {
         return "Utilisateur{" +

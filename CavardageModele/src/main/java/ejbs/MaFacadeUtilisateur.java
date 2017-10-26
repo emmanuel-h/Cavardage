@@ -24,7 +24,7 @@ public interface MaFacadeUtilisateur {
     Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces);
     boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException;
     List<Reservation> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException;
-    boolean refuserReservation(String login, int idReservation);
-    boolean accepterReservation(String login, int idreservation);
+    boolean refuserReservation(String login, int idReservation) throws PasConducteurException;
+    boolean accepterReservation(String login, int idReservation) throws PasConducteurException;
     boolean supprimerNotification(String login, int idNotification);
 }
