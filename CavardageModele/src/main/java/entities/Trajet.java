@@ -22,7 +22,7 @@ public class Trajet {
     @ManyToOne
     private Vehicule vehiculeTrajet;
 
-    @ManyToMany(mappedBy = "listeTrajet")
+    @OneToMany(mappedBy = "trajet")
     private List<Etape> listeEtape;
 
     public Trajet() {
