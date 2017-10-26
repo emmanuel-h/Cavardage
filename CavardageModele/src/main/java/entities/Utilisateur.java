@@ -39,6 +39,13 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
     }
 
+    public Utilisateur(String login, String nom, String mdp, Role roleUtilisateur) {
+        this.login = login;
+        this.nom = nom;
+        this.motDePasse = motDePasse;
+        this.roleUtilisateur= roleUtilisateur;
+    }
+
     public String getLogin() {
         return login;
     }
