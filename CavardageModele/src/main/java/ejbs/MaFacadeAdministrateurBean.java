@@ -27,7 +27,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
 
 
     public boolean ajouterVille(String nomVille){
-        Query q = em.createQuery(selectVille);
+        Query q = em.createQuery("From Ville v where v.nomVille=:nom");
         q.setParameter("nom", nomVille);
         Ville v;
         try{
@@ -41,7 +41,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public List<String> getListeVilles(){
-        Query q = em.createQuery(selectAllVilles);
+        Query q = em.createQuery("From Ville v");
         List<Ville> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
             List<String> listeVilles = new ArrayList<>();
@@ -54,7 +54,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public List<String> getListeGabarits(){
-        Query q = em.createQuery(selectAllGabarits);
+        Query q = em.createQuery("From Gabarit g");
         List<Gabarit> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
             List<String> listeGabarits = new ArrayList<>();
@@ -67,11 +67,22 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public boolean supprimerVille(String nomVille){
+        Query q = em.createQuery("From Ville v where v.nomVille=:nom");
+        q.setParameter("nom", nomVille);
+        try {
+            Ville v = (Ville) q.getSingleResult();
+            em.remove(v);
+            return true;
+        }catch (NoResultException e){
+            return false;
+        }
+
+        /*
         Query q = em.createQuery("DELETE FROM Ville v where v.nomVille=:nom");
         q.setParameter("nom", nomVille);
         q.executeUpdate();
 
-        Query q2 = em.createNativeQuery(selectVille);
+        Query q2 = em.createNativeQuery("From Ville v where v.nomVille=:nom");
         q2.setParameter("nom", nomVille);
         try{
             q2.getSingleResult();
@@ -79,10 +90,11 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             return true;
         }
         return false;
+        */
     }
 
     public boolean ajouterGabarit(String nomGabarit){
-        Query q = em.createQuery(selectGabarit);
+        Query q = em.createQuery("From Gabarit g where g.type=:gabarit");
         q.setParameter("gabarit", nomGabarit);
         Gabarit g;
         try{
@@ -96,11 +108,22 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public boolean supprimerGabarit(String nomGabarit){
-        Query q = em.createQuery("DELETE FROM Gabarit g where g.type=:gabarit");
+        Query q = em.createQuery("From Gabarit g where g.type=:gabarit");
+        q.setParameter("gabarit", nomGabarit);
+        try {
+            Gabarit g = (Gabarit) q.getSingleResult();
+            em.remove(g);
+            return true;
+        }catch(NoResultException e){
+            return false;
+        }
+
+        /*
+        Query q = em.createQuery("DELETE FROM Gabarit g WHERE g.type=:gabarit");
         q.setParameter("gabarit", nomGabarit);
         q.executeUpdate();
 
-        Query q2 = em.createNativeQuery(selectGabarit);
+        Query q2 = em.createNativeQuery("From Gabarit g where g.type=:gabarit");
         q2.setParameter("gabarit", nomGabarit);
         try{
             q2.getSingleResult();
@@ -108,5 +131,6 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             return true;
         }
         return false;
+        */
     }
 }

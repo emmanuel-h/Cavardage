@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 public class Gabarit {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGabarit;
     private String type;
 

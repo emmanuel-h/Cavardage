@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 public class Ville {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idVille;
     private String nomVille;
 
