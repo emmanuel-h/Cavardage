@@ -53,7 +53,7 @@ public class ControleurUtilisateur extends HttpServlet {
         String login =(String) request.getSession().getAttribute("utilisateur");
         List<HistoriqueDTO> listeHistorique = maFacade.historiqueUtilisateur(login);
         request.setAttribute("listeHistorique", listeHistorique);
-        request.getRequestDispatcher("/WEB-INF/homePahe/historique.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/homePage/historique.jsp").forward(request, response);
     }
 
 }

@@ -279,6 +279,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 listeHisto.add(hist);
             }
         }
+        //A faire
+        List<HistoriqueDTO>listeTest = new ArrayList<>();
         return listeHisto;
     }
 }
