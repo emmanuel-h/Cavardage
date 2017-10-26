@@ -258,6 +258,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         em.persist(passager);
     }
 
+
     public List<HistoriqueDTO> historiqueUtilisateur(String login){
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         List<HistoriqueDTO> listeHisto = new ArrayList<>();
@@ -279,8 +280,13 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 listeHisto.add(hist);
             }
         }
-        //A faire
-        List<HistoriqueDTO>listeTest = new ArrayList<>();
+
+        HistoriqueDTO hist1 = new HistoriqueDTO(1, "clio", 0, "conducteur", "Orleans", "Tours", "26/10/2017");
+        HistoriqueDTO hist2 = new HistoriqueDTO(2, "", 2, "passager", "Paris", "Marseille", "15/10/2017");
+
+        listeHisto.add(hist1);
+        listeHisto.add(hist2);
+
         return listeHisto;
     }
 }
