@@ -12,6 +12,8 @@
     <div class="form-group">
         <label for="nomVille1">Nom de la ville : </label>
         <input type="text" id="nomVille1" name="nomVilleAAjouter" class="form-control" required>
+        <label for="departementVille1">Département de la ville : </label>
+        <input type="text" id="departementVille1" name="departementVilleAAjouter" class="form-control" required>
     </div>
     <div class="form-group">
         <button class="btn btn-primary" type="submit" name="boutonAdmin" value="ajouterVille">Ajouter une ville</button>
@@ -24,7 +26,7 @@
         <label>Nom de la ville : </label>
         <datalist id="nomVilleList">
             <c:forEach items="${listeVilles}" var="ville">
-                <option value="${ville}"/>
+                <option value="${ville.nom} (${ville.departement})"/>
             </c:forEach>
         </datalist>
         <input type="text" list="nomVilleList" class="form-control" name="nomVilleASupprimer" required>

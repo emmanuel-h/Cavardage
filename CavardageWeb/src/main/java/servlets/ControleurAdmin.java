@@ -1,5 +1,6 @@
 package servlets;
 
+import dtos.VilleDTO;
 import ejbs.MaFacadeAdministrateur;
 
 import javax.ejb.EJB;
@@ -44,8 +45,9 @@ public class ControleurAdmin extends HttpServlet {
                     break;
                 case "ajouterVille":
                     String nomVilleAjouter = request.getParameter("nomVilleAAjouter");
+                    String departementVilleAjouter = request.getParameter("departementVilleAAjouter");
                     System.out.println("Ville : " + nomVilleAjouter);
-                    ajouterVille(nomVilleAjouter);
+                    ajouterVille(nomVilleAjouter,departementVilleAjouter);
                     setGestionVille(request);
                     setListeVilles(request);
                     request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
@@ -65,8 +67,11 @@ public class ControleurAdmin extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "supprimerVille":
-                    String nomVilleSupp = request.getParameter("nomVilleASupprimer");
-                    supprimerVille(nomVilleSupp);
+                    String villeSupp = request.getParameter("nomVilleASupprimer");
+                    String nomVilleSupp = villeSupp.substring(0,villeSupp.length()-5);
+                    String departementVilleSupp = villeSupp.substring(villeSupp.length()-3,villeSupp.length()-1);
+                    System.out.println(departementVilleSupp);
+                    supprimerVille(nomVilleSupp,departementVilleSupp);
                     setGestionVille(request);
                     setListeVilles(request);
                     request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
@@ -88,7 +93,7 @@ public class ControleurAdmin extends HttpServlet {
     }
 
     private void setListeVilles(HttpServletRequest request){
-        List<String> listeVilles = ejb.getListeVilles();
+        List<VilleDTO> listeVilles = ejb.getListeVilles();
         request.setAttribute("listeVilles",listeVilles);
     }
 
@@ -97,16 +102,16 @@ public class ControleurAdmin extends HttpServlet {
         request.setAttribute("listeGabarits", listeGabarits);
     }
 
-    private boolean ajouterVille(String nomVille){
-        return ejb.ajouterVille(nomVille);
+    private boolean ajouterVille(String nomVille,String departement){
+        return ejb.ajouterVille(nomVille,departement);
     }
 
     private boolean ajouterGabarit(String nomGabarit){
         return ejb.ajouterGabarit(nomGabarit);
     }
 
-    private boolean supprimerVille(String nomVille){
-        return ejb.supprimerVille(nomVille);
+    private boolean supprimerVille(String nomVille,String departement){
+        return ejb.supprimerVille(nomVille,departement);
     }
 
     private boolean supprimerGabarit(String nomGabarit){

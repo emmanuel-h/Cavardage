@@ -1,5 +1,6 @@
 package ejbs;
 
+import dtos.VilleDTO;
 import entities.Gabarit;
 import entities.Ville;
 
@@ -26,27 +27,27 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
 
-    public boolean ajouterVille(String nomVille){
+    public boolean ajouterVille(String nomVille,String departement){
         Query q = em.createQuery("From Ville v where v.nomVille=:nom");
         q.setParameter("nom", nomVille);
         Ville v;
         try{
             v = (Ville) q.getSingleResult();
         }catch(NoResultException e){
-            v = new Ville(nomVille);
+            v = new Ville(nomVille,Integer.parseInt(departement));
             em.persist(v);
             return true;
         }
         return false;
     }
 
-    public List<String> getListeVilles(){
+    public List<VilleDTO> getListeVilles(){
         Query q = em.createQuery("From Ville v");
         List<Ville> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
-            List<String> listeVilles = new ArrayList<>();
+            List<VilleDTO> listeVilles = new ArrayList<>();
             for(Ville v : listeTemp){
-                listeVilles.add(v.getNomVille());
+                listeVilles.add(new VilleDTO(v));
             }
             return listeVilles;
         }
@@ -66,14 +67,17 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         return new ArrayList<>();
     }
 
-    public boolean supprimerVille(String nomVille){
-        Query q = em.createQuery("From Ville v where v.nomVille=:nom");
+    public boolean supprimerVille(String nomVille, String departement){
+        Query q = em.createQuery("From Ville v where v.nomVille=:nom and v.departement=:departement ");
         q.setParameter("nom", nomVille);
+        q.setParameter("departement", Integer.parseInt(departement));
+        System.out.println("Modele" +departement);
         try {
             Ville v = (Ville) q.getSingleResult();
             em.remove(v);
             return true;
         }catch (NoResultException e){
+            System.out.println("no ville");
             return false;
         }
 

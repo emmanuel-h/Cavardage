@@ -12,12 +12,22 @@ public class Ville {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idVille;
     private String nomVille;
+    private int departement;
 
     public Ville() {
     }
 
-    public Ville(String nomVille) {
+    public Ville(String nomVille,int departement) {
         this.nomVille = nomVille;
+        this.departement = departement;
+    }
+
+    public int getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(int departement) {
+        this.departement = departement;
     }
 
     public int getIdVille() {

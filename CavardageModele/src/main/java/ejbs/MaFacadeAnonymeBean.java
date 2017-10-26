@@ -5,6 +5,7 @@ import dtos.UtilisateurDTO;
 import entities.Role;
 import entities.Trajet;
 import entities.Utilisateur;
+import entities.Ville;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
 
@@ -38,7 +39,16 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
 
     @Override
     public List<String> getListeVille() {
-        return null;
+        Query q = em.createQuery("From Ville v");
+        List<Ville> listeTemp = q.getResultList();
+        if(!listeTemp.isEmpty()){
+            List<String> listeVilles = new ArrayList<>();
+            for(Ville v : listeTemp){
+                listeVilles.add(v.getNomVille());
+            }
+            return listeVilles;
+        }
+        return new ArrayList<>();
     }
 
     @Override

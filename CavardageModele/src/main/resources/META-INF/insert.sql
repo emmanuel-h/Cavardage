@@ -12,10 +12,10 @@ INSERT INTO Gabarit (idGabarit, type) VALUES (4,'citadine');
 INSERT INTO Gabarit (idGabarit, type) VALUES (5,'combi VW');
 INSERT INTO Gabarit (idGabarit, type) VALUES (6,'semi-remorque');
 
-INSERT INTO Ville (idVille, nomVille) VALUES (1, 'Paris');
-INSERT INTO Ville (idVille, nomVille) VALUES (2, 'Lyon');
-INSERT INTO Ville (idVille, nomVille) VALUES (3, 'Marseille');
-INSERT INTO Ville (idVille, nomVille) VALUES (4, 'Orleans');
-INSERT INTO Ville (idVille, nomVille) VALUES (5, 'Nantes');
-INSERT INTO Ville (idVille, nomVille) VALUES (6, 'Lille');
-INSERT INTO Ville (idVille, nomVille) VALUES (7, 'Peta-aux-chnoques Les Bains');
+INSERT INTO Ville (idVille, nomVille, departement) VALUES (1, 'Paris',75);
+INSERT INTO Ville (idVille, nomVille, departement) VALUES (2, 'Lyon',69);
+INSERT INTO Ville (idVille, nomVille, departement) VALUES (3, 'Marseille',13);
+INSERT INTO Ville (idVille, nomVille, departement) VALUES (4, 'Orleans',45);
+INSERT INTO Ville (idVille, nomVille, departement) VALUES (5, 'Nantes',44);
+INSERT INTO Ville (idVille, nomVille, departement) VALUES (6, 'Lille',59);
+INSERT INTO Ville (idVille, nomVille, departement) VALUES (7, 'Peta-aux-chnoques Les Bains',39);
