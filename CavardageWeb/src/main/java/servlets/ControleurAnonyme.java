@@ -1,6 +1,8 @@
 package servlets;
 
+import dtos.TrajetDTO;
 import dtos.UtilisateurDTO;
+import dtos.VilleDTO;
 import ejbs.MaFacadeAnonyme;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
@@ -31,7 +33,8 @@ public class ControleurAnonyme extends HttpServlet {
         String login,mdp,nom,mdp_confirmer;
         System.out.println(test);
         if(null == test){
-            setListeVilles(request);
+            getListeVilles(request);
+            getListeDernierTrajet(request);
             request.getRequestDispatcher("/WEB-INF/accueil.jsp")
                     .forward(request, response);
         }else{
@@ -52,9 +55,14 @@ public class ControleurAnonyme extends HttpServlet {
         }
     }
 
+    private void getListeDernierTrajet(HttpServletRequest request) {
+        List<TrajetDTO> listeDernierTrajet = ejb.dernierAjout();
+        request.setAttribute("listeDernierTrajet",listeDernierTrajet);
+    }
 
-    private void setListeVilles(HttpServletRequest request){
-        List<String> listeVilles = ejb.getListeVille();
+
+    private void getListeVilles(HttpServletRequest request){
+        List<VilleDTO> listeVilles = ejb.getListeVille();
         request.setAttribute("listeVilles",listeVilles);
     }
 

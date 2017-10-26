@@ -34,13 +34,19 @@
     <form action="ControleurAnonyme" method="post">
         <h2>Recherche d'un trajet:</h2>
         <label>Ville de départ:</label>
+        <datalist id="nomVilleDepart">
         <c:forEach items="${listeVilles}" var="ville">
-            <option value="${ville}"/>
+            <option value="${ville.nom}(${ville.departement})"/>
         </c:forEach>
+        </datalist>
+        <input type="text" list="nomVilleDepart" class="form-control" name="nomVilleDepart" required>
         <label>Ville d'arrivée:</label>
+        <datalist id="nomVilleArrivee">
         <c:forEach items="${listeVilles}" var="ville">
-            <option value="${ville}"/>
+            <option value="${ville.nom}(${ville.departement})"/>
         </c:forEach>
+        </datalist>
+        <input type="text" list="nomVilleArrivee" class="form-control" name="nomVilleArrivee" required>
         <label>Date:</label>
         <input type="date" name="date"/>
         <button type="submit" name="afaire" value="rechercherTrajet">Rechercher</button>
@@ -50,12 +56,23 @@
 
 <div>
     <form action="ControleurAnonyme" method="post">
-
+        <ul class="list-group">
+            <c:forEach items="${listeDernierTrajet}" var="trajet">
+                <li class="list-group-item">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>${trajet.villeDepart}</td>
+                            <td>${trajet.villeArrive}</td>
+                            <td>${trajet.date}</td>
+                            <td>${trajet.heure}h</td>
+                        </tr>
+                    </table>
+                </li>
+            </c:forEach>
+        </ul>
     </form>
 </div>
 
-
-</datalist>
 
 </body>
 </html>

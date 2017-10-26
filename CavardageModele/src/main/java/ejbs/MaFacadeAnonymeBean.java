@@ -2,6 +2,7 @@ package ejbs;
 
 import dtos.TrajetDTO;
 import dtos.UtilisateurDTO;
+import dtos.VilleDTO;
 import entities.Role;
 import entities.Trajet;
 import entities.Utilisateur;
@@ -38,13 +39,13 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public List<String> getListeVille() {
+    public List<VilleDTO> getListeVille() {
         Query q = em.createQuery("From Ville v");
         List<Ville> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
-            List<String> listeVilles = new ArrayList<>();
+            List<VilleDTO> listeVilles = new ArrayList<>();
             for(Ville v : listeTemp){
-                listeVilles.add(v.getNomVille());
+                listeVilles.add(new VilleDTO(v));
             }
             return listeVilles;
         }
@@ -84,7 +85,7 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
 
     @Override
     public List<TrajetDTO> dernierAjout() {
-        List<Trajet>lt = em.createNativeQuery("SELECT * FROM Trajet LIMIT 10 ").getResultList();
+        List<Trajet>lt = em.createQuery("From Trajet t").getResultList();
         List<TrajetDTO> ltd = new ArrayList<>();
         for(Trajet t :lt){
             ltd.add(new TrajetDTO(t));

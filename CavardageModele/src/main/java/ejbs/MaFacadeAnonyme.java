@@ -2,6 +2,7 @@ package ejbs;
 
 import dtos.TrajetDTO;
 import dtos.UtilisateurDTO;
+import dtos.VilleDTO;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
 
@@ -15,5 +16,6 @@ public interface MaFacadeAnonyme {
     public boolean inscription(String login,String nom,String mdp) throws LoginExistantException;
     public List<TrajetDTO> rechercheTrajet(String villeDepart, String villeArrive, String date);
     public List<TrajetDTO> dernierAjout();
-    public List<String> getListeVille();
+    public List<VilleDTO> getListeVille();
 }
+
