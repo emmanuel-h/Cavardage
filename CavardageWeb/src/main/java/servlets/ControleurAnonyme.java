@@ -43,10 +43,14 @@ public class ControleurAnonyme extends HttpServlet {
                     connexion(request,response);
                     break;
                 case "inscription": request.getRequestDispatcher("/WEB-INF/inscription.jsp")
-                            .forward(request, response);
+                        .forward(request, response);
                     break;
                 case "inscrire":
                     inscription(request,response);
+                    break;
+                case "rechercherTrajet":
+                    getResultatRecherche(request,response);
+                    getListeDernierTrajet(request);
                     break;
                 default:
                     System.out.println("default");
@@ -54,6 +58,22 @@ public class ControleurAnonyme extends HttpServlet {
             }
         }
     }
+
+    private void getResultatRecherche(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+        String villeDepart = request.getParameter("nomVilleDepart");
+        String nomVilleDepart = villeDepart.substring(0,villeDepart.length()-5);
+        String departementVilleDepart = villeDepart.substring(villeDepart.length()-3,villeDepart.length()-1);
+        String villeArrive = request.getParameter("nomVilleArrivee");
+        String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-5);
+        String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
+        String date = request.getParameter("date");
+        List<TrajetDTO> listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart,departementVilleDepart,nomVilleArrivee,departementVilleArrivee,date);
+        System.out.println(listeTrajetRecherche.size());
+        request.setAttribute("listeTrajetRecherche",listeTrajetRecherche);
+        request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
+
+    }
+
 
     private void getListeDernierTrajet(HttpServletRequest request) {
         List<TrajetDTO> listeDernierTrajet = ejb.dernierAjout();
@@ -80,6 +100,7 @@ public class ControleurAnonyme extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);;
             }
         }catch (UtilisateurNonInscritException exception){
+            getListeDernierTrajet(request);
             request.getRequestDispatcher("/WEB-INF/accueil.jsp")
                     .forward(request, response);
         }

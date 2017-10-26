@@ -1,6 +1,7 @@
 package ejbs;
 
 import dtos.HistoriqueDTO;
+import dtos.VehiculeDTO;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
@@ -163,6 +164,24 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
+    public boolean supprimerVehicule(int idVehicule){
+        Vehicule v = em.find(Vehicule.class, idVehicule);
+        em.remove(v);
+        return true;
+    }
+
+    @Override
+    public List<VehiculeDTO> listeVehicules(String login){
+        Utilisateur utilisateur = em.find(Utilisateur.class, login);
+        List<VehiculeDTO> listeVehicules = new ArrayList<>();
+        for(Vehicule v : utilisateur.getListeVehicule()){
+            VehiculeDTO vDTO = new VehiculeDTO(v.getIdVehicule(), v.getModele(), v.getNom(), v.getGabarit().getType(), v.getNombrePlaces());
+            listeVehicules.add(vDTO);
+        }
+        return listeVehicules;
+    }
+
+    @Override
     public boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
@@ -269,6 +288,18 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return gabaritListe;
     }
 
+    private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException {
+        Utilisateur utilisateur = em.find(Utilisateur.class, login);
+        verifierUtilisateurEstConducteur(utilisateur, reservation.getTrajetReservation());
+        reservation.setStatut(statut);
+        Utilisateur passager = reservation.getUtilisateurReservation();
+        Notification notification = new Notification();
+        notification.setMessage(messageNotification);
+        passager.ajouterNotification(notification);
+        em.persist(notification);
+        em.persist(passager);
+    }
+
     private Utilisateur trouverUtilisateur(Vehicule vehicule){
         Query q = em.createQuery("FROM Utilisateur u WHERE u.Vehicule:=vehicule");
         q.setParameter("vehicule", vehicule.getIdVehicule());
@@ -283,17 +314,5 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         } else {
             return true;
         }
-    }
-
-    private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException{
-        Utilisateur utilisateur = em.find(Utilisateur.class,login);
-        verifierUtilisateurEstConducteur(utilisateur,reservation.getTrajetReservation());
-        reservation.setStatut(statut);
-        Utilisateur passager = reservation.getUtilisateurReservation();
-        Notification notification = new Notification();
-        notification.setMessage(messageNotification);
-        passager.ajouterNotification(notification);
-        em.persist(notification);
-        em.persist(passager);
     }
 }

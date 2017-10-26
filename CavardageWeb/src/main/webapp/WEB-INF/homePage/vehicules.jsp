@@ -28,7 +28,5 @@
 </form>
 <br>
 <br>
-Vos véhicules :<br>
 
-</body>
-</html>
+</form>

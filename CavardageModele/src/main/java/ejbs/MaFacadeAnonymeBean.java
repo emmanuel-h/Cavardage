@@ -34,8 +34,9 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
         List<Utilisateur> p = query.getResultList();
         if(!p.isEmpty()) {
             return new UtilisateurDTO(p.get(0));
+        }else{
+            throw new UtilisateurNonInscritException();
         }
-        return null;
     }
 
     @Override
@@ -73,9 +74,11 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public List<TrajetDTO> rechercheTrajet(String villeDepart, String villeArrive, String date) {
-        List<Trajet>lt = em.createQuery("From Trajet t where t.villeDepart=:villeDepart and t.villeArrive=:villeArrive and " +
-                "t.date=:date").getResultList();
+    public List<TrajetDTO> rechercheTrajet(String villeDepart,String departementDepart, String villeArrive,
+           String departementArrive, String date) {
+        Query query = em.createQuery("From Trajet t Join t.villeDepart n WHERE n.nomVille=:villeDepart");
+        query.setParameter("villeDepart", villeDepart);
+        List<Trajet> lt = query.getResultList();
         List<TrajetDTO> ltd = new ArrayList<>();
         for(Trajet t :lt){
             ltd.add(new TrajetDTO(t));
