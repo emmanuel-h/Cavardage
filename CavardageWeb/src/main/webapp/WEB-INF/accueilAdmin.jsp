@@ -14,6 +14,10 @@
 </head>
 <body>
 
+    <b:kickstart title="Cavardage">
+
+    </b:kickstart>
+
     <div class="container">
         <div class="col-lg-3">
             <form method="post" action="ControleurAdmin">

@@ -28,31 +28,88 @@ public class ControleurAdmin extends HttpServlet {
 
         if(null == test){
             request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+            request.setAttribute("gestionVille", false);
+            request.setAttribute("gestionGabarit", false);
         }else{
             switch (test){
                 case "gererVille":
-                    List<String> listeVilles = ejb.getListeVilles();
-                    if(null != listeVilles) {
-                        request.setAttribute("listeVilles", listeVilles);
-                        request.setAttribute("gestionVille", true);
-                    }else{
-                        request.setAttribute("gestionVille", false);
-                    }
+                    setListeVilles(request);
+                    setGestionVille(request);
                     request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "gererGabarit":
-                    List<String> listeGabarits = ejb.getListeGabarits();
-                    if(null != listeGabarits){
-                        request.setAttribute("listeGabarits", listeGabarits);
-                        request.setAttribute("gestionGabarit", true);
-                    }else{
-                        request.setAttribute("gestionGabarit", false);
-                    }
+                    setListeGabarits(request);
+                    setGestionGabarit(request);
+                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    break;
+                case "ajouterVille":
+                    String nomVilleAjouter = request.getParameter("nomVilleAAjouter");
+                    System.out.println("Ville : " + nomVilleAjouter);
+                    ajouterVille(nomVilleAjouter);
+                    setGestionVille(request);
+                    setListeVilles(request);
+                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    break;
+                case "ajouterGabarit":
+                    String nomGabaritAjouter = request.getParameter("nomGabaritAAjouter");
+                    ajouterGabarit(nomGabaritAjouter);
+                    setGestionGabarit(request);
+                    setListeGabarits(request);
+                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    break;
+                case "supprimerGabarit":
+                    String nomGabaritSupp = request.getParameter("nomGabaritASupprimer");
+                    supprimerGabarit(nomGabaritSupp);
+                    setGestionGabarit(request);
+                    setListeGabarits(request);
+                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    break;
+                case "supprimerVille":
+                    String nomVilleSupp = request.getParameter("nomVilleASupprimer");
+                    supprimerVille(nomVilleSupp);
+                    setGestionVille(request);
+                    setListeVilles(request);
                     request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    private void setGestionVille(HttpServletRequest request){
+        request.setAttribute("gestionVille", true);
+        request.setAttribute("gestionGabarit", false);
+    }
+
+    private void setGestionGabarit(HttpServletRequest request){
+        request.setAttribute("gestionVille", false);
+        request.setAttribute("gestionGabarit", true);
+    }
+
+    private void setListeVilles(HttpServletRequest request){
+        List<String> listeVilles = ejb.getListeVilles();
+        request.setAttribute("listeVilles",listeVilles);
+    }
+
+    private void setListeGabarits(HttpServletRequest request){
+        List<String> listeGabarits = ejb.getListeGabarits();
+        request.setAttribute("listeGabarits", listeGabarits);
+    }
+
+    private boolean ajouterVille(String nomVille){
+        return ejb.ajouterVille(nomVille);
+    }
+
+    private boolean ajouterGabarit(String nomGabarit){
+        return ejb.ajouterGabarit(nomGabarit);
+    }
+
+    private boolean supprimerVille(String nomVille){
+        return ejb.supprimerVille(nomVille);
+    }
+
+    private boolean supprimerGabarit(String nomGabarit){
+        return ejb.supprimerGabarit(nomGabarit);
     }
 }

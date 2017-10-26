@@ -11,7 +11,7 @@
     <legend>Ajouter une ville</legend>
     <div class="form-group">
         <label for="nomVille1">Nom de la ville : </label>
-        <input type="text" id="nomVille1" name="nomVilleAAjouter" class="form-control">
+        <input type="text" id="nomVille1" name="nomVilleAAjouter" class="form-control" required>
     </div>
     <div class="form-group">
         <button class="btn btn-primary" type="submit" name="boutonAdmin" value="ajouterVille">Ajouter une ville</button>
@@ -27,6 +27,9 @@
                 <option value="${ville}"/>
             </c:forEach>
         </datalist>
-        <input type="text" list="nomVilleList">
+        <input type="text" list="nomVilleList" class="form-control" name="nomVilleASupprimer" required>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit" name="boutonAdmin" value="supprimerVille">Supprimer une ville</button>
     </div>
 </form>

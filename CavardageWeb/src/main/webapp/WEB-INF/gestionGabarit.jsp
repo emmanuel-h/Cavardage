@@ -11,7 +11,7 @@
     <legend>Ajouter un gabarit</legend>
     <div class="form-group">
         <label for="nomGabarit1">Nom du gabarit : </label>
-        <input type="text" id="nomGabarit1" name="nomGabaritAAjouter" class="form-control">
+        <input type="text" id="nomGabarit1" name="nomGabaritAAjouter" class="form-control" required>
     </div>
     <div class="form-group">
         <button class="btn btn-primary" type="submit" name="boutonAdmin" value="ajouterGabarit">Ajouter un gabarit</button>
@@ -27,6 +27,9 @@
                 <option value="${gabarit}"/>
             </c:forEach>
         </datalist>
-        <input type="text" list="nomGabaritList">
+        <input type="text" list="nomGabaritList" class="form-control" name="nomGabaritASupprimer" required>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit" name="boutonAdmin" value="supprimerGabarit">Supprimer un gabarit</button>
     </div>
 </form>
