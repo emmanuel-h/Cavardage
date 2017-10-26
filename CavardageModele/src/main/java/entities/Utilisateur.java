@@ -115,6 +115,7 @@ public class Utilisateur {
             return false;
         } else {
             this.listeVehicule.add(vehicule);
+            return true;
         }
     }
 
@@ -132,6 +133,7 @@ public class Utilisateur {
             return false;
         } else {
             this.notifications.add(notification);
+            return true;
         }
     }
 }
