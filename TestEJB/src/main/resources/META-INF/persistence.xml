@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="
+        http://java.sun.com/xml/ns/persistence
+        http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <!-- Changer le nom si on en préfère un mieux -->
+    <persistence-unit name="monUnite">
+        <!-- If you are running in a production environment, add a managed
+           data source, this example data source is just for development and testing! -->
+        <!-- The datasource is deployed as WEB-INF/greeter-quickstart-ds.xml, you
+           can find it in the source at src/main/webapp/WEB-INF/greeter-quickstart-ds.xml -->
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        <properties>
+            <!-- Properties for Hibernate -->
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.show_sql" value="false" />
+          <!--  <property name="hibernate.hbm2ddl.import_files" value="META-INF/insert.sql"/> -->
+        </properties>
+    </persistence-unit>
+
+
+</persistence>

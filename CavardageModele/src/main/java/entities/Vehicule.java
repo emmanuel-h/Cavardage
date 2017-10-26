@@ -76,11 +76,16 @@ public class Vehicule {
 
     @Override
     public boolean equals(Object o){
-        if(o instanceof Vehicule){
-            if(((Vehicule) o).getIdVehicule() == idVehicule){
-                return true;
-            }
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false;
+        if(((Vehicule)o).getIdVehicule() == (this.idVehicule)){
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }

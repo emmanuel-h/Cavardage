@@ -10,6 +10,7 @@ public class Reservation {
 
     @Id @GeneratedValue
     private int IdReservation;
+    // accepte, refuse, enAttente
     private String statut;
     private int nbPlace;
 
