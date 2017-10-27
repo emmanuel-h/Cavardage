@@ -22,7 +22,6 @@ public class TrajetDTO {
         tab=t.getVilleArrivee().getNomVille().split("_");
         villeArrive=tab[0];
         departementArrivee=tab[1];
-        System.out.println(villeDepart+" "+departementDepart);
         date=t.getDate();
         heure=t.getHeure();
         vehicule=t.getVehiculeTrajet().getModele();
