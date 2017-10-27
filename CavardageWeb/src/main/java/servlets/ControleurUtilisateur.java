@@ -5,6 +5,7 @@ import dtos.VehiculeDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
+import entities.Ville;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -92,7 +93,7 @@ public class ControleurUtilisateur extends HttpServlet {
     private void voirCreerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
         List<VehiculeDTO> vehiculeDTOS = maFacade.listeVehicules(login);
-        List<VilleDTO> listeVilles = maFacade.getListeVilles();
+        List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
         request.setAttribute("listeVehicules", vehiculeDTOS);
         request.setAttribute("listeVilles", listeVilles);
         request.setAttribute("aAfficher", "creerTrajet");

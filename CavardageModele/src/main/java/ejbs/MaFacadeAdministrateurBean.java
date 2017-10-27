@@ -41,15 +41,24 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         return false;
     }
 
-    public List<VilleDTO> getListeVilles(){
+    public List<Ville> getListeVilles(){
         Query q = em.createQuery("From Ville v");
         List<Ville> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
-            List<VilleDTO> listeVilles = new ArrayList<>();
-            for(Ville v : listeTemp){
-                listeVilles.add(new VilleDTO(v));
+            return listeTemp;
+        }
+        return new ArrayList<>();
+    }
+
+    public List<VilleDTO> getListeVilleDTO(){
+        Query q = em.createQuery("From Ville v");
+        List<Ville> listeVille = q.getResultList();
+        if(!listeVille.isEmpty()){
+            List<VilleDTO> villeDTOS = new ArrayList<>();
+            for(Ville v : listeVille){
+                villeDTOS.add(new VilleDTO(v.getNomVille()));
             }
-            return listeVilles;
+            return villeDTOS;
         }
         return new ArrayList<>();
     }
@@ -68,6 +77,12 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public boolean supprimerVille(String nomVille, String departement){
+        String idVille = nomVille + "_" + departement;
+        Ville v = em.find(Ville.class, idVille);
+        em.remove(v);
+        return true;
+
+        /*
         Query q = em.createQuery("From Ville v where v.nomVille=:nom and v.departement=:departement ");
         q.setParameter("nom", nomVille);
         q.setParameter("departement", Integer.parseInt(departement));
@@ -80,6 +95,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             System.out.println("no ville");
             return false;
         }
+        */
 
         /*
         Query q = em.createQuery("DELETE FROM Ville v where v.nomVille=:nom");

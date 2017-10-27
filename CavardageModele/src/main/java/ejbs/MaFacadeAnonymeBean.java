@@ -40,15 +40,11 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public List<VilleDTO> getListeVille() {
+    public List<Ville> getListeVille() {
         Query q = em.createQuery("From Ville v");
         List<Ville> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
-            List<VilleDTO> listeVilles = new ArrayList<>();
-            for(Ville v : listeTemp){
-                listeVilles.add(new VilleDTO(v));
-            }
-            return listeVilles;
+            return listeTemp;
         }
         return new ArrayList<>();
     }
@@ -104,5 +100,18 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
         }
         return ltd;
 
+    }
+
+    public List<VilleDTO> getListeVilleDTO(){
+        Query q = em.createQuery("From Ville v");
+        List<Ville> listeVille = q.getResultList();
+        if(!listeVille.isEmpty()){
+            List<VilleDTO> villeDTOS = new ArrayList<>();
+            for(Ville v : listeVille){
+                villeDTOS.add(new VilleDTO(v.getNomVille()));
+            }
+            return villeDTOS;
+        }
+        return new ArrayList<>();
     }
 }

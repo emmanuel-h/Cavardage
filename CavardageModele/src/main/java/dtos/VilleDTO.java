@@ -1,30 +1,50 @@
 package dtos;
 
-import entities.Ville;
-
 public class VilleDTO {
 
-    String nom;
-    String departement;
+    private String idVille;
+    private String nomVille;
+    private int departement;
 
-    public VilleDTO(Ville v){
-        this.nom = v.getNomVille();
-        this.departement = String.valueOf(v.getDepartement());
+    public VilleDTO(){
+
     }
 
-    public String getNom() {
-        return nom;
+    public VilleDTO(String idVille){
+        this.idVille = idVille;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public VilleDTO(String nom, String departement){
+        this.nomVille = nom;
+        this.departement = Integer.parseInt(departement);
     }
 
-    public String getDepartement() {
+    public VilleDTO(String nom, int departement){
+        this.nomVille = nom;
+        this.departement = departement;
+    }
+
+    public String getIdVille() {
+        return idVille;
+    }
+
+    public void setIdVille(String idVille) {
+        this.idVille = idVille;
+    }
+
+    public String getNomVille() {
+        return nomVille;
+    }
+
+    public void setNomVille(String nomVille) {
+        this.nomVille = nomVille;
+    }
+
+    public int getDepartement() {
         return departement;
     }
 
-    public void setDepartement(String departement) {
+    public void setDepartement(int departement) {
         this.departement = departement;
     }
 }

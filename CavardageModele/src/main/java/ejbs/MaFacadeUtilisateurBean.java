@@ -32,7 +32,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         reservation.setUtilisateurReservation(utilisateur);
 
         // Teste si la ville d'arrivée est une étape
-        if(trajet.getVilleArrivee().getIdVille() != idVilleArrivee) {
+        if(!trajet.getVilleArrivee().getNomVille().equals(idVilleArrivee)) {
             Etape arrivee = null;
             for (Etape etape : etapes) {
                 if (etape.getIdEtape() == idVilleArrivee) {
@@ -345,36 +345,25 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
-    public List<VilleDTO> getListeVilles(){
+    public List<Ville> getListeVilles(){
         Query q = em.createQuery("From Ville v");
         List<Ville> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
-            List<VilleDTO> listeVilles = new ArrayList<>();
-            for(Ville v : listeTemp){
-                listeVilles.add(new VilleDTO(v));
-            }
-            return listeVilles;
+            return listeTemp;
         }
         return new ArrayList<>();
     }
 
-    @Override
-    public void preAjoutTrajet(String villeDepart, String villeArrivee, String date, String heure, String vehicule, String[] etapes, int[] prix) {
-        Query q = em.createQuery("From Ville v where v.nomVille=:villeD");
-        q.setParameter("villeD", villeDepart);
-        Ville depart = (Ville) q.getSingleResult();
-
-        q = em.createQuery("From Ville v where v.nomVille=:villeA");
-        q.setParameter("villeA", villeArrivee);
-        Ville arrivee = (Ville) q.getSingleResult();
-
-        q = em.createQuery("From Vehicule v where v.nomVehicule=:vehicule");
-        q.setParameter("vehicule", vehicule);
-        Vehicule v = (Vehicule) q.getSingleResult();
-
-        Map<Integer, Integer> mapEtapes = new TreeMap<>();
-        for(int i = 0; i < etapes.length; i++){
-
+    public List<VilleDTO> getListeVilleDTO(){
+        Query q = em.createQuery("From Ville v");
+        List<Ville> listeVille = q.getResultList();
+        if(!listeVille.isEmpty()){
+            List<VilleDTO> villeDTOS = new ArrayList<>();
+            for(Ville v : listeVille){
+                villeDTOS.add(new VilleDTO(v.getNomVille()));
+            }
+            return villeDTOS;
         }
+        return new ArrayList<>();
     }
 }

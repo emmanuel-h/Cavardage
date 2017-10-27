@@ -9,41 +9,34 @@ import javax.persistence.*;
 @Entity
 public class Ville {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idVille;
+    @Id
     private String nomVille;
-    private int departement;
 
     public Ville() {
     }
 
     public Ville(String nomVille,int departement) {
-        this.nomVille = nomVille;
-        this.departement = departement;
+        this.nomVille = nomVille + "_" + departement;
     }
 
-    public int getDepartement() {
-        return departement;
+    public Ville(String nom, String departement){
+        this.nomVille = nom + "_" + departement;
     }
 
-    public void setDepartement(int departement) {
-        this.departement = departement;
+    public void setNomVille(String idVille) {
+        this.nomVille = idVille;
     }
 
-    public int getIdVille() {
-        return idVille;
+    public void setNomVille(String nom, String departement){
+        this.nomVille = nom + "_" + departement;
     }
 
-    public void setIdVille(int idVille) {
-        this.idVille = idVille;
+    public void setNomVille(String nom, int departement){
+        this.nomVille = nom + "_" + departement;
     }
 
     public String getNomVille() {
         return nomVille;
-    }
-
-    public void setNomVille(String nomVille) {
-        this.nomVille = nomVille;
     }
 
     @Override
@@ -54,7 +47,7 @@ public class Ville {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        if(((Ville)obj).getIdVille() == (this.idVille)){
+        if(((Ville)obj).getNomVille().equals(this.nomVille)){
             return true;
         } else {
             return false;

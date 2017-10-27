@@ -1,7 +1,6 @@
 package ejbs;
 
 import dtos.VilleDTO;
-import entities.Gabarit;
 import entities.Ville;
 
 import javax.ejb.Local;
@@ -18,7 +17,9 @@ public interface MaFacadeAdministrateur {
 
     boolean supprimerGabarit(String nomGabarit);
 
-    List<VilleDTO> getListeVilles();
+    List<Ville> getListeVilles();
 
     List<String> getListeGabarits();
+
+    List<VilleDTO> getListeVilleDTO();
 }

@@ -93,7 +93,7 @@ public class ControleurAdmin extends HttpServlet {
     }
 
     private void setListeVilles(HttpServletRequest request){
-        List<VilleDTO> listeVilles = ejb.getListeVilles();
+        List<VilleDTO> listeVilles = ejb.getListeVilleDTO();
         request.setAttribute("listeVilles",listeVilles);
     }
 

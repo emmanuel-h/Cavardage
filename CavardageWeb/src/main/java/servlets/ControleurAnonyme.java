@@ -4,6 +4,7 @@ import dtos.TrajetDTO;
 import dtos.UtilisateurDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAnonyme;
+import entities.Ville;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
 
@@ -79,7 +80,7 @@ public class ControleurAnonyme extends HttpServlet {
 
 
     private void getListeVilles(HttpServletRequest request){
-        List<VilleDTO> listeVilles = ejb.getListeVille();
+        List<VilleDTO> listeVilles = ejb.getListeVilleDTO();
         request.setAttribute("listeVilles",listeVilles);
     }
 
