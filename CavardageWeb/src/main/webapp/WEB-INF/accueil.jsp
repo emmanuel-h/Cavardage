@@ -73,8 +73,8 @@
                 <li class="list-group-item">
                     <table class="table table-bordered">
                         <tr>
-                            <td>${trajet.villeDepart}</td>
-                            <td>${trajet.villeArrive}</td>
+                            <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
+                            <td>${trajet.villeArrive}(${trajet.departementDepart})</td>
                             <td>${trajet.date}</td>
                             <td>${trajet.heure}h</td>
                         </tr>
