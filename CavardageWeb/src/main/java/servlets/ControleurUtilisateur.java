@@ -40,7 +40,7 @@ public class ControleurUtilisateur extends HttpServlet {
                     voirTrajetsEnCours(request, response);
                     break;
                 case "creerTrajet":
-                    creerTrajet(request,response);
+                    voirCreerTrajet(request,response);
                     break;
                 case "voirVehicules":
                     voirVehicules(request, response);
@@ -59,18 +59,34 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "ajouterVehicule":
                     ajouterVehicule(request, response);
                     break;
+                case "enregistrerTrajet":
+                    enregistrerTrajet(request, response);
+                    break;
                 default :
                     //display homepage
             }
         }
     }
 
+    private void enregistrerTrajet(HttpServletRequest request, HttpServletResponse response) {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        String villeDepart = request.getParameter("villeDepart");
+        String villeArrivee = request.getParameter("villeArrivee");
+        String date = request.getParameter("date");
+        String nomVehicule = request.getParameter("vehicule");
+        String[] etapes = request.getParameterValues("etape");
+    }
+
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response){
 
     }
 
-    private void creerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    private void voirCreerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        List<VehiculeDTO> vehiculeDTOS = maFacade.listeVehicules(login);
+        request.setAttribute("listeVehicules", vehiculeDTOS);
+        request.setAttribute("aAfficher", "creerTrajet");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
     private void voirVehicules(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
