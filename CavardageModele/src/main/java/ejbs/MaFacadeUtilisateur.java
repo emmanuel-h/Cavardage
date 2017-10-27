@@ -31,4 +31,6 @@ public interface MaFacadeUtilisateur {
     List<HistoriqueDTO> historiqueUtilisateur(String login);
     List<Gabarit> listeGabarits();
     boolean changerMotDePasse(String login, String motDePasse);
+    boolean verifierMotDePasse(String login, String motDePasse);
+    boolean supprimerUtilisateur(String login);
 }

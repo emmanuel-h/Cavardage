@@ -137,8 +137,7 @@ public class ControleurUtilisateur extends HttpServlet {
         String login = (String) request.getSession().getAttribute("utilisateur");
         String motDePasse1 = request.getParameter("nouveauMdP1");
         String motDePasse2 = request.getParameter("nouveauMdP2");
-        String message="";
-        System.out.println(motDePasse1 + "-" + motDePasse2);
+        String message;
         if(motDePasse1.equals("") || motDePasse2.equals("")){
             message = "Un champs n'est pas rempli";
         } else if(!motDePasse1.equals(motDePasse2)){
@@ -154,9 +153,27 @@ public class ControleurUtilisateur extends HttpServlet {
         request.setAttribute("message",message);
         request.setAttribute("aAfficher", "parametres");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
-
     }
 
-    private void supprimerCompte(HttpServletRequest request, HttpServletResponse response) {
+    private void supprimerCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String confirmation = request.getParameter("confirmation");
+        if(null == confirmation){
+            request.setAttribute("aAfficher", "suppressionCompte");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        } else {
+            if(confirmation.equals("ok")){
+                String login = (String) request.getSession().getAttribute("utilisateur");
+                String motDePasse = request.getParameter("motDePasse");
+                if(maFacade.verifierMotDePasse(login,motDePasse)){
+                    maFacade.supprimerUtilisateur(login);
+                    request.getSession().setAttribute("utilisateur",null);
+                    response.sendRedirect("ControleurAnonyme");
+                } else {
+                    request.setAttribute("message","Mot de passe incorrect");
+                    request.setAttribute("aAfficher", "suppressionCompte");
+                    request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+                }
+            }
+        }
     }
 }

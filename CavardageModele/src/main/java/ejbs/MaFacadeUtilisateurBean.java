@@ -299,6 +299,23 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
+    @Override
+    public boolean verifierMotDePasse(String login, String motDePasse) {
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        return utilisateur.getMotDePasse().equals(motDePasse);
+    }
+
+    @Override
+    public boolean supprimerUtilisateur(String login) {
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        if(null != utilisateur) {
+            em.remove(utilisateur);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         verifierUtilisateurEstConducteur(utilisateur, reservation.getTrajetReservation());

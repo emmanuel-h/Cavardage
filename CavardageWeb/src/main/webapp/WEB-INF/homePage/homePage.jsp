@@ -63,6 +63,9 @@
             <c:if test="${aAfficher == 'parametres'}">
                 <jsp:include page="parametres.jsp"></jsp:include>
             </c:if>
+            <c:if test="${aAfficher == 'suppressionCompte'}">
+                <jsp:include page="confirmationSuppressionCompte.jsp"></jsp:include>
+            </c:if>
         </div>
     </div>
 
