@@ -65,11 +65,10 @@ public class ControleurAnonyme extends HttpServlet {
         String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-4);
         String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
         String date = request.getParameter("date");
-        List<TrajetDTO> listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart,departementVilleDepart,nomVilleArrivee,departementVilleArrivee,date);
-        request.setAttribute("listeTrajetRecherche",listeTrajetRecherche);
+        List<TrajetDTO> listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date);
+        request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
         getListeDernierTrajet(request);
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
-
     }
 
 
@@ -112,7 +111,7 @@ public class ControleurAnonyme extends HttpServlet {
         nom = request.getParameter("nom");
         mdp = request.getParameter("mdp");
         mdp_confirmer = request.getParameter("mdp_confirmer");
-        if(mdp.equals(mdp_confirmer)) {
+        if((mdp.equals(mdp_confirmer))) {
             try {
                 boolean succesInscription=ejb.inscription(login, nom, mdp);
                 if(succesInscription) {
@@ -120,14 +119,18 @@ public class ControleurAnonyme extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp")
                             .forward(request, response);
                 }else{
+                    request.setAttribute("messageErreur","L'inscription n'a pas réussi.");
                     request.getRequestDispatcher("/WEB-INF/inscription.jsp")
                             .forward(request, response);
                 }
             }catch(LoginExistantException e){
+                request.setAttribute("messageErreur","Le login est déjà pris.");
                 request.getRequestDispatcher("/WEB-INF/inscription.jsp")
                         .forward(request, response);
             }
         }else{
+
+            request.setAttribute("messageErreur","Les mots de passe est différent.");
             request.getRequestDispatcher("/WEB-INF/inscription.jsp")
                     .forward(request, response);
         }

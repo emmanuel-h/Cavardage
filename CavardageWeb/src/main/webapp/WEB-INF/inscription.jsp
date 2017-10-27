@@ -13,14 +13,15 @@
 <body>
 <div>
     <form action="ControleurAnonyme" method="post">
+        ${messageErreur}
         <label>Login:</label>
-        <input type="text" name="login"/>
+        <input type="text" name="login" required/>
         <label>Nom:</label>
-        <input type="text" name="nom"/>
+        <input type="text" name="nom" required/>
         <label>Mot de passe:</label>
-        <input type="password" name="mdp"/>
+        <input type="password" name="mdp" required/>
         <label>Confirmer le mot de passe:</label>
-        <input type="password" name="mdp_confirmer"/>
+        <input type="password" name="mdp_confirmer" required/>
         <button type="submit" name="afaire" value="inscrire">Créer</button>
     </form>
 </div>
