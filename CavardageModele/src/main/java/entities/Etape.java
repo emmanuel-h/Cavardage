@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 public class Etape {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idEtape;
     private int prix;
 

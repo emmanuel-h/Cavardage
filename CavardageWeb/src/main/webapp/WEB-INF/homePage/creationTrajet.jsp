@@ -47,24 +47,24 @@
         <div class="form-group">
             <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerTrajet">Créer</button>
         </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label for="inputEtape">Ville étape : </label>
+                <input type="text" list="listeVille" id="inputEtape">
+            </div>
+            <div class="form-group">
+                <label for="inputPrix">Prix : </label>
+                <input placeholder="prix en €" type="text" id="inputPrix" name="prix">
+            </div>
+            <div class="form-group">
+                <input type="button" name="afaire" class="btn btn-primary" value="ajouterEtape" onclick="ajouterEtape()">Ajouter étape</input>
+            </div>
+            <div id="etapesDiv">
+                <ul id="ulEtapes">
+
+                </ul>
+            </div>
+        </div>
     </form>
 
-    <div class="col-lg-6">
-        <div class="form-group">
-            <label for="inputEtape">Ville étape : </label>
-            <input type="text" list="listeVille" id="inputEtape" name="etape">
-        </div>
-        <div class="form-group">
-            <label for="inputPrix">Prix : </label>
-            <input placeholder="prix en €" type="text" id="inputPrix" name="prix">
-        </div>
-        <div class="form-group">
-            <button name="afaire" class="btn btn-primary" value="ajouterEtape" onclick="ajouterEtape()">Ajouter étape</button>
-        </div>
-        <div id="etapesDiv">
-            <ul id="ulEtapes">
-
-            </ul>
-        </div>
-    </div>
 

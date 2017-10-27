@@ -7,13 +7,10 @@ function ajouterEtape(){
     var li = document.createElement("LI");
     li.id = etape;
 
-    /*
-    var idLi = document.createAttribute("id");
-    idLi.value = etape;
-    li.setAttributeNode(idLi);
-    */
+    var hidden = document.createElement("INPUT");
+    li.appendChild(hidden);
 
-    var textNode = document.createTextNode(etape + "   -   " + prix + " €");
+    var textNode = document.createTextNode(etape + "   -   " + prix + "€");
     li.appendChild(textNode);
 
     var button = document.createElement("BUTTON");
@@ -28,11 +25,15 @@ function ajouterEtape(){
 
     var name = document.createAttribute("name");
     name.value="etape";
-    li.setAttributeNode(name);
+    hidden.setAttributeNode(name);
 
     var value = document.createAttribute("value");
-    value.value=etape;
-    li.setAttributeNode(value);
+    value.value = etape+"-"+prix;
+    hidden.setAttributeNode(value);
+
+    var hiddenType = document.createAttribute("type");
+    hiddenType.value = "hidden";
+    hidden.setAttributeNode(hiddenType);
 
     document.getElementById("ulEtapes").appendChild(li);
 }

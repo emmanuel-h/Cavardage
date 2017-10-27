@@ -123,14 +123,15 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             Etape etape;
             // On récupère tous les id des villes
             Set etapes = villesPrix.keySet();
-            int etapeId;
-            Iterator<Integer> it = etapes.iterator();
+            String etapeId;
+            Iterator<String> it = etapes.iterator();
             // On itère sur tous les id de villes-étapes
             while (it.hasNext()) {
                 etapeId = it.next();
                 //On crée chaque nouvelle étape
                 etape = new Etape();
                 etape.setTrajet(trajet);
+                System.out.println(villesPrix.get(etapeId));
                 etape.setPrix(villesPrix.get(etapeId));
                 Ville ville = em.find(Ville.class, etapeId);
                 etape.setVilleEtape(ville);
@@ -371,7 +372,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String[] prixEtapes, String date, String heure, String prix) {
+    public void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) {
         Utilisateur user = em.find(Utilisateur.class, login);
         List<Vehicule> vListe = user.getListeVehicule();
         int idVehicule = 0;
@@ -386,12 +387,11 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Map<String, Integer> mapPrix = new TreeMap<>();
         String nomVille;
         if(null != etapes) {
-            System.out.println("LA");
             for (int i = 0; i < etapes.length; i++) {
-                st = new StringTokenizer(etapes[i], "()");
+                st = new StringTokenizer(etapes[i], " -");
                 nomVille = st.nextToken() + "_" + st.nextToken();
-                mapPrix.put(nomVille, Integer.parseInt(prixEtapes[i]));
-                System.out.println(nomVille+" "+Integer.parseInt(prixEtapes[i]));
+                prix = st.nextToken();
+                mapPrix.put(nomVille, Integer.parseInt(prix));
             }
         }
         st = new StringTokenizer(villeDepart, " -");
