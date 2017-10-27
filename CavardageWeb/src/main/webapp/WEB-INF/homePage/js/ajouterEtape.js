@@ -6,11 +6,13 @@ function ajouterEtape(){
 
     var li = document.createElement("LI");
     li.id = etape;
+
     /*
     var idLi = document.createAttribute("id");
     idLi.value = etape;
     li.setAttributeNode(idLi);
-*/
+    */
+
     var textNode = document.createTextNode(etape + "   -   " + prix + " €");
     li.appendChild(textNode);
 

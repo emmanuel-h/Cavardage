@@ -2,6 +2,7 @@ package ejbs;
 
 import dtos.HistoriqueDTO;
 import dtos.VehiculeDTO;
+import dtos.VilleDTO;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
@@ -341,6 +342,39 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             throw new PasConducteurException();
         } else {
             return true;
+        }
+    }
+
+    public List<VilleDTO> getListeVilles(){
+        Query q = em.createQuery("From Ville v");
+        List<Ville> listeTemp = q.getResultList();
+        if(!listeTemp.isEmpty()){
+            List<VilleDTO> listeVilles = new ArrayList<>();
+            for(Ville v : listeTemp){
+                listeVilles.add(new VilleDTO(v));
+            }
+            return listeVilles;
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void preAjoutTrajet(String villeDepart, String villeArrivee, String date, String heure, String vehicule, String[] etapes, int[] prix) {
+        Query q = em.createQuery("From Ville v where v.nomVille=:villeD");
+        q.setParameter("villeD", villeDepart);
+        Ville depart = (Ville) q.getSingleResult();
+
+        q = em.createQuery("From Ville v where v.nomVille=:villeA");
+        q.setParameter("villeA", villeArrivee);
+        Ville arrivee = (Ville) q.getSingleResult();
+
+        q = em.createQuery("From Vehicule v where v.nomVehicule=:vehicule");
+        q.setParameter("vehicule", vehicule);
+        Vehicule v = (Vehicule) q.getSingleResult();
+
+        Map<Integer, Integer> mapEtapes = new TreeMap<>();
+        for(int i = 0; i < etapes.length; i++){
+
         }
     }
 }

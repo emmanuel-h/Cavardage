@@ -4,18 +4,18 @@
     <ul class="list-group">
         <c:forEach items="${listeHistorique}" var="trajet">
             <li class="list-group-item">
-                <table class="table table-bordered">
+                <table>
                     <tr>
-                        <td>${trajet.villeDepart}</td>
-                        <td>${trajet.villeArrivee}</td>
-                        <td>${trajet.dateDepart}</td>
+                        <td class="col-lg-3">${trajet.villeDepart}</td>
+                        <td class="col-lg-3">${trajet.villeArrivee}</td>
+                        <td class="col-lg-3">${trajet.dateDepart}</td>
                         <c:if test="${trajet.role == 'conducteur'}">
-                            <td>${trajet.nomVehicule}</td>
+                            <td class="col-lg-2">${trajet.nomVehicule}</td>
                         </c:if>
                         <c:if test="${trajet.role == 'passager'}">
-                            <td>${trajet.nbReservation}</td>
+                            <td class="col-lg-2">${trajet.nbReservation}</td>
                         </c:if>
-                        <td>
+                        <td class="col-lg-1">
                             <input type="hidden" name="idTrajet" value="${trajet.idTrajet}">
                             <button class="btn btn-primary" type="submit" name="afaire" value="detailHistorique">Details</button>
                         </td>

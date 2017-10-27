@@ -2,6 +2,7 @@ package ejbs;
 
 import dtos.HistoriqueDTO;
 import dtos.VehiculeDTO;
+import dtos.VilleDTO;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
@@ -33,4 +34,6 @@ public interface MaFacadeUtilisateur {
     boolean changerMotDePasse(String login, String motDePasse);
     boolean verifierMotDePasse(String login, String motDePasse);
     boolean supprimerUtilisateur(String login);
+    List<VilleDTO> getListeVilles();
+    public void preAjoutTrajet(String villeDepart, String villeArrivee, String date, String heure, String vehicule, String[] etapes, int[] prix);
 }
