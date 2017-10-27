@@ -118,7 +118,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
         // Liste des étapes
         if(!villesPrix.isEmpty()) {
-            System.out.println("Il y a des étapes");
             List<Etape> etapeListe = new ArrayList<>();
             Etape etape;
             // On récupère tous les id des villes
@@ -131,7 +130,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 //On crée chaque nouvelle étape
                 etape = new Etape();
                 etape.setTrajet(trajet);
-                System.out.println(villesPrix.get(etapeId));
                 etape.setPrix(villesPrix.get(etapeId));
                 Ville ville = em.find(Ville.class, etapeId);
                 etape.setVilleEtape(ville);

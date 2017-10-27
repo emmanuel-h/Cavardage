@@ -76,7 +76,7 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
-    private void enregistrerTrajet(HttpServletRequest request, HttpServletResponse response) {
+    private void enregistrerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
         String villeDepart = request.getParameter("villeDepart");
         String villeArrivee = request.getParameter("villeArrivee");
@@ -86,6 +86,10 @@ public class ControleurUtilisateur extends HttpServlet {
         String prixVoyage = request.getParameter("prixVoyage");
         String[] etapes = request.getParameterValues("etape");
         maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
+        String message = "Trajet créé";
+        request.setAttribute("message",message);
+        request.setAttribute("aAfficher", "creerTrajet");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response){

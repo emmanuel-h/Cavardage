@@ -36,6 +36,9 @@ function ajouterEtape(){
     hidden.setAttributeNode(hiddenType);
 
     document.getElementById("ulEtapes").appendChild(li);
+
+    document.getElementById("inputEtape").value = "";
+    document.getElementById("inputPrix").value = "";
 }
 function supprimerEtape(nomEtape){
     var n = document.getElementById(nomEtape);

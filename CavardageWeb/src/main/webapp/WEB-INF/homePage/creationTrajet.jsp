@@ -7,6 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+${message}<br>
+
     <datalist id="listeVille">
         <c:forEach items="${listeVilles}" var="ville">
             <option value="${ville.nomVille} - ${ville.departement}" />
