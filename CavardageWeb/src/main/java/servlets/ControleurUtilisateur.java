@@ -2,6 +2,7 @@ package servlets;
 
 import dtos.HistoriqueDTO;
 import dtos.VehiculeDTO;
+import dtos.VilleDTO;
 import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
 
@@ -81,6 +82,7 @@ public class ControleurUtilisateur extends HttpServlet {
         String date = request.getParameter("date");
         String nomVehicule = request.getParameter("vehicule");
         String[] etapes = request.getParameterValues("etape");
+        String[] prix = request.getParameterValues("prix");
     }
 
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response){
@@ -90,7 +92,9 @@ public class ControleurUtilisateur extends HttpServlet {
     private void voirCreerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
         List<VehiculeDTO> vehiculeDTOS = maFacade.listeVehicules(login);
+        List<VilleDTO> listeVilles = maFacade.getListeVilles();
         request.setAttribute("listeVehicules", vehiculeDTOS);
+        request.setAttribute("listeVilles", listeVilles);
         request.setAttribute("aAfficher", "creerTrajet");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
