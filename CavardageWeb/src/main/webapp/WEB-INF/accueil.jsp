@@ -55,7 +55,7 @@
                             <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
                             <td>${trajet.villeArrive}(${trajet.departementArrivee})</td>
                             <td>${trajet.date}</td>
-                            <td>${trajet.heure}h</td>
+                            <td>${trajet.heure}</td>
                         </tr>
                     </table>
                 </li>
