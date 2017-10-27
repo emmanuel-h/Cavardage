@@ -110,34 +110,37 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public Trajet proposerTrajet(String idVilleDepart, String idVilleArrivee, Map<String,Integer> villesPrix, String date, String heure, int idVehicule, int prix) {
+    public void proposerTrajet(String idVilleDepart, String idVilleArrivee, Map<String,Integer> villesPrix, String date, String heure, int idVehicule, int prix) {
         Vehicule vehicule = em.find(Vehicule.class,idVehicule);
         Ville depart = em.find(Ville.class,idVilleDepart);
         Ville arrivee = em.find(Ville.class,idVilleArrivee);
-        Trajet trajet = new Trajet();
+        Trajet trajet = new Trajet(date,heure);
 
         // Liste des étapes
-        List<Etape> etapeListe = new ArrayList<>();
-        Etape etape;
-        // On récupère tous les id des villes
-        Set etapes = villesPrix.keySet();
-        int etapeId;
-        Iterator<Integer> it = etapes.iterator();
-        // On itère sur tous les id de villes-étapes
-        while(it.hasNext()){
-            etapeId = it.next();
-            //On crée chaque nouvelle étape
-            etape = new Etape();
-            etape.setTrajet(trajet);
-            etape.setPrix(villesPrix.get(etapeId));
-            Ville ville = em.find(Ville.class,etapeId);
-            etape.setVilleEtape(ville);
-            em.persist(etape);
-            etapeListe.add(etape);
+        if(!villesPrix.isEmpty()) {
+            System.out.println("Il y a des étapes");
+            List<Etape> etapeListe = new ArrayList<>();
+            Etape etape;
+            // On récupère tous les id des villes
+            Set etapes = villesPrix.keySet();
+            int etapeId;
+            Iterator<Integer> it = etapes.iterator();
+            // On itère sur tous les id de villes-étapes
+            while (it.hasNext()) {
+                etapeId = it.next();
+                //On crée chaque nouvelle étape
+                etape = new Etape();
+                etape.setTrajet(trajet);
+                etape.setPrix(villesPrix.get(etapeId));
+                Ville ville = em.find(Ville.class, etapeId);
+                etape.setVilleEtape(ville);
+                em.persist(etape);
+                etapeListe.add(etape);
+            }
+            trajet.setListeEtape(etapeListe);
         }
 
         // On ajoute tous les élement du trajet
-        trajet.setListeEtape(etapeListe);
         trajet.setDate(date);
         trajet.setHeure(heure);
         trajet.setVehiculeTrajet(vehicule);
@@ -146,7 +149,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         trajet.setPrix(prix);
         trajet.setStatut("aVenir");
         em.persist(trajet);
-        return trajet;
+        //return trajet;
     }
 
     @Override
@@ -378,18 +381,23 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 break;
             }
         }
+
         StringTokenizer st;
         Map<String, Integer> mapPrix = new TreeMap<>();
-        for(int i = 0; i < etapes.length; i++){
-            st = new StringTokenizer(etapes[i], "()");
-            mapPrix.put(st.nextToken() + "_" + st.nextToken(), Integer.parseInt(prixEtapes[i]));
+        String nomVille;
+        if(null != etapes) {
+            System.out.println("LA");
+            for (int i = 0; i < etapes.length; i++) {
+                st = new StringTokenizer(etapes[i], "()");
+                nomVille = st.nextToken() + "_" + st.nextToken();
+                mapPrix.put(nomVille, Integer.parseInt(prixEtapes[i]));
+                System.out.println(nomVille+" "+Integer.parseInt(prixEtapes[i]));
+            }
         }
-
-        st = new StringTokenizer(villeDepart, "()");
+        st = new StringTokenizer(villeDepart, " -");
         String idVilleDepart = st.nextToken() + "_" + st.nextToken();
-        st = new StringTokenizer(villeArrivee, "()");
+        st = new StringTokenizer(villeArrivee, " -");
         String idVilleArrivee = st.nextToken() + "_" + st.nextToken();
-
         proposerTrajet(idVilleDepart, idVilleArrivee, mapPrix, date, heure, idVehicule, Integer.parseInt(prix));
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 public class Trajet {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idTrajet;
     private String date;
     private String heure;
@@ -115,6 +115,7 @@ public class Trajet {
     public void setPrix(int prix) {
         this.prix = prix;
     }
+
 
     @Override
     public boolean equals(Object obj) {

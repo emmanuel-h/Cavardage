@@ -27,7 +27,7 @@ INSERT INTO Ville (nomVille) VALUES ('Marseille_13');
 INSERT INTO Ville (nomVille) VALUES ('Orleans_45');
 INSERT INTO Ville (nomVille) VALUES ('Nantes_44');
 INSERT INTO Ville (nomVille) VALUES ('Lille_59');
-INSERT INTO Ville (nomVille) VALUES ('Peta-aux-chnoques Les Bains_39');
+INSERT INTO Ville (nomVille) VALUES ('Petaouchnok Les Bains_39');
 INSERT INTO Ville (nomVille) VALUES ('Amiens_80');
 INSERT INTO Ville (nomVille) VALUES ('Colmar_68');
 INSERT INTO Ville (nomVille) VALUES ('Corbie_80');
@@ -76,7 +76,7 @@ INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (4,1
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (5,25,2,'Rouen_76');
 
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (3,'10/07/2017','8h30','fini',150,5,'Perpignan_66','Blois_41');
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (6,5,3,'Peta-aux-chnoques Les Bains_39');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (6,5,3,'Petaouchnok Les Bains_39');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (7,10,3,'La Rochelle_17');
 
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (4,'26/12/2017','0h00','aVenir',1050,3,'Lyon_69','Amiens_80');
@@ -99,9 +99,9 @@ INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (12,
 
 
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (10,'17/08/2017','1h00','annule',102,2,'Lyon_69','Nantes_44');
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (13,10,10,'Peta-aux-chnoques Les Bains_39');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (13,10,10,'Petaouchnok Les Bains_39');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (14,30,10,'Strasbourg_67');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (15,70,10,'Blois_41');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (11,'02/01/2017','18h30','fini',5,5,'Marseille_13','Peta-aux-chnoques Les Bains_39');
+INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (11,'02/01/2017','18h30','fini',5,5,'Marseille_13','Petaouchnok Les Bains_39');
 
