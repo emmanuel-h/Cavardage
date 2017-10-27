@@ -62,6 +62,12 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "enregistrerTrajet":
                     enregistrerTrajet(request, response);
                     break;
+                case "changerMotDePasse":
+                    changerMotDepasse(request,response);
+                    break;
+                case "supprimerCompte":
+                    supprimerCompte(request,response);
+                    break;
                 default :
                     //display homepage
             }
@@ -111,8 +117,9 @@ public class ControleurUtilisateur extends HttpServlet {
 
     }
 
-    private void parametres(HttpServletRequest request, HttpServletResponse response){
-
+    private void parametres(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("aAfficher", "parametres");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
     private void ajouterVehicule(HttpServletRequest request, HttpServletResponse response){
@@ -126,5 +133,30 @@ public class ControleurUtilisateur extends HttpServlet {
 
     }
 
+    private void changerMotDepasse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        String motDePasse1 = request.getParameter("nouveauMdP1");
+        String motDePasse2 = request.getParameter("nouveauMdP2");
+        String message="";
+        System.out.println(motDePasse1 + "-" + motDePasse2);
+        if(motDePasse1.equals("") || motDePasse2.equals("")){
+            message = "Un champs n'est pas rempli";
+        } else if(!motDePasse1.equals(motDePasse2)){
+            message = "Les mots de passe ne sont pas identiques";
+        } else {
+            boolean b = maFacade.changerMotDePasse(login, motDePasse1);
+            if (!b) {
+                message = "Le nouveau mot de passe est identique à l'actuel";
+            } else {
+                message = "Votre mot de passe a bien été changé";
+            }
+        }
+        request.setAttribute("message",message);
+        request.setAttribute("aAfficher", "parametres");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
 
+    }
+
+    private void supprimerCompte(HttpServletRequest request, HttpServletResponse response) {
+    }
 }

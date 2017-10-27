@@ -30,4 +30,5 @@ public interface MaFacadeUtilisateur {
     boolean supprimerNotification(String login, int idNotification);
     List<HistoriqueDTO> historiqueUtilisateur(String login);
     List<Gabarit> listeGabarits();
+    boolean changerMotDePasse(String login, String motDePasse);
 }

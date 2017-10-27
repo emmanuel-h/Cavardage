@@ -288,6 +288,17 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return gabaritListe;
     }
 
+    @Override
+    public boolean changerMotDePasse(String login, String motDePasse) {
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        if(utilisateur.getMotDePasse().equals(motDePasse)){
+            return false;
+        } else {
+            utilisateur.setMotDePasse(motDePasse);
+            return true;
+        }
+    }
+
     private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         verifierUtilisateurEstConducteur(utilisateur, reservation.getTrajetReservation());
