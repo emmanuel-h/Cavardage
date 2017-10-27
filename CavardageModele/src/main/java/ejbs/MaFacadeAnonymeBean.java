@@ -74,11 +74,18 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public List<TrajetDTO> rechercheTrajet(String villeDepart,String departementDepart, String villeArrive,
+    public List<TrajetDTO> rechercheTrajet(String villeDepart,String departementDepart, String villeArrivee,
            String departementArrive, String date) {
-        Query query = em.createQuery("From Trajet t Join t.villeDepart n WHERE n.nomVille=:villeDepart");
+        System.out.println(villeDepart+" "+departementDepart +" "+villeArrivee+" "+departementArrive+""+date);
+       Query query = em.createQuery("SELECT t From Trajet t, Ville vd, Ville va WHERE " +
+               "t.villeDepart=vd and vd.nomVille=:villeDepart" +
+               " and t.villeArrivee=va and va.nomVille=:villeArrivee " +
+               "and t.date=:date");
         query.setParameter("villeDepart", villeDepart);
+        query.setParameter("villeArrivee", villeArrivee);
+        query.setParameter("date",date);
         List<Trajet> lt = query.getResultList();
+        System.out.println(lt.size());
         List<TrajetDTO> ltd = new ArrayList<>();
         for(Trajet t :lt){
             ltd.add(new TrajetDTO(t));

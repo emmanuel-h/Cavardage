@@ -68,7 +68,9 @@
         </ul>
     </form>
 </div>
+<hr>
 
+<h2>10 derniers ajouts:</h2>
 <div>
     <form action="ControleurAnonyme" method="post">
         <ul class="list-group">

@@ -31,7 +31,6 @@ public class ControleurAnonyme extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String test = request.getParameter("afaire");
         String login,mdp,nom,mdp_confirmer;
-        System.out.println(test);
         if(null == test){
             getListeVilles(request);
             getListeDernierTrajet(request);
@@ -53,7 +52,6 @@ public class ControleurAnonyme extends HttpServlet {
                     getListeDernierTrajet(request);
                     break;
                 default:
-                    System.out.println("default");
                     break;
             }
         }
@@ -61,15 +59,15 @@ public class ControleurAnonyme extends HttpServlet {
 
     private void getResultatRecherche(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         String villeDepart = request.getParameter("nomVilleDepart");
-        String nomVilleDepart = villeDepart.substring(0,villeDepart.length()-5);
+        String nomVilleDepart = villeDepart.substring(0,villeDepart.length()-4);
         String departementVilleDepart = villeDepart.substring(villeDepart.length()-3,villeDepart.length()-1);
         String villeArrive = request.getParameter("nomVilleArrivee");
-        String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-5);
+        String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-4);
         String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
         String date = request.getParameter("date");
         List<TrajetDTO> listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart,departementVilleDepart,nomVilleArrivee,departementVilleArrivee,date);
-        System.out.println(listeTrajetRecherche.size());
         request.setAttribute("listeTrajetRecherche",listeTrajetRecherche);
+        getListeDernierTrajet(request);
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
 
     }

@@ -68,7 +68,7 @@ public class ControleurAdmin extends HttpServlet {
                     break;
                 case "supprimerVille":
                     String villeSupp = request.getParameter("nomVilleASupprimer");
-                    String nomVilleSupp = villeSupp.substring(0,villeSupp.length()-5);
+                    String nomVilleSupp = villeSupp.substring(0,villeSupp.length()-4);
                     String departementVilleSupp = villeSupp.substring(villeSupp.length()-3,villeSupp.length()-1);
                     System.out.println(departementVilleSupp);
                     supprimerVille(nomVilleSupp,departementVilleSupp);
