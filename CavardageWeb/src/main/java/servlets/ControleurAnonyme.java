@@ -92,9 +92,9 @@ public class ControleurAnonyme extends HttpServlet {
             UtilisateurDTO utilisateurDTO = ejb.connexion(login, mdp);
             request.getSession().setAttribute("utilisateur",login);
             if(utilisateurDTO.getRole().equals("utilisateur")) {
-                request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);;
+                request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
             }else {
-                request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);;
+                request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
             }
         }catch (UtilisateurNonInscritException exception){
             getListeDernierTrajet(request);

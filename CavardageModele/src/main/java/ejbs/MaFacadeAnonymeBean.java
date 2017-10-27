@@ -77,7 +77,7 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     public List<TrajetDTO> rechercheTrajet(String villeDepart,String departementDepart, String villeArrivee,
            String departementArrive, String date) {
         System.out.println(villeDepart+" "+departementDepart +" "+villeArrivee+" "+departementArrive+""+date);
-       Query query = em.createQuery("SELECT t From Trajet t, Ville vd, Ville va, Etape e WHERE " +
+       Query query = em.createQuery("SELECT DISTINCT t From Trajet t, Ville vd, Ville va, Etape e WHERE " +
                "t.villeDepart=vd and vd.nomVille=:villeDepart" +
                " and ((t.villeArrivee=va and va.nomVille=:villeArrivee) or" +
                " (e.villeEtape.nomVille=:villeArrivee and e.trajet=t)) " +
@@ -96,7 +96,8 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
 
     @Override
     public List<TrajetDTO> dernierAjout() {
-        List<Trajet>lt = em.createQuery("From Trajet t").getResultList();
+
+        List<Trajet>lt = em.createQuery("From Trajet t WHERE t.statut='aVenir' ORDER BY t.idTrajet DESC").setMaxResults(10).getResultList();
         List<TrajetDTO> ltd = new ArrayList<>();
         for(Trajet t :lt){
             ltd.add(new TrajetDTO(t));
