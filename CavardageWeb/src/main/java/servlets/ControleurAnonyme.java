@@ -68,6 +68,7 @@ public class ControleurAnonyme extends HttpServlet {
         List<TrajetDTO> listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date);
         request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
         getListeDernierTrajet(request);
+        getListeVilles(request);
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
     }
 
