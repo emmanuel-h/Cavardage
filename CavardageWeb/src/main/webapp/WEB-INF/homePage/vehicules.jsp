@@ -7,11 +7,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Véhicules</title>
-</head>
-<body>
 <form action="ControleurUtilisateur" method="post">
     Nom véhicule :<br>
     <input type="text" name="nomVehicule"><br>

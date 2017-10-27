@@ -7,38 +7,60 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="js/ajouterEtape.js"></jsp:include>
-<dataliste id="listeVille">
-    <c:forEach items="${listeVilles}" var="ville">
-        <option value="${ville.nomVille}" />
-    </c:forEach>
-</dataliste>
-<dataliste id="listeVehicule">
-    <c:forEach items="${listeVehicules}" var="vehicule">
-        <option value="${vehicule.nom}" />
-    </c:forEach>
-</dataliste>
-<form action="ControleurUtilisateur" method="post">
-    Ville de départ :<br>
-    <input type="text" name="villeDepart">
-    Ville d'arrivée :<br>
-    <input type="text" name="villeArrivee">
-    A partir de :<br>
-    <input type="date" name="date">
-    Choix du véhicule :<br>
+    <datalist id="listeVille">
+        <c:forEach items="${listeVilles}" var="ville">
+            <option value="${ville.nomVille}" />
+        </c:forEach>
+    </datalist>
+    <datalist id="listVehicule">
+        <c:forEach items="${listeVehicules}" var="vehicule">
+            <option value="${vehicule.nomVehicule}" />
+        </c:forEach>
+    </datalist>
+    <form class="col-lg-6" action="ControleurUtilisateur" method="post">
+        <!--<legend>Ajouter un trajet</legend>-->
+        <div class="form-group">
+            <label for="villeDepart">Ville de départ : </label>
+            <input type="text" list="listeVille" id="villeDepart" name="villeDepart">
+        </div>
+        <div class="form-group">
+            <label for="villeArrivee">Ville d'arrivée : </label>
+            <input type="text" list="listeVille" id="villeArrivee" name="villeArrivee">
+        </div>
+        <div class="form-group">
+            <label for="date">Le : </label>
+            <input type="date" id="date" name="date">
+        </div>
+        <div class="form-group">
+            <label for="heure">À : </label>
+            <input type="text" id="heure" name="heure"> :
+            <input type="text" id="minute" name="minute">
+        </div>
+        <div class="form-group">
+            <label for="vehicule">Choix du véhicule : </label>
+            <input type="text" id="vehicule" list="listVehicule" name="vehicule">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerTrajet">Créer</button>
+        </div>
+    </form>
 
-    <input type="text" liste="listeVehicule" name="vehicule">
-    <button type="submit" name="afaire" value="enregistrerTrajet">Créer</button>
-</form>
+    <div class="col-lg-6">
+        <div class="form-group">
+            <label for="inputEtape">Ville étape : </label>
+            <input type="text" list="listeVille" id="inputEtape" name="etape">
+        </div>
+        <div class="form-group">
+            <label for="inputPrix">Prix : </label>
+            <input type="text" id="inputPrix" name="prix">
+        </div>
+        <div class="form-group">
+            <button name="afaire" class="btn btn-primary" value="ajouterEtape" onclick="ajouterEtape()">Ajouter étape</button>
+        </div>
+        <div id="etapesDiv">
+            <ul id="ulEtapes">
 
-Ajouter une étape :<br>
-<input type="text" id="inputEtape" name="etape">
-<button name="afaire" value="ajouterEtape" onclick="ajouterEtape()">Ajouter étape</button>
-<div id="etapesDiv">
-    <ul id="ulEtapes">
+            </ul>
+        </div>
+    </div>
 
-    </ul>
-</div>
-
-</body>
-</html>

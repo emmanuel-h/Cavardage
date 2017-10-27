@@ -2,6 +2,7 @@
 
 function ajouterEtape(){
     var etape = document.getElementById("inputEtape").value;
+    var prix = document.getElementById("inputPrix").value;
 
     var li = document.createElement("LI");
     li.id = etape;
@@ -10,11 +11,13 @@ function ajouterEtape(){
     idLi.value = etape;
     li.setAttributeNode(idLi);
 */
-    var textNode = document.createTextNode(etape);
+    var textNode = document.createTextNode(etape + "   -   " + prix + " €");
     li.appendChild(textNode);
 
     var button = document.createElement("BUTTON");
-    button.innerHTML = " - ";
+    button.innerHTML = "&nbsp;-&nbsp;";
+    button.type = "button";
+    button.classList = "btn btn-outline-danger";
     var onclickButton = document.createAttribute("onclick");
     onclickButton.value = "supprimerEtape('"+etape+"')";
     button.setAttributeNode(onclickButton);

@@ -13,6 +13,9 @@
     <title>HomePage</title>
 </head>
 <body>
+
+    <jsp:include page="js/ajouterEtape.js"></jsp:include>
+
     <b:kickstart title="Cavardage">
 
     </b:kickstart>
@@ -62,6 +65,7 @@
             </c:if>
         </div>
     </div>
+
 
 </body>
 </html>
