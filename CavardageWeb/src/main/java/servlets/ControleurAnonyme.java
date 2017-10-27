@@ -31,7 +31,6 @@ public class ControleurAnonyme extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String test = request.getParameter("afaire");
-        String login,mdp,nom,mdp_confirmer;
         if(null == test){
             getListeVilles(request);
             getListeDernierTrajet(request);

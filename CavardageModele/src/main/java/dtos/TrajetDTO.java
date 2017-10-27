@@ -5,7 +5,9 @@ import entities.Trajet;
 public class TrajetDTO {
 
     private String villeDepart;
+    private String departementDepart;
     private String villeArrive;
+    private String departementArrivee;
     private String date;
     private String heure;
     private String vehicule;
@@ -14,11 +16,32 @@ public class TrajetDTO {
     }
 
     public TrajetDTO(Trajet t) {
-        villeDepart=t.getVilleDepart().getNomVille();
-        villeArrive=t.getVilleArrivee().getNomVille();
+        String[] tab= t.getVilleDepart().getNomVille().split("_");
+        villeDepart=tab[0];
+        departementDepart=tab[1];
+        tab=t.getVilleArrivee().getNomVille().split("_");
+        villeArrive=tab[0];
+        departementArrivee=tab[1];
+        System.out.println(villeDepart+" "+departementDepart);
         date=t.getDate();
         heure=t.getHeure();
         vehicule=t.getVehiculeTrajet().getModele();
+    }
+
+    public String getDepartementDepart() {
+        return departementDepart;
+    }
+
+    public void setDepartementDepart(String departementDepart) {
+        this.departementDepart = departementDepart;
+    }
+
+    public String getDepartementArrivee() {
+        return departementArrivee;
+    }
+
+    public void setDepartementArrivee(String departementArrivee) {
+        this.departementArrivee = departementArrivee;
     }
 
     public String getVilleDepart() {

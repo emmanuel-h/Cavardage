@@ -36,7 +36,7 @@
         <label>Ville de départ:</label>
         <datalist id="listeVille">
         <c:forEach items="${listeVilles}" var="ville">
-            <option value="${ville.nom}(${ville.departement})"/>
+            <option value="${ville.nomVille}(${ville.departement})"/>
         </c:forEach>
         </datalist>
         <input type="text" list="listeVille" class="form-control" name="nomVilleDepart" required>
@@ -52,8 +52,8 @@
                 <li class="list-group-item">
                     <table class="table table-bordered">
                         <tr>
-                            <td>${trajet.villeDepart}</td>
-                            <td>${trajet.villeArrive}</td>
+                            <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
+                            <td>${trajet.villeArrive}(${trajet.departementArrivee})</td>
                             <td>${trajet.date}</td>
                             <td>${trajet.heure}h</td>
                         </tr>

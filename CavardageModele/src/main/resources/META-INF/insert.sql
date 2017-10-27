@@ -21,24 +21,24 @@ INSERT INTO Gabarit (idGabarit, type) VALUES (7,'monospace');
 INSERT INTO Gabarit (idGabarit, type) VALUES (8,'berline');
 INSERT INTO Gabarit (idGabarit, type) VALUES (9,'sportif');
 
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (1, 'Paris',75);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (2, 'Lyon',69);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (3, 'Marseille',13);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (4, 'Orleans',45);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (5, 'Nantes',44);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (6, 'Lille',59);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (7, 'Peta-aux-chnoques Les Bains',39);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (8, 'Amiens',80);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (9, 'Colmar',68);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (10, 'Corbie',80);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (11, 'Rouen',76);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (12, 'Bourges',18);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (13, 'Tours',37);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (14, 'Blois',41);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (15, 'Evry',91);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (16, 'Strasbourg',67);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (17, 'Perpignan',66);
-INSERT INTO Ville (idVille, nomVille, departement) VALUES (18, 'La Rochelle',17);
+INSERT INTO Ville (nomVille) VALUES ('Paris_75');
+INSERT INTO Ville (nomVille) VALUES ('Lyon_69');
+INSERT INTO Ville (nomVille) VALUES ('Marseille_13');
+INSERT INTO Ville (nomVille) VALUES ('Orleans_45');
+INSERT INTO Ville (nomVille) VALUES ('Nantes_44');
+INSERT INTO Ville (nomVille) VALUES ('Lille_59');
+INSERT INTO Ville (nomVille) VALUES ('Peta-aux-chnoques Les Bains_39');
+INSERT INTO Ville (nomVille) VALUES ('Amiens_80');
+INSERT INTO Ville (nomVille) VALUES ('Colmar_68');
+INSERT INTO Ville (nomVille) VALUES ('Corbie_80');
+INSERT INTO Ville (nomVille) VALUES ('Rouen_76');
+INSERT INTO Ville (nomVille) VALUES ('Bourges_18');
+INSERT INTO Ville (nomVille) VALUES ('Tours_37');
+INSERT INTO Ville (nomVille) VALUES ('Blois_41');
+INSERT INTO Ville (nomVille) VALUES ('Evry_91');
+INSERT INTO Ville (nomVille) VALUES ('Strasbourg_67');
+INSERT INTO Ville (nomVille) VALUES ('Perpignan_66');
+INSERT INTO Ville (nomVille) VALUES ('La Rochelle_17');
 
 INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALUES (1,'Espace',6,'titine',7);
 INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALUES (2,'Punto',4,'poupu',4);
@@ -48,7 +48,7 @@ INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALU
 INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALUES (6,'Maserati',2,'bologno',9);
 INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALUES (7,'Safrane',3,'une voiture quelle est bien pour la conduire',1);
 INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALUES (8,'Kit Kat',5,'asiat',2);
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALUES (9,'Renault Truck XGR2',60,'le passeur',6;
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALUES (9,'Renault Truck XGR2',60,'le passeur',6);
 INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit) VALUES (10,'Combi Volkswagen',12,'vamos a la playa',5);
 
 INSERT INTO Utilisateur_vehicule(utilisateur_login,listevehicule_idvehicule) VALUES ('alice',1);
@@ -63,48 +63,18 @@ INSERT INTO Utilisateur_vehicule(utilisateur_login,listevehicule_idvehicule) VAL
 INSERT INTO Utilisateur_vehicule(utilisateur_login,listevehicule_idvehicule) VALUES ('gaston',10);
 
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (1,'21/12/2017','12','aVenir',50,1,6,4);
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_idville) VALUES (1,10,1,1);
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_idville) VALUES (2,30,1,8);
+INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (1,'21/12/2017','12','aVenir',50,1,'Lille_59','Orleans_45');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (1,10,1,'Paris_75');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (2,30,1,'Amiens_80');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (1,1,'accepte',null,1,'alice');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (2,2,'enAttente',2,1,'charlie');
 
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (2,'25/12/2017','17','aVenir',30,2,9,5);
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_idville) VALUES (3,5,2,6);
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_idville) VALUES (4,10,2,3);
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_idville) VALUES (5,25,2,11);
+INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (2,'25/12/2017','17','aVenir',30,2,'Colmar_68','Nantes_44');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (3,5,2,'Lille_59');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (4,10,2,'Marseille_13');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (5,25,2,'Rouen_76');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (3,'10/07/2017','8h30','fini',150,5,17,14);
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_idville) VALUES (6,5,3,7);
-INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_idville) VALUES (7,10,3,18);
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (4,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (5,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (6,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (7,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (8,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (9,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (10,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (11,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (12,'21/12/2017','12','aVenir',50,1,6,4);
-
-
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_idville,villedepart_idville) VALUES (13,'21/12/2017','12','aVenir',50,1,6,4);
-
+INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (3,'10/07/2017','8h30','fini',150,5,'Perpignan_66','Blois_41');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (6,5,3,'Peta-aux-chnoques Les Bains_39');
+INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (7,10,3,'La Rochelle_17');
