@@ -11,7 +11,10 @@ public class VilleDTO {
     }
 
     public VilleDTO(String idVille){
+        String[] id = idVille.split("_");
         this.idVille = idVille;
+        this.nomVille = id[0];
+        this.departement = Integer.parseInt(id[1]);
     }
 
     public VilleDTO(String nom, String departement){
@@ -29,7 +32,10 @@ public class VilleDTO {
     }
 
     public void setIdVille(String idVille) {
+        String[] id = idVille.split("_");
         this.idVille = idVille;
+        this.nomVille = id[0];
+        this.departement = Integer.parseInt(id[1]);
     }
 
     public String getNomVille() {
