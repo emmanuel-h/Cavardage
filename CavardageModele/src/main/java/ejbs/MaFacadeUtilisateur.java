@@ -20,7 +20,7 @@ public interface MaFacadeUtilisateur {
     List<Appreciation> avoirNotesTrajet(int idTrajet);
     List<Appreciation> avoirNotesTotal(String login);
     float moyenneNotes(String login) throws DivisionParZeroException;
-    Trajet proposerTrajet(int idVilleDepart, int idVilleArrivee, Map<Integer,Integer> villesPrix, String date, String heure, int idVehicule, int prix);
+    Trajet proposerTrajet(String idVilleDepart, String idVilleArrivee, Map<String,Integer> villesPrix, String date, String heure, int idVehicule, int prix);
     Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces);
     boolean supprimerVehicule(int idVehicule);
     List<VehiculeDTO> listeVehicules(String login);
@@ -36,5 +36,6 @@ public interface MaFacadeUtilisateur {
     boolean supprimerUtilisateur(String login);
     List<Ville> getListeVilles();
     List<VilleDTO> getListeVilleDTO();
+    void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String[] prixEtapes, String date, String heure, String prix);
 
 }

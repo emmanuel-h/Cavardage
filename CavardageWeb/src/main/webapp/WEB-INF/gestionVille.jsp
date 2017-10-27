@@ -26,7 +26,7 @@
         <label>Nom de la ville : </label>
         <datalist id="nomVilleList">
             <c:forEach items="${listeVilles}" var="ville">
-                <option value="${ville.nomVille} (${ville.departement})"/>
+                <option value="${ville.nomVille}(${ville.departement})"/>
             </c:forEach>
         </datalist>
         <input type="text" list="nomVilleList" class="form-control" name="nomVilleASupprimer" required>

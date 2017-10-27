@@ -29,7 +29,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
 
     public boolean ajouterVille(String nomVille,String departement){
         Query q = em.createQuery("From Ville v where v.nomVille=:nom");
-        q.setParameter("nom", nomVille);
+        q.setParameter("nom", nomVille + "_" + departement);
         Ville v;
         try{
             v = (Ville) q.getSingleResult();
@@ -79,8 +79,12 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     public boolean supprimerVille(String nomVille, String departement){
         String idVille = nomVille + "_" + departement;
         Ville v = em.find(Ville.class, idVille);
-        em.remove(v);
-        return true;
+        if(null != v){
+            em.remove(v);
+            return true;
+        }else{
+            return false;
+        }
 
         /*
         Query q = em.createQuery("From Ville v where v.nomVille=:nom and v.departement=:departement ");

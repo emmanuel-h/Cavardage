@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <datalist id="listeVille">
         <c:forEach items="${listeVilles}" var="ville">
-            <option value="${ville.nom} - ${ville.departement}" />
+            <option value="${ville.nomVille} - ${ville.departement}" />
         </c:forEach>
     </datalist>
     <datalist id="listVehicule">
@@ -41,6 +41,10 @@
             <input type="text" id="vehicule" list="listVehicule" name="vehicule">
         </div>
         <div class="form-group">
+            <label for="prixVoyage">Prix du voyage : </label>
+            <input placeholder="prix en €" type="text" id="prixVoyage" name="prixVoyage">
+        </div>
+        <div class="form-group">
             <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerTrajet">Créer</button>
         </div>
     </form>
@@ -52,7 +56,7 @@
         </div>
         <div class="form-group">
             <label for="inputPrix">Prix : </label>
-            <input type="text" id="inputPrix" name="prix">
+            <input placeholder="prix en €" type="text" id="inputPrix" name="prix">
         </div>
         <div class="form-group">
             <button name="afaire" class="btn btn-primary" value="ajouterEtape" onclick="ajouterEtape()">Ajouter étape</button>

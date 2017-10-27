@@ -81,9 +81,13 @@ public class ControleurUtilisateur extends HttpServlet {
         String villeDepart = request.getParameter("villeDepart");
         String villeArrivee = request.getParameter("villeArrivee");
         String date = request.getParameter("date");
+        String heure = request.getParameter("heure");
         String nomVehicule = request.getParameter("vehicule");
+        String prixVoyage = request.getParameter("prixVoyage");
         String[] etapes = request.getParameterValues("etape");
         String[] prix = request.getParameterValues("prix");
+
+        maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, prix, date, heure, prixVoyage);
     }
 
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response){

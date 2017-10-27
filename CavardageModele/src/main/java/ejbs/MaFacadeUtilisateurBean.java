@@ -110,7 +110,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public Trajet proposerTrajet(int idVilleDepart, int idVilleArrivee, Map<Integer,Integer> villesPrix, String date, String heure, int idVehicule, int prix) {
+    public Trajet proposerTrajet(String idVilleDepart, String idVilleArrivee, Map<String,Integer> villesPrix, String date, String heure, int idVehicule, int prix) {
         Vehicule vehicule = em.find(Vehicule.class,idVehicule);
         Ville depart = em.find(Ville.class,idVilleDepart);
         Ville arrivee = em.find(Ville.class,idVilleArrivee);
@@ -365,5 +365,31 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             return villeDTOS;
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String[] prixEtapes, String date, String heure, String prix) {
+        Utilisateur user = em.find(Utilisateur.class, login);
+        List<Vehicule> vListe = user.getListeVehicule();
+        int idVehicule = 0;
+        for(Vehicule v : vListe){
+            if(v.getNom().equals(nomVehicule)){
+                idVehicule = v.getIdVehicule();
+                break;
+            }
+        }
+        StringTokenizer st;
+        Map<String, Integer> mapPrix = new TreeMap<>();
+        for(int i = 0; i < etapes.length; i++){
+            st = new StringTokenizer(etapes[i], "()");
+            mapPrix.put(st.nextToken() + "_" + st.nextToken(), Integer.parseInt(prixEtapes[i]));
+        }
+
+        st = new StringTokenizer(villeDepart, "()");
+        String idVilleDepart = st.nextToken() + "_" + st.nextToken();
+        st = new StringTokenizer(villeArrivee, "()");
+        String idVilleArrivee = st.nextToken() + "_" + st.nextToken();
+
+        proposerTrajet(idVilleDepart, idVilleArrivee, mapPrix, date, heure, idVehicule, Integer.parseInt(prix));
     }
 }
