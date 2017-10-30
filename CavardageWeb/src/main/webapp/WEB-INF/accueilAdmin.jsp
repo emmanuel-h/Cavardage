@@ -27,6 +27,10 @@
                 <div class="form-group">
                     <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
                 </div>
+                <hr>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" name="boutonAdmin" value="deconnexion">Déconnexion</button>
+                </div>
             </form>
         </div>
 

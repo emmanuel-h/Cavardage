@@ -46,6 +46,10 @@
                 <div class="form-group">
                     <button class="btn btn-default" type="submit" name="afaire" value="rechercherTrajet">Rechercher un trajet</button>
                 </div>
+                <hr>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" name="afaire" value="deconnexion">Déconnexion</button>
+                </div>
             </form>
         </div>
 

@@ -51,7 +51,14 @@ public class ControleurAnonyme extends HttpServlet {
                     getResultatRecherche(request,response);
                     getListeDernierTrajet(request);
                     break;
+                case "deconnexion":
+                    test = null;
+                    request.getSession().removeAttribute("utilisateur");
+                    request.getSession().invalidate();
+                    response.sendRedirect(request.getContextPath());
+                    break;
                 default:
+
                     break;
             }
         }

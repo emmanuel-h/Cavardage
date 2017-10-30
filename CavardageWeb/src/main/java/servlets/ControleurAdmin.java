@@ -77,6 +77,12 @@ public class ControleurAdmin extends HttpServlet {
                     setListeVilles(request);
                     request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
                     break;
+                case "deconnexion":
+                    test = null;
+                    request.getSession().removeAttribute("utilisateur");
+                    request.getSession().invalidate();
+                    response.sendRedirect(request.getContextPath());
+                    break;
                 default:
                     break;
             }

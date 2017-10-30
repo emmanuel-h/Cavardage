@@ -78,6 +78,12 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "afficherRechercheTrajet":
                     afficherRechercheTrajet(request,response);
                     break;
+                case "deconnexion":
+                    aFaire = null;
+                    request.getSession().removeAttribute("utilisateur");
+                    request.getSession().invalidate();
+                    response.sendRedirect(request.getContextPath());
+                    break;
                 default :
                     //display homepage
             }
