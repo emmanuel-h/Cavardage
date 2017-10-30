@@ -1,5 +1,7 @@
 package dtos;
 
+import java.util.StringTokenizer;
+
 public class HistoriqueDTO {
 
     private int idTrajet;
@@ -19,8 +21,10 @@ public class HistoriqueDTO {
         this.nomVehicule = nomVehicule;
         this.nbReservation = nbReservation;
         this.role = role;
-        this.villeArrivee = villeArrivee;
-        this.villeDepart = villeDepart;
+        StringTokenizer st = new StringTokenizer(villeArrivee, "_");
+        this.villeArrivee = st.nextToken() + "(" + st.nextToken() + ")";
+        st = new StringTokenizer(villeDepart, "_");
+        this.villeDepart = st.nextToken() + "(" + st.nextToken() + ")";
         this.dateDepart = dateDepart;
     }
 
@@ -61,7 +65,8 @@ public class HistoriqueDTO {
     }
 
     public void setVilleDepart(String villeDepart) {
-        this.villeDepart = villeDepart;
+        StringTokenizer st = new StringTokenizer(villeDepart, "_");
+        this.villeDepart = st.nextToken() + "(" + st.nextToken() + ")";
     }
 
     public String getVilleArrivee() {
@@ -69,7 +74,8 @@ public class HistoriqueDTO {
     }
 
     public void setVilleArrivee(String villeArrivee) {
-        this.villeArrivee = villeArrivee;
+        StringTokenizer st = new StringTokenizer(villeArrivee, "_");
+        this.villeArrivee = st.nextToken() + "(" + st.nextToken() + ")";
     }
 
     public String getDateDepart() {
