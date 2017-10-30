@@ -6,6 +6,7 @@ import dtos.VilleDTO;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
+import exceptions.PrixInferieurException;
 import exceptions.VilleNonTrouvee;
 
 import javax.ejb.Local;
@@ -36,6 +37,6 @@ public interface MaFacadeUtilisateur {
     boolean supprimerUtilisateur(String login);
     List<Ville> getListeVilles();
     List<VilleDTO> getListeVilleDTO();
-    void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix);
+    void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException;
 
 }

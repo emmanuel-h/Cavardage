@@ -6,6 +6,7 @@ import dtos.VilleDTO;
 import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
 import entities.Ville;
+import exceptions.PrixInferieurException;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -85,16 +86,15 @@ public class ControleurUtilisateur extends HttpServlet {
         String nomVehicule = request.getParameter("vehicule");
         String prixVoyage = request.getParameter("prixVoyage");
         String[] etapes = request.getParameterValues("etape");
-        System.out.println("Prix trajet : " + prixVoyage);
-        maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
-        String message = "Trajet créé";
+        String message;
+        try {
+            maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
+            message = "Trajet créé";
+        }catch(PrixInferieurException e){
+            message = "Erreur : " + e.getMessage();
+        }
         request.setAttribute("message",message);
-        request.setAttribute("aAfficher", "creerTrajet");
-        List<VehiculeDTO> vehiculeDTOS = maFacade.listeVehicules(login);
-        List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
-        request.setAttribute("listeVehicules", vehiculeDTOS);
-        request.setAttribute("listeVilles", listeVilles);
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        voirCreerTrajet(request, response);
     }
 
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response){
