@@ -7,6 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:include page="homePage/js/date.js"></jsp:include>
 <html>
 <head>
     <title>Cavardage ~ Accueil ~</title>
@@ -79,9 +80,9 @@
                     <table class="table table-bordered">
                         <tr>
                             <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
-                            <td>${trajet.villeArrive}(${trajet.departementDepart})</td>
+                            <td>${trajet.villeArrive}(${trajet.departementArrivee})</td>
                             <td>${trajet.date}</td>
-                            <td>${trajet.heure}h</td>
+                            <td>${trajet.heure}</td>
                         </tr>
                     </table>
                 </li>
