@@ -8,6 +8,7 @@ import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
 import exceptions.VilleNonTrouvee;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +20,11 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @PersistenceContext(unitName = "monUnite")
     EntityManager em;
+    @EJB
+    RechercheBean recherche;
+
+    public MaFacadeUtilisateurBean() {
+    }
 
     @Override
     public Reservation reserverPlace(String login, int idTrajet, int nbPlaces, int idVilleArrivee) throws VilleNonTrouvee {
@@ -348,25 +354,11 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     public List<Ville> getListeVilles(){
-        Query q = em.createQuery("From Ville v");
-        List<Ville> listeTemp = q.getResultList();
-        if(!listeTemp.isEmpty()){
-            return listeTemp;
-        }
-        return new ArrayList<>();
+        return recherche.getListeVilles();
     }
 
     public List<VilleDTO> getListeVilleDTO(){
-        Query q = em.createQuery("From Ville v");
-        List<Ville> listeVille = q.getResultList();
-        if(!listeVille.isEmpty()){
-            List<VilleDTO> villeDTOS = new ArrayList<>();
-            for(Ville v : listeVille){
-                villeDTOS.add(new VilleDTO(v.getNomVille()));
-            }
-            return villeDTOS;
-        }
-        return new ArrayList<>();
+        return recherche.getListeVillesDTO();
     }
 
     @Override

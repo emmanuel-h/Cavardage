@@ -4,6 +4,7 @@ import dtos.VilleDTO;
 import entities.Gabarit;
 import entities.Ville;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,13 +15,8 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
 
     @PersistenceContext(unitName = "monUnite")
     EntityManager em;
-
-    private String selectVille = /*"SELECT Ville AS v FROM Ville where v.nomVille=:nom";*/ "From Ville v where v.nomVille=:nom";
-    private String selectAllVilles = /*"SELECT Ville AS v FROM Ville";*/ "From Ville v";
-
-    private String selectGabarit = /*"SELECT Gabarit AS g FROM Gabarit where g.type=:gabarit";*/ "From Gabarit g where g.type=:gabarit";
-    private String selectAllGabarits = /*"SELECT Gabarit AS g FROM Gabarit";*/ "FROM Gabarit  g";
-
+    @EJB
+    RechercheBean recherche;
 
     public MaFacadeAdministrateurBean(){
 
@@ -42,25 +38,11 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public List<Ville> getListeVilles(){
-        Query q = em.createQuery("From Ville v");
-        List<Ville> listeTemp = q.getResultList();
-        if(!listeTemp.isEmpty()){
-            return listeTemp;
-        }
-        return new ArrayList<>();
+        return recherche.getListeVilles();
     }
 
     public List<VilleDTO> getListeVilleDTO(){
-        Query q = em.createQuery("From Ville v");
-        List<Ville> listeVille = q.getResultList();
-        if(!listeVille.isEmpty()){
-            List<VilleDTO> villeDTOS = new ArrayList<>();
-            for(Ville v : listeVille){
-                villeDTOS.add(new VilleDTO(v.getNomVille()));
-            }
-            return villeDTOS;
-        }
-        return new ArrayList<>();
+        return recherche.getListeVillesDTO();
     }
 
     public List<String> getListeGabarits(){
@@ -85,36 +67,6 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }else{
             return false;
         }
-
-        /*
-        Query q = em.createQuery("From Ville v where v.nomVille=:nom and v.departement=:departement ");
-        q.setParameter("nom", nomVille);
-        q.setParameter("departement", Integer.parseInt(departement));
-        System.out.println("Modele" +departement);
-        try {
-            Ville v = (Ville) q.getSingleResult();
-            em.remove(v);
-            return true;
-        }catch (NoResultException e){
-            System.out.println("no ville");
-            return false;
-        }
-        */
-
-        /*
-        Query q = em.createQuery("DELETE FROM Ville v where v.nomVille=:nom");
-        q.setParameter("nom", nomVille);
-        q.executeUpdate();
-
-        Query q2 = em.createNativeQuery("From Ville v where v.nomVille=:nom");
-        q2.setParameter("nom", nomVille);
-        try{
-            q2.getSingleResult();
-        }catch (NoResultException e){
-            return true;
-        }
-        return false;
-        */
     }
 
     public boolean ajouterGabarit(String nomGabarit){
@@ -141,20 +93,5 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }catch(NoResultException e){
             return false;
         }
-
-        /*
-        Query q = em.createQuery("DELETE FROM Gabarit g WHERE g.type=:gabarit");
-        q.setParameter("gabarit", nomGabarit);
-        q.executeUpdate();
-
-        Query q2 = em.createNativeQuery("From Gabarit g where g.type=:gabarit");
-        q2.setParameter("gabarit", nomGabarit);
-        try{
-            q2.getSingleResult();
-        }catch(NoResultException e){
-            return true;
-        }
-        return false;
-        */
     }
 }
