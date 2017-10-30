@@ -398,4 +398,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) {
         return recherche.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
     }
+
+    @Override
+    public TrajetDTO avoirTrajet(int idTrajet) {
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+        return new TrajetDTO(trajet);
+    }
 }

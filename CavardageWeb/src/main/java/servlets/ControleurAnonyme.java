@@ -76,7 +76,6 @@ public class ControleurAnonyme extends HttpServlet {
         if(!prix.equals("")) {
             request.setAttribute("prix", prix);
         }
-        System.out.println("LA");
         request.setAttribute("resultatsRecherche","afficher");
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
     }

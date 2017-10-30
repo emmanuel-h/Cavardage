@@ -74,6 +74,9 @@
             <c:if test="${aAfficher == 'rechercherTrajet'}">
                 <jsp:include page="recherche/initFormrecherche.jsp"></jsp:include>
             </c:if>
+            <c:if test="${aAfficher == 'detailsTrajet'}">
+                <jsp:include page="detailsTrajet.jsp"></jsp:include>
+            </c:if>
         </div>
     </div>
 

@@ -50,7 +50,7 @@
                     <table class="table table-bordered">
                         <tr>
                             <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
-                            <td>${trajet.villeArrive}(${trajet.departementArrivee})</td>
+                            <td>${trajet.villeArrivee}(${trajet.departementArrivee})</td>
                             <td>${trajet.date}</td>
                             <td>${trajet.heure}</td>
                         </tr>

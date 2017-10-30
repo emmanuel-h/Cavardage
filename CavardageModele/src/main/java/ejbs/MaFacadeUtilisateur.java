@@ -40,4 +40,5 @@ public interface MaFacadeUtilisateur {
     List<VilleDTO> getListeVilleDTO();
     void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException;
     List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix);
+    TrajetDTO avoirTrajet(int idTrajet);
 }

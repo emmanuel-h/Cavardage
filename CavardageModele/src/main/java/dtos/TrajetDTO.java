@@ -1,36 +1,58 @@
 package dtos;
 
+import entities.Etape;
+import entities.Reservation;
 import entities.Trajet;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 public class TrajetDTO implements Comparable{
 
+    private int id;
     private String loginConducteur;
     private String villeDepart;
     private String departementDepart;
-    private String villeArrive;
+    private String villeArrivee;
     private String departementArrivee;
     private String date;
     private String heure;
     private String vehicule;
+    private int prix;
+    private int nbPlaces;
+    private List<EtapeDTO> etapes;
 
     public TrajetDTO() {
     }
 
     public TrajetDTO(Trajet t) {
-        String[] tab= t.getVilleDepart().getNomVille().split("_");
-        villeDepart=tab[0];
-        departementDepart=tab[1];
-        tab=t.getVilleArrivee().getNomVille().split("_");
-        villeArrive=tab[0];
-        departementArrivee=tab[1];
-        date=t.getDate();
-        heure=t.getHeure();
-        vehicule=t.getVehiculeTrajet().getModele();
-        loginConducteur = t.getVehiculeTrajet().getUtilisateur().getLogin();
+        String[] tab = t.getVilleDepart().getNomVille().split("_");
+        this.villeDepart = tab[0];
+        this.departementDepart = tab[1];
+        tab = t.getVilleArrivee().getNomVille().split("_");
+        this.villeArrivee = tab[0];
+        this.departementArrivee = tab[1];
+        this.date = t.getDate();
+        this.heure = t.getHeure();
+        this.vehicule = t.getVehiculeTrajet().getModele();
+        this.loginConducteur = t.getVehiculeTrajet().getUtilisateur().getLogin();
+        this.id = t.getIdTrajet();
+        this.prix = t.getPrix();
+
+        int nbPlacesTemp = t.getVehiculeTrajet().getNombrePlaces();
+        for (Reservation reservation : t.getListeReservation()){
+            if(reservation.getStatut().equals("accepte")){
+                nbPlacesTemp -= reservation.getNbPlace();
+            }
+        }
+        this.nbPlaces = nbPlacesTemp;
+        this.etapes = new ArrayList<>();
+        for(Etape e:t.getListeEtape()){
+            this.etapes.add(new EtapeDTO(e));
+        }
     }
 
     public String getLoginConducteur() {
@@ -65,12 +87,12 @@ public class TrajetDTO implements Comparable{
         this.villeDepart = villeDepart;
     }
 
-    public String getVilleArrive() {
-        return villeArrive;
+    public String getVilleArrivee() {
+        return villeArrivee;
     }
 
-    public void setVilleArrive(String villeArrive) {
-        this.villeArrive = villeArrive;
+    public void setVilleArrivee(String villeArrivee) {
+        this.villeArrivee = villeArrivee;
     }
 
     public String getDate() {
@@ -95,6 +117,38 @@ public class TrajetDTO implements Comparable{
 
     public void setVehicule(String vehicule) {
         this.vehicule = vehicule;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getPrix() {
+        return prix;
+    }
+
+    public void setPrix(int prix) {
+        this.prix = prix;
+    }
+
+    public int getNbPlaces() {
+        return nbPlaces;
+    }
+
+    public void setNbPlaces(int nbPlaces) {
+        this.nbPlaces = nbPlaces;
+    }
+
+    public List<EtapeDTO> getEtapes() {
+        return etapes;
+    }
+
+    public void setEtapes(List<EtapeDTO> etapes) {
+        this.etapes = etapes;
     }
 
     @Override

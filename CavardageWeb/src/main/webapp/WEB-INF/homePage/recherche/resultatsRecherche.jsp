@@ -16,19 +16,21 @@
             <table class="table">
                 <tr>
                     <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
-                    <td>${trajet.villeArrive}(${trajet.departementArrivee})</td>
+                    <td>${trajet.villeArrivee}(${trajet.departementArrivee})</td>
                     <td>${trajet.date}</td>
                     <td>${trajet.heure}</td>
                     <c:if test="${!empty utilisateur}">
                         <c:if test="${trajet.loginConducteur eq utilisateur}">
                             <td class="col-lg-1">
                                 <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
+                                <input type="hidden" name="idTrajet" value="${trajet.id}">
                                 <button class="btn btn-primary" type="submit" name="afaire" value="gererTrajet">Gérer</button>
                             </td>
                         </c:if>
                         <c:if test="${trajet.loginConducteur ne utilisateur}">
                             <td class="col-lg-1">
                                 <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
+                                <input type="hidden" name="idTrajet" value="${trajet.id}">
                                 <button class="btn btn-primary" type="submit" name="afaire" value="detailsTrajet">Détails</button>
                             </td>
                         </c:if>

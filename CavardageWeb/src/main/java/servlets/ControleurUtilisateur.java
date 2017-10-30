@@ -1,9 +1,6 @@
 package servlets;
 
-import dtos.HistoriqueDTO;
-import dtos.TrajetDTO;
-import dtos.VehiculeDTO;
-import dtos.VilleDTO;
+import dtos.*;
 import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
 import entities.Ville;
@@ -77,6 +74,12 @@ public class ControleurUtilisateur extends HttpServlet {
                     break;
                 case "afficherRechercheTrajet":
                     afficherRechercheTrajet(request,response);
+                    break;
+                case "detailsTrajet":
+                    detailsTrajet(request,response);
+                    break;
+                case "reserverTrajet":
+                    reserverTrajet(request,response);
                     break;
                 default :
                     //display homepage
@@ -231,4 +234,21 @@ public class ControleurUtilisateur extends HttpServlet {
         request.setAttribute("resultatsRecherche","afficher");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
+
+    private void detailsTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
+        TrajetDTO trajetDTO = maFacade.avoirTrajet(idTrajet);
+        request.setAttribute("trajet",trajetDTO);
+        for(EtapeDTO etapeDTO:trajetDTO.getEtapes()){
+            System.out.println(etapeDTO);
+        }
+        request.setAttribute("aAfficher", "detailsTrajet");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+    }
+
+    private void reserverTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idVilleArrivee = request.getParameter("etapeArrivee");
+        System.out.println(idVilleArrivee);
+    }
+
 }
