@@ -65,10 +65,17 @@ public class ControleurAnonyme extends HttpServlet {
         String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-4);
         String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
         String date = request.getParameter("date");
-        List<TrajetDTO> listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date);
+        String prix = request.getParameter("prix");
+        List<TrajetDTO> listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date, prix);
         request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
         getListeDernierTrajet(request);
         getListeVilles(request);
+        request.setAttribute("villeDepart",villeDepart);
+        request.setAttribute("villeArrivee",villeArrive);
+        request.setAttribute("date",date);
+        if(!prix.equals("")) {
+            request.setAttribute("prix", prix);
+        }
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
     }
 
