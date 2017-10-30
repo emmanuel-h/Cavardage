@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class TrajetDTO implements Comparable{
 
+    private String loginConducteur;
     private String villeDepart;
     private String departementDepart;
     private String villeArrive;
@@ -29,6 +30,15 @@ public class TrajetDTO implements Comparable{
         date=t.getDate();
         heure=t.getHeure();
         vehicule=t.getVehiculeTrajet().getModele();
+        loginConducteur = t.getVehiculeTrajet().getUtilisateur().getLogin();
+    }
+
+    public String getLoginConducteur() {
+        return loginConducteur;
+    }
+
+    public void setLoginConducteur(String loginConducteur) {
+        this.loginConducteur = loginConducteur;
     }
 
     public String getDepartementDepart() {

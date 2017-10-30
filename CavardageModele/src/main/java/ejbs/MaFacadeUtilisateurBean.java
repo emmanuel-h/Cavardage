@@ -57,7 +57,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         em.persist(reservation);
 
         Vehicule vehicule = trajet.getVehiculeTrajet();
-        Utilisateur conducteur = trouverUtilisateur(vehicule);
+        Utilisateur conducteur = vehicule.getUtilisateur();
         Notification notification = new Notification();
         String messageNotification = "Une nouvelle réservation est arrivée pour le trajet "+trajet.getVilleDepart().getNomVille()+" - "+trajet.getVilleArrivee().getNomVille();
         notification.setMessage(messageNotification);
@@ -74,7 +74,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
         // Le faire sur la bonne table
         Vehicule vehicule = trajet.getVehiculeTrajet();
-        Utilisateur estNote = trouverUtilisateur(vehicule);
+        Utilisateur estNote = vehicule.getUtilisateur();
         Appreciation appreciation = new Appreciation();
         appreciation.setCommentaire(commentaire);
         appreciation.setNote(note);
@@ -189,6 +189,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             VehiculeDTO vDTO = new VehiculeDTO(v.getIdVehicule(), v.getModele(), v.getNom(), v.getGabarit().getType(), v.getNombrePlaces());
             listeVehicules.add(vDTO);
         }
+
         return listeVehicules;
     }
 
@@ -337,13 +338,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         passager.ajouterNotification(notification);
         em.persist(notification);
         em.persist(passager);
-    }
-
-    private Utilisateur trouverUtilisateur(Vehicule vehicule){
-        Query q = em.createQuery("FROM Utilisateur u WHERE u.Vehicule:=vehicule");
-        q.setParameter("vehicule", vehicule.getIdVehicule());
-        Utilisateur utilisateur = (Utilisateur) q.getSingleResult();
-        return utilisateur;
     }
 
     private boolean verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{

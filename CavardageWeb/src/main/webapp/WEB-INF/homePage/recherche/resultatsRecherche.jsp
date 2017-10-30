@@ -13,12 +13,24 @@
 <ul class="list-group">
     <c:forEach items="${listeTrajetRecherche}" var="trajet">
         <li class="list-group-item">
-            <table class="table table-bordered">
+            <table class="table">
                 <tr>
                     <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
                     <td>${trajet.villeArrive}(${trajet.departementArrivee})</td>
                     <td>${trajet.date}</td>
                     <td>${trajet.heure}</td>
+                    <c:if test="${trajet.loginConducteur eq utilisateur}">
+                        <td class="col-lg-1">
+                            <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
+                            <button class="btn btn-primary" type="submit" name="afaire" value="gererTrajet">Gérer</button>
+                        </td>
+                    </c:if>
+                    <c:if test="${trajet.loginConducteur ne utilisateur}">
+                        <td class="col-lg-1">
+                            <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
+                            <button class="btn btn-primary" type="submit" name="afaire" value="detailsTrajet">Détails</button>
+                        </td>
+                    </c:if>
                 </tr>
             </table>
         </li>

@@ -15,7 +15,7 @@ public class Utilisateur {
     @JoinColumn(name = "IDROLE")
     private Role roleUtilisateur;
 
-    @OneToMany
+    @OneToMany(mappedBy = "utilisateur")
     private List<Vehicule> listeVehicule;
 
     @OneToMany(mappedBy = "utilisateurReservation")

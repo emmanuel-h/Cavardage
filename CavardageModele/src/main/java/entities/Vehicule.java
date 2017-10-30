@@ -18,6 +18,9 @@ public class Vehicule {
     @OneToMany(mappedBy = "vehiculeTrajet")
     private List<Trajet> listeTrajet;
 
+    @ManyToOne
+    private Utilisateur utilisateur;
+
     public Vehicule() {
     }
 
@@ -72,6 +75,14 @@ public class Vehicule {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     @Override

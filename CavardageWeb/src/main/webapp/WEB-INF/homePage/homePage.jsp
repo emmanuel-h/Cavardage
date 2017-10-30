@@ -20,6 +20,8 @@
 
     </b:kickstart>
 
+    ${testLogin}
+
     <div class="container">
         <div class="col-lg-3">
             <form action="ControleurUtilisateur" method="post">
