@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div>
-    <form action="ControleurAnonyme" method="post">
+    <form action="ControleurUtilisateur" method="post">
         <h2>Recherche d'un trajet:</h2>
         <label>Ville de départ:</label>
         <datalist id="listeVille">
@@ -22,6 +22,11 @@
         <input type="text" list="listeVille" class="form-control" name="nomVilleArrivee" required>
         <label>Date:</label>
         <input type="date" name="date"/>
-        <button type="submit" name="afaire" value="afficherRechercherTrajet">Rechercher</button>
+        <label>Prix: (Optionnel)</label>
+        <input type="text" name="prix"/>
+        <button type="submit" name="afaire" value="afficherRechercheTrajet">Rechercher</button>
     </form>
+    <c:if test="${resultatsRecherche == 'afficher'}" >
+        <jsp:include page="resultatsRecherche.jsp"></jsp:include>
+    </c:if>
 </div>

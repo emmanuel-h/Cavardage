@@ -1,6 +1,7 @@
 package ejbs;
 
 import dtos.HistoriqueDTO;
+import dtos.TrajetDTO;
 import dtos.VehiculeDTO;
 import dtos.VilleDTO;
 import entities.*;
@@ -397,5 +398,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }else{
             throw new PrixInferieurException("Le prix des étapes est inférieur au prix du trajet");
         }
+    }
+
+    @Override
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) {
+        return recherche.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
     }
 }
