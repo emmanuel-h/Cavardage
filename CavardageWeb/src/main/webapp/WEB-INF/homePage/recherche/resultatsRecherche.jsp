@@ -7,7 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<p>Résultats de la recherche : </p>
+<c:if test="${!empty villeDepart && !empty villeArrivee && !empty date}">
+    <label>Résultat de la recherche: ${villeDepart} à destination de ${villeArrivee}, le ${date} <c:if test="${!empty prix}">pour un prix inférieur à ${prix}€</c:if>  </label>
+</c:if>
 <ul class="list-group">
     <c:forEach items="${listeTrajetRecherche}" var="trajet">
         <li class="list-group-item">

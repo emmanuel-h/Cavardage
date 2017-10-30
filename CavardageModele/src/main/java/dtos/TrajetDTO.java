@@ -2,7 +2,11 @@ package dtos;
 
 import entities.Trajet;
 
-public class TrajetDTO {
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
+
+public class TrajetDTO implements Comparable{
 
     private String villeDepart;
     private String departementDepart;
@@ -81,5 +85,27 @@ public class TrajetDTO {
 
     public void setVehicule(String vehicule) {
         this.vehicule = vehicule;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        int result=0;
+        try {
+            Date date1 = format.parse(this.getDate()+" "+this.getHeure());
+            Date date2 = format.parse(((TrajetDTO)o).getDate()+" "+((TrajetDTO)o).getHeure());
+            if (date1.compareTo(date2) > 0) {
+                result=1;
+            } else if (date1.compareTo(date2) < 0) {
+                result=-1;
+            } else if (date1.compareTo(date2) == 0) {
+                result=0;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println(e.toString());
+        }
+        return result;
     }
 }

@@ -33,41 +33,11 @@
 </div>
 <div>
     <form action="ControleurAnonyme" method="post">
-        <h2>Recherche d'un trajet:</h2>
-        <label>Ville de départ:</label>
-        <datalist id="listeVille">
-        <c:forEach items="${listeVilles}" var="ville">
-            <option value="${ville.nomVille}(${ville.departement})"/>
-        </c:forEach>
-        </datalist>
-        <input type="text" list="listeVille" class="form-control" name="nomVilleDepart" required>
-        <label>Ville d'arrivée:</label>
-        <input type="text" list="listeVille" class="form-control" name="nomVilleArrivee" required>
-        <label>Date:</label>
-        <input type="date" name="date" required/>
-        <label>Prix: (Optionnel)</label>
-        <input type="text" name="prix"/>
-        <button type="submit" name="afaire" value="rechercherTrajet">Rechercher</button>
+        <jsp:include page="homePage/recherche/rechercheTrajet.jsp"></jsp:include>
     </form>
-    <c:if test="${!empty villeDepart && !empty villeArrivee && !empty date}">
-        <label>Résultat de la recherche: ${villeDepart} à destination de ${villeArrivee}, le ${date} <c:if test="${!empty prix}">pour un prix inférieur à ${prix}€</c:if>  </label>
-    </c:if>
-    <form action="ControleurAnonyme" method="post">
-        <ul class="list-group">
-            <c:forEach items="${listeTrajetRecherche}" var="trajet">
-                <li class="list-group-item">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
-                            <td>${trajet.villeArrive}(${trajet.departementArrivee})</td>
-                            <td>${trajet.date}</td>
-                            <td>${trajet.heure}</td>
-                        </tr>
-                    </table>
-                </li>
-            </c:forEach>
-        </ul>
-    </form>
+    <ul class="list-group">
+        <jsp:include page="homePage/recherche/resultatsRecherche.jsp"></jsp:include>
+    </ul>
 </div>
 <hr>
 

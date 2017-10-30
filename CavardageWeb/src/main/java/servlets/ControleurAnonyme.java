@@ -47,7 +47,7 @@ public class ControleurAnonyme extends HttpServlet {
                 case "inscrire":
                     inscription(request,response);
                     break;
-                case "rechercherTrajet":
+                case "afficherRechercheTrajet":
                     getResultatRecherche(request,response);
                     getListeDernierTrajet(request);
                     break;
@@ -76,6 +76,8 @@ public class ControleurAnonyme extends HttpServlet {
         if(!prix.equals("")) {
             request.setAttribute("prix", prix);
         }
+        System.out.println("LA");
+        request.setAttribute("resultatsRecherche","afficher");
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
     }
 

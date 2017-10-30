@@ -75,32 +75,7 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
         for(Trajet t :lt){
             ltd.add(new TrajetDTO(t));
         }
-        Collections.sort(ltd, new Comparator<TrajetDTO>() {
-            @Override
-            public int compare(TrajetDTO o1, TrajetDTO o2) {
-
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                int result=0;
-                try {
-                    Date date1 = format.parse(o1.getDate()+" "+o1.getHeure());
-                    Date date2 = format.parse(o2.getDate()+" "+o2.getHeure());
-                    if (date1.compareTo(date2) > 0) {
-                        result=1;
-                        System.out.println(date1+" is after "+date2);
-                    } else if (date1.compareTo(date2) < 0) {
-                        result=-1;
-                        System.out.println(date1+" is before end "+date2);
-                    } else if (date1.compareTo(date2) == 0) {
-                        result=0;
-                        System.out.println(date1+" is equal to "+date2);
-                    }
-                    }catch(Exception e){
-                    e.printStackTrace();
-                    System.out.println(e.toString());
-                }
-                return result;
-            }
-        });
+        Collections.sort(ltd);
         return ltd;
 
     }
