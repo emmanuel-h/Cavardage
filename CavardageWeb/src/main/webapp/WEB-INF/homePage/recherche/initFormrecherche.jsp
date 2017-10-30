@@ -13,6 +13,8 @@
 <jsp:include page="rechercheTrajet.jsp"/>
 </form>
 
-<c:if test="${resultatsRecherche == 'afficher'}" >
-    <jsp:include page="resultatsRecherche.jsp"></jsp:include>
-</c:if>
+<form action="ControleurUtilisateur" method="post">
+    <c:if test="${resultatsRecherche == 'afficher'}" >
+        <jsp:include page="resultatsRecherche.jsp"></jsp:include>
+    </c:if>
+</form>

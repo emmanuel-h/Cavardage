@@ -382,4 +382,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
         em.persist(trajet);
     }
+
+    @Override
+    public TrajetDTO avoirTrajet(int idTrajet) {
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+        return new TrajetDTO(trajet);
+    }
 }
