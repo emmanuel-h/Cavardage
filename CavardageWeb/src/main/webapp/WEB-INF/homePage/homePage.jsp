@@ -70,7 +70,7 @@
                 <jsp:include page="confirmationSuppressionCompte.jsp"></jsp:include>
             </c:if>
             <c:if test="${aAfficher == 'rechercherTrajet'}">
-                <jsp:include page="rechercheTrajet.jsp"></jsp:include>
+                <jsp:include page="recherche/initFormrecherche.jsp"></jsp:include>
             </c:if>
         </div>
     </div>

@@ -13,7 +13,6 @@
     </c:forEach>
 </datalist>
 <div>
-    <form action="ControleurUtilisateur" method="post">
         <h2>Recherche d'un trajet:</h2>
         <label>Ville de départ:</label>
         <datalist id="listeVille">
@@ -29,8 +28,4 @@
         <label>Prix: (Optionnel)</label>
         <input type="text" name="prix"/>
         <button type="submit" name="afaire" value="afficherRechercheTrajet">Rechercher</button>
-    </form>
-    <c:if test="${resultatsRecherche == 'afficher'}" >
-        <jsp:include page="resultatsRecherche.jsp"></jsp:include>
-    </c:if>
 </div>
