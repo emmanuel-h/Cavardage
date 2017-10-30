@@ -43,9 +43,14 @@
         <label>Ville d'arrivée:</label>
         <input type="text" list="listeVille" class="form-control" name="nomVilleArrivee" required>
         <label>Date:</label>
-        <input type="date" name="date"/>
+        <input type="date" name="date" required/>
+        <label>Prix: (Optionnel)</label>
+        <input type="text" name="prix"/>
         <button type="submit" name="afaire" value="rechercherTrajet">Rechercher</button>
     </form>
+    <c:if test="${!empty villeDepart && !empty villeArrivee && !empty date}">
+        <label>Résultat de la recherche: ${villeDepart} à destination de ${villeArrivee}, le ${date} <c:if test="${!empty prix}">pour un prix inférieur à ${prix}€</c:if>  </label>
+    </c:if>
     <form action="ControleurAnonyme" method="post">
         <ul class="list-group">
             <c:forEach items="${listeTrajetRecherche}" var="trajet">

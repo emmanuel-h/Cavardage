@@ -71,12 +71,27 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
 
     @Override
     public List<TrajetDTO> rechercheTrajet(String villeDepart,String departementDepart, String villeArrivee,
-           String departementArrive, String date) {
-       Query query = em.createQuery("SELECT DISTINCT t From Trajet t, Ville vd, Ville va, Etape e WHERE " +
-               "t.villeDepart=vd and vd.nomVille=:villeDepart" +
-               " and ((t.villeArrivee=va and va.nomVille=:villeArrivee) or" +
-               " (e.villeEtape.nomVille=:villeArrivee and e.trajet=t)) " +
-               "and t.date=:date");
+           String departementArrive, String date, String prix) {
+        String mq="SELECT DISTINCT t From Trajet t, Ville vd, Ville va, Etape e WHERE " +
+                "t.villeDepart=vd and vd.nomVille=:villeDepart" +
+                " and ((t.villeArrivee=va and va.nomVille=:villeArrivee) or" +
+                " (e.villeEtape.nomVille=:villeArrivee and e.trajet=t)) " +
+                "and t.date=:date and t.statut='aVenir'";
+        Query query=null;
+        if(null != prix && !prix.equals("")){
+            if(Integer.parseInt(prix)>0 ) {
+                query=em.createQuery("SELECT DISTINCT t From Trajet t, Ville vd, Ville va, Etape e WHERE " +
+                        "t.villeDepart=vd and vd.nomVille=:villeDepart" +
+                        " and ((t.villeArrivee=va and va.nomVille=:villeArrivee and t.prix<= :prix) or" +
+                        " (e.villeEtape.nomVille=:villeArrivee and e.trajet=t and e.prix<= :prix)) " +
+                        "and t.date=:date and t.statut='aVenir'");
+                query.setParameter("prix",Integer.parseInt(prix));
+            }else{
+                query=em.createQuery(mq);
+            }
+        }else{
+            query=em.createQuery(mq);
+        }
         query.setParameter("villeDepart", villeDepart+"_"+departementDepart);
         query.setParameter("villeArrivee", villeArrivee+"_"+departementArrive);
         query.setParameter("date",date);
