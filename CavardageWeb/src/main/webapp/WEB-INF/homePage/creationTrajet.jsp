@@ -24,28 +24,28 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="villeDepart">Ville de départ : </label>
-                <input type="text" list="listeVille" id="villeDepart" name="villeDepart" required>
+                <input class="form-control" type="text" list="listeVille" id="villeDepart" name="villeDepart" required>
             </div>
             <div class="form-group">
                 <label for="villeArrivee">Ville d'arrivée : </label>
-                <input type="text" list="listeVille" id="villeArrivee" name="villeArrivee" required>
+                <input class="form-control" type="text" list="listeVille" id="villeArrivee" name="villeArrivee" required>
             </div>
             <div class="form-group">
                 <label for="date">Le : </label>
-                <input type="date" id="date" name="date" required>
+                <input class="form-control" type="text" id="date" name="date" required placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
             </div>
             <div class="form-group">
                 <label for="heure">À : </label>
-                <input type="text" id="heure" name="heure"> :
-                <input type="text" id="minute" name="minute" required>
+                <input style="width: 50px" class="form-control" type="text" id="heure" name="heure" placeholder="hh" required pattern="[0-9]{2}"> :
+                <input style="width: 50px" class="form-control" type="text" id="minute" name="minute" placeholder="mm" required pattern="[0-9]{2}">
             </div>
             <div class="form-group">
                 <label for="vehicule">Choix du véhicule : </label>
-                <input type="text" id="vehicule" list="listVehicule" name="vehicule" required>
+                <input class="form-control" type="text" id="vehicule" list="listVehicule" name="vehicule" required>
             </div>
             <div class="form-group">
                 <label for="prixVoyage">Prix du voyage : </label>
-                <input placeholder="prix en €" type="text" id="prixVoyage" name="prixVoyage" required>
+                <input class="form-control" placeholder="prix en €" type="text" id="prixVoyage" name="prixVoyage" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerTrajet">Créer</button>
@@ -54,11 +54,11 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="inputEtape">Ville étape : </label>
-                <input type="text" list="listeVille" id="inputEtape">
+                <input class="form-control" type="text" list="listeVille" id="inputEtape">
             </div>
             <div class="form-group">
                 <label for="inputPrix">Prix : </label>
-                <input placeholder="prix en €" type="text" id="inputPrix" name="prix">
+                <input class="form-control" placeholder="prix en €" type="text" id="inputPrix" name="prix">
             </div>
             <div class="form-group">
                 <input type="button" name="afaire" class="btn btn-primary" value="Ajouter étape" onclick="ajouterEtape()" />

@@ -25,7 +25,7 @@
         <label>Ville d'arrivée:</label>
         <input type="text" list="listeVille" class="form-control" name="nomVilleArrivee" required>
         <label>Date:</label>
-        <input type="date" name="date"/>
+        <input type="text" name="date" placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}"/>
         <label>Prix: (Optionnel)</label>
         <input type="text" name="prix"/>
         <button type="submit" name="afaire" value="afficherRechercheTrajet">Rechercher</button>
