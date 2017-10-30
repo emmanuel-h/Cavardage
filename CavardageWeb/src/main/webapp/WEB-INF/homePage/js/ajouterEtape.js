@@ -10,7 +10,7 @@ function ajouterEtape(){
     var hidden = document.createElement("INPUT");
     li.appendChild(hidden);
 
-    var textNode = document.createTextNode(etape + "   -   " + prix + "€");
+    var textNode = document.createTextNode(etape + "/" + prix + "€");
     li.appendChild(textNode);
 
     var button = document.createElement("BUTTON");
@@ -28,7 +28,7 @@ function ajouterEtape(){
     hidden.setAttributeNode(name);
 
     var value = document.createAttribute("value");
-    value.value = etape+"-"+prix;
+    value.value = etape+"/"+prix;
     hidden.setAttributeNode(value);
 
     var hiddenType = document.createAttribute("type");

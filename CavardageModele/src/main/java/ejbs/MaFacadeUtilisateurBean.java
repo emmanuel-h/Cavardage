@@ -6,6 +6,7 @@ import dtos.VilleDTO;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
+import exceptions.PrixInferieurException;
 import exceptions.VilleNonTrouvee;
 
 import javax.ejb.Stateless;
@@ -370,7 +371,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) {
+    public void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException {
         Utilisateur user = em.find(Utilisateur.class, login);
         List<Vehicule> vListe = user.getListeVehicule();
         int idVehicule = 0;
@@ -384,18 +385,25 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         StringTokenizer st;
         Map<String, Integer> mapPrix = new TreeMap<>();
         String nomVille;
+        String prixEtape;
+        int sumPrix = 0;
         if(null != etapes) {
             for (int i = 0; i < etapes.length; i++) {
-                st = new StringTokenizer(etapes[i], " -");
+                st = new StringTokenizer(etapes[i], "()/€");
                 nomVille = st.nextToken() + "_" + st.nextToken();
-                prix = st.nextToken();
-                mapPrix.put(nomVille, Integer.parseInt(prix));
+                prixEtape = st.nextToken();
+                sumPrix += Integer.parseInt(prixEtape);
+                mapPrix.put(nomVille, Integer.parseInt(prixEtape));
             }
         }
-        st = new StringTokenizer(villeDepart, " -");
+        st = new StringTokenizer(villeDepart, "()");
         String idVilleDepart = st.nextToken() + "_" + st.nextToken();
-        st = new StringTokenizer(villeArrivee, " -");
+        st = new StringTokenizer(villeArrivee, "()");
         String idVilleArrivee = st.nextToken() + "_" + st.nextToken();
-        proposerTrajet(idVilleDepart, idVilleArrivee, mapPrix, date, heure, idVehicule, Integer.parseInt(prix));
+        if(sumPrix < Integer.parseInt(prix)) {
+            proposerTrajet(idVilleDepart, idVilleArrivee, mapPrix, date, heure, idVehicule, Integer.parseInt(prix));
+        }else{
+            throw new PrixInferieurException("Le prix des étapes est inférieur au prix du trajet");
+        }
     }
 }
