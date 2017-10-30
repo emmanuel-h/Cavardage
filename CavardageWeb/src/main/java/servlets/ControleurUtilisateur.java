@@ -95,13 +95,15 @@ public class ControleurUtilisateur extends HttpServlet {
         String villeDepart = request.getParameter("villeDepart");
         String villeArrivee = request.getParameter("villeArrivee");
         String date = request.getParameter("date");
-        String heure = request.getParameter("heure")+"h"+request.getParameter("minute");
+        String heure = request.getParameter("heure");
+        String minute = request.getParameter("minute");
         String nomVehicule = request.getParameter("vehicule");
         String prixVoyage = request.getParameter("prixVoyage");
         String[] etapes = request.getParameterValues("etape");
         String message;
         try {
-            maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
+            //maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
+            maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
             message = "Trajet créé";
         }catch(PrixInferieurException e){
             message = "Erreur : " + e.getMessage();

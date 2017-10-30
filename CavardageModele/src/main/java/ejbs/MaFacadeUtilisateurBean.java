@@ -118,48 +118,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public void proposerTrajet(String idVilleDepart, String idVilleArrivee, Map<String,Integer> villesPrix, String date, String heure, int idVehicule, int prix) {
-        Vehicule vehicule = em.find(Vehicule.class,idVehicule);
-        Ville depart = em.find(Ville.class,idVilleDepart);
-        Ville arrivee = em.find(Ville.class,idVilleArrivee);
-        Trajet trajet = new Trajet(date,heure);
-
-        // Liste des étapes
-        if(!villesPrix.isEmpty()) {
-            List<Etape> etapeListe = new ArrayList<>();
-            Etape etape;
-            // On récupère tous les id des villes
-            Set etapes = villesPrix.keySet();
-            String etapeId;
-            Iterator<String> it = etapes.iterator();
-            // On itère sur tous les id de villes-étapes
-            while (it.hasNext()) {
-                etapeId = it.next();
-                //On crée chaque nouvelle étape
-                etape = new Etape();
-                etape.setTrajet(trajet);
-                etape.setPrix(villesPrix.get(etapeId));
-                Ville ville = em.find(Ville.class, etapeId);
-                etape.setVilleEtape(ville);
-                em.persist(etape);
-                etapeListe.add(etape);
-            }
-            trajet.setListeEtape(etapeListe);
-        }
-
-        // On ajoute tous les élement du trajet
-        trajet.setDate(date);
-        trajet.setHeure(heure);
-        trajet.setVehiculeTrajet(vehicule);
-        trajet.setVilleDepart(depart);
-        trajet.setVilleArrivee(arrivee);
-        trajet.setPrix(prix);
-        trajet.setStatut("aVenir");
-        em.persist(trajet);
-        //return trajet;
-    }
-
-    @Override
     public Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Gabarit gabarit = em.find(Gabarit.class,idGabarit);
@@ -358,7 +316,12 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException {
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) {
+        return recherche.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
+    }
+
+    @Override
+    public void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException{
         Utilisateur user = em.find(Utilisateur.class, login);
         List<Vehicule> vListe = user.getListeVehicule();
         int idVehicule = 0;
@@ -369,33 +332,54 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             }
         }
 
+        Trajet trajet = new Trajet(date, heure+":"+minute);
+
         StringTokenizer st;
         Map<String, Integer> mapPrix = new TreeMap<>();
-        String nomVille;
-        String prixEtape;
-        int sumPrix = 0;
-        if(null != etapes) {
-            for (int i = 0; i < etapes.length; i++) {
-                st = new StringTokenizer(etapes[i], "()/€");
-                nomVille = st.nextToken() + "_" + st.nextToken();
-                prixEtape = st.nextToken();
-                sumPrix += Integer.parseInt(prixEtape);
-                mapPrix.put(nomVille, Integer.parseInt(prixEtape));
+        int sumpPrix = 0;
+        if(null != etapes){
+            for(String etape : etapes){
+                st = new StringTokenizer(etape, "()/€");
+                String nomVille = st.nextToken() + "_" + st.nextToken();
+                int prixEtape = Integer.parseInt(st.nextToken());
+                sumpPrix += prixEtape;
+                mapPrix.put(nomVille, prixEtape);
             }
         }
+
+        if(Integer.parseInt(prix) < sumpPrix){
+            throw new PrixInferieurException("Le prix des étapes est inférieur au prix du trajet");
+        }
+
+        if(!mapPrix.isEmpty()){
+            List<Etape> listeEtapes = new ArrayList<>();
+            mapPrix.forEach((etape, prixEtape) -> {
+                Etape etapeTemp = new Etape();
+                etapeTemp.setTrajet(trajet);
+                etapeTemp.setPrix(prixEtape);
+                Ville villeTemp = em.find(Ville.class, etape);
+                etapeTemp.setVilleEtape(villeTemp);
+                em.persist(etapeTemp);
+                listeEtapes.add(etapeTemp);
+            });
+            trajet.setListeEtape(listeEtapes);
+        }
+
         st = new StringTokenizer(villeDepart, "()");
         String idVilleDepart = st.nextToken() + "_" + st.nextToken();
         st = new StringTokenizer(villeArrivee, "()");
         String idVilleArrivee = st.nextToken() + "_" + st.nextToken();
-        if(sumPrix < Integer.parseInt(prix)) {
-            proposerTrajet(idVilleDepart, idVilleArrivee, mapPrix, date, heure, idVehicule, Integer.parseInt(prix));
-        }else{
-            throw new PrixInferieurException("Le prix des étapes est inférieur au prix du trajet");
-        }
-    }
 
-    @Override
-    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) {
-        return recherche.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
+        Ville ville1 = em.find(Ville.class, idVilleDepart);
+        Ville ville2 = em.find(Ville.class, idVilleArrivee);
+        Vehicule vehicule = em.find(Vehicule.class, idVehicule);
+
+        trajet.setVehiculeTrajet(vehicule);
+        trajet.setVilleDepart(ville1);
+        trajet.setVilleArrivee(ville2);
+        trajet.setPrix(Integer.parseInt(prix));
+        trajet.setStatut("aVenir");
+
+        em.persist(trajet);
     }
 }
