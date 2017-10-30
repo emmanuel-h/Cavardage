@@ -12,7 +12,7 @@ ${message}<br>
 
     <datalist id="listeVille">
         <c:forEach items="${listeVilles}" var="ville">
-            <option value="${ville.nomVille} - ${ville.departement}" />
+            <option value="${ville.nomVille}(${ville.departement})" />
         </c:forEach>
     </datalist>
     <datalist id="listVehicule">
