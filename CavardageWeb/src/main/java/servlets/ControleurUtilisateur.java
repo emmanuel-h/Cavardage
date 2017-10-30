@@ -1,6 +1,7 @@
 package servlets;
 
 import dtos.HistoriqueDTO;
+import dtos.TrajetDTO;
 import dtos.VehiculeDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeUtilisateur;
@@ -200,11 +201,34 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void rechercherTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
+        request.setAttribute("listeVilles",listeVilles);
         request.setAttribute("aAfficher", "rechercherTrajet");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
     private void afficherRechercheTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String villeDepart = request.getParameter("nomVilleDepart");
+        String nomVilleDepart = villeDepart.substring(0,villeDepart.length()-4);
+        String departementVilleDepart = villeDepart.substring(villeDepart.length()-3,villeDepart.length()-1);
+        String villeArrive = request.getParameter("nomVilleArrivee");
+        String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-4);
+        String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
+        String date = request.getParameter("date");
+        String prix = request.getParameter("prix");
+        List<TrajetDTO> listeTrajetRecherche = maFacade.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date, prix);
+        request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
+        List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
+        request.setAttribute("listeVilles",listeVilles);
+        request.setAttribute("villeDepart",villeDepart);
+        request.setAttribute("villeArrivee",villeArrive);
+        request.setAttribute("date",date);
+        if(!prix.equals("")) {
+            request.setAttribute("prix", prix);
+        }
+        request.setAttribute("aAfficher", "rechercherTrajet");
+        request.setAttribute("resultatsRecherche","afficher");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 }

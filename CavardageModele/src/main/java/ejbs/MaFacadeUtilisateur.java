@@ -1,6 +1,7 @@
 package ejbs;
 
 import dtos.HistoriqueDTO;
+import dtos.TrajetDTO;
 import dtos.VehiculeDTO;
 import dtos.VilleDTO;
 import entities.*;
@@ -38,5 +39,5 @@ public interface MaFacadeUtilisateur {
     List<Ville> getListeVilles();
     List<VilleDTO> getListeVilleDTO();
     void preAjoutVille(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException;
-
+    List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix);
 }
