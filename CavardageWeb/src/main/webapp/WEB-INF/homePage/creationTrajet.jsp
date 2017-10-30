@@ -24,28 +24,28 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="villeDepart">Ville de départ : </label>
-                <input type="text" list="listeVille" id="villeDepart" name="villeDepart">
+                <input type="text" list="listeVille" id="villeDepart" name="villeDepart" required>
             </div>
             <div class="form-group">
                 <label for="villeArrivee">Ville d'arrivée : </label>
-                <input type="text" list="listeVille" id="villeArrivee" name="villeArrivee">
+                <input type="text" list="listeVille" id="villeArrivee" name="villeArrivee" required>
             </div>
             <div class="form-group">
                 <label for="date">Le : </label>
-                <input type="date" id="date" name="date">
+                <input type="date" id="date" name="date" required>
             </div>
             <div class="form-group">
                 <label for="heure">À : </label>
                 <input type="text" id="heure" name="heure"> :
-                <input type="text" id="minute" name="minute">
+                <input type="text" id="minute" name="minute" required>
             </div>
             <div class="form-group">
                 <label for="vehicule">Choix du véhicule : </label>
-                <input type="text" id="vehicule" list="listVehicule" name="vehicule">
+                <input type="text" id="vehicule" list="listVehicule" name="vehicule" required>
             </div>
             <div class="form-group">
                 <label for="prixVoyage">Prix du voyage : </label>
-                <input placeholder="prix en €" type="text" id="prixVoyage" name="prixVoyage">
+                <input placeholder="prix en €" type="text" id="prixVoyage" name="prixVoyage" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerTrajet">Créer</button>
