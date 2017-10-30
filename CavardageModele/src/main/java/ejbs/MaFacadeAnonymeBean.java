@@ -63,8 +63,8 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date) {
-        return rechercheBean.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date);
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) {
+        return rechercheBean.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
     }
 
     @Override

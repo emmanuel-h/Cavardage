@@ -22,21 +22,36 @@ public class RechercheBean {
     }
 
     public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrivee,
-                                           String departementArrivee, String date) {
-        Query query = em.createQuery("SELECT DISTINCT t From Trajet t, Ville vd, Ville va, Etape e WHERE " +
-                "t.villeDepart=vd and vd.nomVille=:villeDepart" +
-                " and ((t.villeArrivee=va and va.nomVille=:villeArrivee) or" +
-                " (e.villeEtape.nomVille=:villeArrivee and e.trajet=t)) " +
-                "and t.date=:date");
-        query.setParameter("villeDepart", villeDepart+"_"+departementDepart);
-        query.setParameter("villeArrivee", villeArrivee+"_"+departementArrivee);
-        query.setParameter("date",date);
-        List<Trajet> lt = query.getResultList();
-        List<TrajetDTO> ltd = new ArrayList<>();
-        for(Trajet t :lt){
-            ltd.add(new TrajetDTO(t));
-        }
-        return ltd;
+                                           String departementArrivee, String date, String prix) {
+            String mq="SELECT DISTINCT t From Trajet t, Ville vd, Ville va, Etape e WHERE " +
+                    "t.villeDepart=vd and vd.nomVille=:villeDepart" +
+                    " and ((t.villeArrivee=va and va.nomVille=:villeArrivee) or" +
+                    " (e.villeEtape.nomVille=:villeArrivee and e.trajet=t)) " +
+                    "and t.date=:date and t.statut='aVenir'";
+            Query query=null;
+            if(null != prix && !prix.equals("")){
+                if(Integer.parseInt(prix)>0 ) {
+                    query=em.createQuery("SELECT DISTINCT t From Trajet t, Ville vd, Ville va, Etape e WHERE " +
+                            "t.villeDepart=vd and vd.nomVille=:villeDepart" +
+                            " and ((t.villeArrivee=va and va.nomVille=:villeArrivee and t.prix<= :prix) or" +
+                            " (e.villeEtape.nomVille=:villeArrivee and e.trajet=t and e.prix<= :prix)) " +
+                            "and t.date=:date and t.statut='aVenir'");
+                    query.setParameter("prix",Integer.parseInt(prix));
+                }else{
+                    query=em.createQuery(mq);
+                }
+            }else{
+                query=em.createQuery(mq);
+            }
+            query.setParameter("villeDepart", villeDepart+"_"+departementDepart);
+            query.setParameter("villeArrivee", villeArrivee+"_"+departementArrivee);
+            query.setParameter("date",date);
+            List<Trajet> lt = query.getResultList();
+            List<TrajetDTO> ltd = new ArrayList<>();
+            for(Trajet t :lt){
+                ltd.add(new TrajetDTO(t));
+            }
+            return ltd;
     }
 
     public List<VilleDTO> getListeVillesDTO(){
