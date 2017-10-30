@@ -41,6 +41,9 @@
                 <div class="form-group">
                     <button class="btn btn-default" type="submit" name="afaire" value="parametres">Paramètres</button>
                 </div>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" name="afaire" value="rechercherTrajet">Rechercher un trajet</button>
+                </div>
             </form>
         </div>
 
@@ -65,6 +68,9 @@
             </c:if>
             <c:if test="${aAfficher == 'suppressionCompte'}">
                 <jsp:include page="confirmationSuppressionCompte.jsp"></jsp:include>
+            </c:if>
+            <c:if test="${aAfficher == 'rechercherTrajet'}">
+                <jsp:include page="rechercheTrajet.jsp"></jsp:include>
             </c:if>
         </div>
     </div>

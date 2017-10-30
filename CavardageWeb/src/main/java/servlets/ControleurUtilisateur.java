@@ -6,6 +6,7 @@ import dtos.VilleDTO;
 import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
 import entities.Ville;
+import exceptions.PrixInferieurException;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -70,6 +71,12 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "supprimerCompte":
                     supprimerCompte(request,response);
                     break;
+                case "rechercherTrajet":
+                    rechercherTrajet(request,response);
+                    break;
+                case "afficherRechercheTrajet":
+                    afficherRechercheTrajet(request,response);
+                    break;
                 default :
                     //display homepage
             }
@@ -85,11 +92,15 @@ public class ControleurUtilisateur extends HttpServlet {
         String nomVehicule = request.getParameter("vehicule");
         String prixVoyage = request.getParameter("prixVoyage");
         String[] etapes = request.getParameterValues("etape");
-        maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
-        String message = "Trajet créé";
+        String message;
+        try {
+            maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
+            message = "Trajet créé";
+        }catch(PrixInferieurException e){
+            message = "Erreur : " + e.getMessage();
+        }
         request.setAttribute("message",message);
-        request.setAttribute("aAfficher", "creerTrajet");
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        voirCreerTrajet(request, response);
     }
 
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response){
@@ -186,5 +197,14 @@ public class ControleurUtilisateur extends HttpServlet {
                 }
             }
         }
+    }
+
+    private void rechercherTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("aAfficher", "rechercherTrajet");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+    }
+
+    private void afficherRechercheTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 }
