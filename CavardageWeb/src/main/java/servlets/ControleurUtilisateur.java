@@ -71,6 +71,12 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "supprimerCompte":
                     supprimerCompte(request,response);
                     break;
+                case "rechercherTrajet":
+                    rechercherTrajet(request,response);
+                    break;
+                case "afficherRechercheTrajet":
+                    afficherRechercheTrajet(request,response);
+                    break;
                 default :
                     //display homepage
             }
@@ -191,5 +197,14 @@ public class ControleurUtilisateur extends HttpServlet {
                 }
             }
         }
+    }
+
+    private void rechercherTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("aAfficher", "rechercherTrajet");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+    }
+
+    private void afficherRechercheTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 }
