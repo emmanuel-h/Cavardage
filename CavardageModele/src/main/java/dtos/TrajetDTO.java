@@ -183,4 +183,23 @@ public class TrajetDTO implements Comparable{
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "TrajetDTO{" +
+                "id=" + id +
+                ", loginConducteur='" + loginConducteur + '\'' +
+                ", villeDepart='" + villeDepart + '\'' +
+                ", departementDepart='" + departementDepart + '\'' +
+                ", villeArrivee='" + villeArrivee + '\'' +
+                ", departementArrivee='" + departementArrivee + '\'' +
+                ", date='" + date + '\'' +
+                ", heure='" + heure + '\'' +
+                ", vehicule='" + vehicule + '\'' +
+                ", nomVehicule='" + nomVehicule + '\'' +
+                ", prix=" + prix +
+                ", nbPlaces=" + nbPlaces +
+                ", etapes=" + etapes +
+                '}';
+    }
 }

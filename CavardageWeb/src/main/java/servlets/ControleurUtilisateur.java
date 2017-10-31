@@ -244,6 +244,9 @@ public class ControleurUtilisateur extends HttpServlet {
         if (!prix.equals("")) {
             request.setAttribute("prix", prix);
         }
+        for(TrajetDTO t : listeTrajetRecherche){
+            System.out.println(t.toString());
+        }
         request.setAttribute("aAfficher", "rechercherTrajet");
         request.setAttribute("resultatsRecherche", "afficher");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);

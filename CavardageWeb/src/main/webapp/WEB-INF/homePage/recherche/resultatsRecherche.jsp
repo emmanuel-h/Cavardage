@@ -13,6 +13,7 @@
 <ul class="list-group">
     <c:forEach items="${listeTrajetRecherche}" var="trajet">
         <li class="list-group-item">
+            <form action="ControleurUtilisateur" method="post">
             <table class="table">
                 <tr>
                     <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
@@ -37,6 +38,7 @@
                     </c:if>
                 </tr>
             </table>
+            </form>
         </li>
     </c:forEach>
 </ul>
