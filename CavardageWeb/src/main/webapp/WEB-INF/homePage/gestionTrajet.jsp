@@ -10,6 +10,7 @@
 
 <div>
     <form action="ControleurUtilisateur" method="post" name="myForm">
+        <input type="hidden" name="idTrajet" value="${trajet.id}" />
         <label>Ville de départ:</label> <label>${trajet.villeDepart}(${trajet.departementDepart})</label><br>
         <label>Ville d'arrivée:</label> <label>${trajet.villeArrivee}(${trajet.departementArrivee})</label><br>
         <label>Date:</label> <label>${trajet.date} ${trajet.heure}</label><br>
@@ -54,7 +55,7 @@
     </li>
 </div>
 <div>
-    <form method="post" action="ControleurUtilisateur">
+
         <label>Liste des réservations en attente:</label>
         <li class="list-group-item">
             <table class="table table-bordered">
@@ -64,16 +65,21 @@
                     <th>Ville d'arrivée</th>
                 </tr>
                 <c:forEach items="${reservationsAttente}" var="reservation">
-                    <tr>
-                        <td>${reservation.nomUtilisateur}</td>
-                        <td>${reservation.nbPlaces}</td>
-                        <td>${reservation.nomVilleArrivee}(${reservation.departementArrivee})</td>
-                        <td><button type="submit" name="afaire" value="accepterReservation">V</button>
-                            <button type="submit" name="afaire" value="refuserReservation">X</button></td>
-                    </tr>
+                    <form method="post" action="ControleurUtilisateur">
+                        <tr>
+                            <td>${reservation.nomUtilisateur}</td>
+                            <td>${reservation.nbPlaces}</td>
+                            <td>${reservation.nomVilleArrivee}(${reservation.departementArrivee})</td>
+                            <td>
+                                <input type="hidden" name="idReservation" value="${reservation.idReservation}" />
+                                <input type="hidden" name="idTrajet" value="${trajet.id}" />
+                                <button type="submit" name="afaire" value="accepterReservation">V</button>
+                                <button type="submit" name="afaire" value="refuserReservation">X</button>
+                            </td>
+                        </tr>
+                    </form>
                 </c:forEach>
             </table>
         </li>
-    </form>
 </div>
 

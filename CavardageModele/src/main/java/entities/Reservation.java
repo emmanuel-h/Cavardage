@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Reservation {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int IdReservation;
+    private int idReservation;
     // accepte, refuse, enAttente
     private String statut;
     private int nbPlace;
@@ -28,11 +28,11 @@ public class Reservation {
     }
 
     public int getIdReservation() {
-        return IdReservation;
+        return idReservation;
     }
 
     public void setIdReservation(int idReservation) {
-        IdReservation = idReservation;
+        this.idReservation = idReservation;
     }
 
     public String getStatut() {
