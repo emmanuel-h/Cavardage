@@ -1,9 +1,6 @@
 package ejbs;
 
-import dtos.HistoriqueDTO;
-import dtos.TrajetDTO;
-import dtos.VehiculeDTO;
-import dtos.VilleDTO;
+import dtos.*;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
@@ -17,7 +14,7 @@ import java.util.Map;
 @Local
 public interface MaFacadeUtilisateur {
 
-    Reservation reserverPlace(String login, int idTrajet, int nbPlaces, int idVilleArrivee) throws VilleNonTrouvee;
+    Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee;
     Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note);
     List<Appreciation> avoirNotesTrajet(int idTrajet);
     List<Appreciation> avoirNotesTotal(String login);
@@ -26,7 +23,8 @@ public interface MaFacadeUtilisateur {
     boolean supprimerVehicule(int idVehicule);
     List<VehiculeDTO> listeVehicules(String login);
     boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException;
-    List<Reservation> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException;
+    List<ReservationDTO> avoirReservationsAcceptees(String login, int idTrajet) throws PasConducteurException;
+    List<ReservationDTO> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException;
     boolean refuserReservation(String login, int idReservation) throws PasConducteurException;
     boolean accepterReservation(String login, int idReservation) throws PasConducteurException;
     boolean supprimerNotification(String login, int idNotification);
@@ -40,4 +38,6 @@ public interface MaFacadeUtilisateur {
     List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix);
     void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException;
     TrajetDTO avoirTrajet(int idTrajet);
+    Notification creerNotification(String login,String message);
+    int avoirNbPlacesRestantes(int idTrajet);
 }

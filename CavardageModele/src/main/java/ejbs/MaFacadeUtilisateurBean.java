@@ -1,14 +1,12 @@
 package ejbs;
 
-import dtos.HistoriqueDTO;
-import dtos.TrajetDTO;
-import dtos.VehiculeDTO;
-import dtos.VilleDTO;
+import dtos.*;
 import entities.*;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
 import exceptions.PrixInferieurException;
 import exceptions.VilleNonTrouvee;
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -29,7 +27,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public Reservation reserverPlace(String login, int idTrajet, int nbPlaces, int idVilleArrivee) throws VilleNonTrouvee {
+    public Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
         List<Etape> etapes = trajet.getListeEtape();
@@ -43,7 +41,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         if(!trajet.getVilleArrivee().getNomVille().equals(idVilleArrivee)) {
             Etape arrivee = null;
             for (Etape etape : etapes) {
-                if (etape.getIdEtape() == idVilleArrivee) {
+                System.out.println(etape.getVilleEtape().getNomVille()+" "+idVilleArrivee);
+                if (etape.getVilleEtape().getNomVille().equals(idVilleArrivee)) {
                     arrivee = etape;
                 }
             }
@@ -179,19 +178,29 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public List<Reservation> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException {
+    public List<ReservationDTO> avoirReservationsAcceptees(String login, int idTrajet) throws PasConducteurException {
+        return avoirReservation(login,idTrajet,"accepte");
+    }
+
+    @Override
+    public List<ReservationDTO> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException {
+        return avoirReservation(login,idTrajet,"enAttente");
+    }
+
+    private List<ReservationDTO> avoirReservation(String login, int idTrajet, String message) throws PasConducteurException{
+        System.out.println(idTrajet);
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
-
         verifierUtilisateurEstConducteur(utilisateur,trajet);
 
-        List<Reservation> reservationListe = new ArrayList<>();
+        List<ReservationDTO> reservationListe = new ArrayList<>();
         for(Reservation reservation : trajet.getListeReservation()){
-            if(reservation.getStatut().equals("enAttente")){
-                reservationListe.add(reservation);
+            if(reservation.getStatut().equals(message)){
+                reservationListe.add(new ReservationDTO(reservation));
             }
         }
         return reservationListe;
+
     }
 
     @Override
@@ -299,8 +308,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     private boolean verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
-        Vehicule vehicule = trajet.getVehiculeTrajet();
-        if(!utilisateur.possedeVehicule(vehicule)) {
+        if(!trajet.getVehiculeTrajet().getUtilisateur().getLogin().equals(utilisateur.getLogin())) {
             throw new PasConducteurException();
         } else {
             return true;
@@ -388,4 +396,29 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Trajet trajet = em.find(Trajet.class,idTrajet);
         return new TrajetDTO(trajet);
     }
+
+    @Override
+    public Notification creerNotification(String login, String message) {
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        Notification notification = new Notification();
+        notification.setMessage(message);
+        em.persist(notification);
+        utilisateur.ajouterNotification(notification);
+        em.persist(utilisateur);
+        return notification;
+    }
+
+    @Override
+    public int avoirNbPlacesRestantes(int idTrajet) {
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+        int nbPlacesRestantes = trajet.getVehiculeTrajet().getNombrePlaces();
+        for ( Reservation reservation : trajet.getListeReservation()){
+            if(reservation.getStatut().equals("accepte")){
+                nbPlacesRestantes -= reservation.getNbPlace();
+            }
+        }
+        return  nbPlacesRestantes;
+    }
+
+
 }

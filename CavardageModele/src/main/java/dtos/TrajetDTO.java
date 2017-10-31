@@ -21,6 +21,7 @@ public class TrajetDTO implements Comparable{
     private String date;
     private String heure;
     private String vehicule;
+    private String nomVehicule;
     private int prix;
     private int nbPlaces;
     private List<EtapeDTO> etapes;
@@ -41,7 +42,7 @@ public class TrajetDTO implements Comparable{
         this.loginConducteur = t.getVehiculeTrajet().getUtilisateur().getLogin();
         this.id = t.getIdTrajet();
         this.prix = t.getPrix();
-
+        this.nomVehicule = t.getVehiculeTrajet().getNom();
         int nbPlacesTemp = t.getVehiculeTrajet().getNombrePlaces();
         for (Reservation reservation : t.getListeReservation()){
             if(reservation.getStatut().equals("accepte")){
@@ -54,6 +55,8 @@ public class TrajetDTO implements Comparable{
             this.etapes.add(new EtapeDTO(e));
         }
     }
+
+
 
     public String getLoginConducteur() {
         return loginConducteur;
@@ -149,6 +152,14 @@ public class TrajetDTO implements Comparable{
 
     public void setEtapes(List<EtapeDTO> etapes) {
         this.etapes = etapes;
+    }
+
+    public String getNomVehicule() {
+        return nomVehicule;
+    }
+
+    public void setNomVehicule(String nomVehicule) {
+        this.nomVehicule = nomVehicule;
     }
 
     @Override

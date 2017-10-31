@@ -17,7 +17,7 @@
             <option value="gabarit.idGabarit"> ${gabarit.type} </option>
         </c:forEach>
     </select><br>
-    Places :<br>
+    <label>Nombre de places disponibles (Hors conducteur) :</label><br>
     <input type="text" name="nbPlaces"><br>
     <button type="submit" name="afaire" value="enregistrerVehicule">Ajouter</button>
 </form>

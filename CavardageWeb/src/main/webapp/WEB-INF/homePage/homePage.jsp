@@ -81,6 +81,9 @@
             <c:if test="${aAfficher == 'detailsTrajet'}">
                 <jsp:include page="detailsTrajet.jsp"></jsp:include>
             </c:if>
+            <c:if test="${aAfficher == 'gestionTrajet'}">
+                <jsp:include page="gestionTrajet.jsp"></jsp:include>
+            </c:if>
         </div>
     </div>
 

@@ -66,7 +66,7 @@ INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utili
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (1,'21/12/2017','12:00','aVenir',50,1,'Lille_59','Orleans_45');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (1,10,1,'Paris_75');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (2,30,1,'Amiens_80');
-INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (1,1,'accepte',null,1,'alice');
+INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (1,1,'accepte',null,1,'bob');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (2,2,'enAttente',2,1,'charlie');
 
 

@@ -17,22 +17,24 @@
     <label>Véhicule:</label> <label>${trajet.vehicule}</label><br>
     <label>Nombre de places disponibles:</label> <label>${trajet.nbPlaces}</label><br>
         <label id="label_etape" hidden>Etape choisie:</label><input type="hidden" name="afficherEtape" readonly  /><input type="hidden" value="Supprimer" name="supprimerEtape" onclick="supprimerChampsEtape()"/> <br>
-    <label>Nombre de places réservées:</label> <input type="text" name="nbPlacesReservees"/>
+    <label>Nombre de places réservées:</label> <input type="text" name="nbPlacesReservees" required/>
         <input type="hidden" name="etapeArrivee" />
+        <input type="hidden" name="villeArrivee" value="${trajet.villeArrivee}_${trajet.departementArrivee}"/>
+        <input type="hidden" name="idTrajet" value="${trajet.id}" />
      <button type="submit" value="reserverTrajet" name="afaire">Réserver le trajet</button>
     </form>
     <label>Etapes:</label>
     <li class="list-group-item">
         <table class="table table-bordered">
             <tr>
-                <td>Nom de la ville étape</td>
-                <td>Prix</td>
+                <th>Nom de la ville étape</th>
+                <th>Prix</th>
             </tr>
             <c:forEach items="${trajet.etapes}" var="etape">
                 <tr>
                     <td>${etape.nomVilleArrivee}(${etape.departementArrivee})</td>
                     <td>${etape.prix}€</td>
-                    <td><input type="button" value="Descendre à cette étape" name="descenteEtape" onclick="saveAttribute('${etape.idEtape}','${etape.nomVilleArrivee}')"/></td>
+                    <td><input type="button" value="Descendre à cette étape" name="descenteEtape" onclick="saveAttribute('${etape.nomVilleArrivee}_${etape.departementArrivee}','${etape.nomVilleArrivee}')"/></td>
                 </tr>
             </c:forEach>
         </table>
