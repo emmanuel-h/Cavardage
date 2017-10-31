@@ -11,10 +11,17 @@
     <label>Résultat de la recherche: ${villeDepart} à destination de ${villeArrivee}, le ${date} <c:if test="${!empty prix}">pour un prix inférieur à ${prix}€</c:if>  </label>
 </c:if>
 <ul class="list-group">
-    <c:forEach items="${listeTrajetRecherche}" var="trajet">
+
         <li class="list-group-item">
             <form action="ControleurUtilisateur" method="post">
-            <table class="table">
+            <table class="table table-bordered">
+                <tr>
+                    <th class="col-lg-3">Ville de départ</th>
+                    <th class="col-lg-3">Ville d'arrivée</th>
+                    <th class="col-lg-3">Date</th>
+                    <th class="col-lg-3">Heure</th>
+                </tr>
+                <c:forEach items="${listeTrajetRecherche}" var="trajet">
                 <tr>
                     <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
                     <td>${trajet.villeArrivee}(${trajet.departementArrivee})</td>
@@ -37,8 +44,8 @@
                         </c:if>
                     </c:if>
                 </tr>
+                </c:forEach>
             </table>
             </form>
         </li>
-    </c:forEach>
 </ul>
