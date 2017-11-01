@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -131,4 +133,5 @@ public class Trajet {
             return false;
         }
     }
+
 }
