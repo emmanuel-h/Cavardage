@@ -1,14 +1,16 @@
 package ejbs;
 
+import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
-import entities.Gabarit;
-import entities.Ville;
+import entities.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Stateless(name = "AdministrateurBean")
 public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
@@ -95,7 +97,45 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }
     }
 
-    public void recupererStatistiques(){
+    public StatistiquesDTO recupererStatistiques(){
+        Query q = em.createQuery("From Utilisateur u");
+        List<Utilisateur> listeUtilisateur = q.getResultList();
+        int nbUtilisateur = listeUtilisateur.size();
+
+        q = em.createQuery("FROM Reservation res where res.statut=:statutReservation");
+        q.setParameter("statutReservation", "accepte");
+        int nbTrajetsAcceptes = q.getResultList().size();
+
+        q = em.createQuery("SELECT res.trajetReservation.prix FROM Reservation res where res.statut=:statutReservation and res.trajetReservation.statut=:statutTrajet");
+        q.setParameter("statutReservation", "accepte");
+        q.setParameter("statutTrajet", "fini");
+        List<Integer> listePrix = q.getResultList();
+        int prixTotal = 0;
+        for(int n : listePrix){
+            prixTotal += n;
+        }
+
+        q = em.createQuery("FROM Trajet t");
+        List<Trajet> listeTrajets = q.getResultList();
+        int nbTrajetsFinis = 0;
+        Map<String, Integer> mapDeparts = new TreeMap<>();
+        Map<String, Integer> mapArrivees = new TreeMap<>();
+        for(Trajet t : listeTrajets){
+            if(t.getStatut().equals("fini")) {
+                nbTrajetsFinis++;
+            }
+            //TODO trouver la ville avec le plus de départs et celle avec le plus d'arrivées
+        }
+
+        /*
+        q = em.createQuery("From Trajet t where t.statut=:statutTrajet");
+        q.setParameter("statutTrajet", "fini");
+        int nbTrajetsFinis = q.getResultList().size();
+        */
+
+        StatistiquesDTO stat = new StatistiquesDTO(nbUtilisateur, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
+
+        return stat;
 
     }
 }

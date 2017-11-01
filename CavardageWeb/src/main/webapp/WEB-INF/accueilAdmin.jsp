@@ -41,11 +41,11 @@
             <c:if test="${aAfficher == 'gestionVille'}">
                 <jsp:include page="gestionVille.jsp"></jsp:include>
             </c:if>
-            <c:if test="${aAfficher == 'gestionVille'}">
+            <c:if test="${aAfficher == 'gestionGabarit'}">
                 <jsp:include page="gestionGabarit.jsp"></jsp:include>
             </c:if>
             <c:if test="${aAfficher == 'statistiques'}">
-
+                <jsp:include page="statistiques.jsp"></jsp:include>
             </c:if>
         </div>
     </div>
