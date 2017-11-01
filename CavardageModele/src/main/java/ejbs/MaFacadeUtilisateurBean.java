@@ -284,6 +284,20 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
+    public HistoriqueDTO uniqueHistoriqueUtilisateur(String login, int id){
+        System.out.println("trajet modele : " + id);
+        List<HistoriqueDTO> liste = historiqueUtilisateur(login);
+        System.out.println("size : " + liste.size());
+        for(HistoriqueDTO h : liste){
+            if(h.getIdTrajet() == id){
+                System.out.println("id : " + h.getIdTrajet());
+                return h;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<Gabarit> listeGabarits(){
         Query q = em.createQuery("FROM Gabarit g");
         List<Gabarit> gabaritListe = q.getResultList();

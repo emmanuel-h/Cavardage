@@ -54,6 +54,9 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "voirHistorique":
                     voirHistorique(request, response);
                     break;
+                case "detailHistorique":
+                    detailsHistorique(request, response);
+                    break;
                 case "enregistrerVehicule":
                     enregistrerVehicule(request, response);
                     break;
@@ -111,6 +114,7 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+
     private void enregistrerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
         String villeDepart = request.getParameter("villeDepart");
@@ -162,6 +166,19 @@ public class ControleurUtilisateur extends HttpServlet {
         List<HistoriqueDTO> listeHistorique = maFacade.historiqueUtilisateur(login);
         request.setAttribute("listeHistorique", listeHistorique);
         request.setAttribute("aAfficher", "historique");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+    }
+
+    private void detailsHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("detail historique");
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
+        System.out.println("idTrajet : " + idTrajet);
+        HistoriqueDTO historique = maFacade.uniqueHistoriqueUtilisateur(login, idTrajet);
+        TrajetDTO trajet = maFacade.avoirTrajet(idTrajet);
+        request.setAttribute("histo", historique);
+        request.setAttribute("trajet", trajet);
+        request.setAttribute("aAfficher", "detailsHistorique");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
