@@ -6,6 +6,7 @@ import entities.Gabarit;
 import entities.Ville;
 import exceptions.PasConducteurException;
 import exceptions.PrixInferieurException;
+import exceptions.VehiculeDejaExistantException;
 import exceptions.VilleNonTrouvee;
 
 import javax.ejb.EJB;
@@ -54,6 +55,10 @@ public class ControleurUtilisateur extends HttpServlet {
                     break;
                 case "enregistrerVehicule":
                     enregistrerVehicule(request, response);
+                    break;
+                case "supprimerVehicule":
+                    supprimerVehicule(request, response);
+                    break;
                 case "voirAppreciations":
                     voirAppreciations(request, response);
                     break;
@@ -171,6 +176,7 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    //TODO supprimer cette méthode je crois qu'elle ne sert à rien
     private void ajouterVehicule(HttpServletRequest request, HttpServletResponse response) {
         String nomvehicule = request.getParameter("nomVehicule");
         String modeleVehicule = request.getParameter("modeleVehicule");
@@ -179,7 +185,25 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void enregistrerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        String nomVehicule = request.getParameter("nomVehicule");
+        String modeleVehicule = request.getParameter("modeleVehicule");
+        String gabaritVehicule = request.getParameter("gabaritVehicule");
+        int nbPlaces = Integer.parseInt(request.getParameter("nbPlaces"));
+        try{
+            maFacade.ajouterVehicule(login, nomVehicule, modeleVehicule, gabaritVehicule, nbPlaces);
+        }catch(VehiculeDejaExistantException e){
+            request.setAttribute("message", e.getMessage());
+        }
+        voirVehicules(request, response);
 
+    }
+
+    private void supprimerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        int idVehicule = Integer.parseInt(request.getParameter("idVehicule"));
+        maFacade.supprimerVehicule(login, idVehicule);
+        voirVehicules(request, response);
     }
 
     private void changerMotDepasse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

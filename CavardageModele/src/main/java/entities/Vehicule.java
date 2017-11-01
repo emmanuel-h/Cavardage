@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 public class Vehicule {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idVehicule;
     private String modele;
     private int nombrePlaces;

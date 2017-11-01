@@ -127,6 +127,10 @@ public class Utilisateur {
         }
     }
 
+    public boolean supprimerVehicule(Vehicule vehicule){
+        return listeVehicule.remove(vehicule);
+    }
+
     public boolean possedeVehicule(Vehicule vehicule){
         for(Vehicule vehiculeTest : listeVehicule){
             if(vehicule.equals(vehiculeTest)){

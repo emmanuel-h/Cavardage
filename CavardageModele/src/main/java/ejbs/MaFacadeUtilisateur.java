@@ -2,10 +2,7 @@ package ejbs;
 
 import dtos.*;
 import entities.*;
-import exceptions.DivisionParZeroException;
-import exceptions.PasConducteurException;
-import exceptions.PrixInferieurException;
-import exceptions.VilleNonTrouvee;
+import exceptions.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -19,8 +16,8 @@ public interface MaFacadeUtilisateur {
     List<Appreciation> avoirNotesTrajet(int idTrajet);
     List<Appreciation> avoirNotesTotal(String login);
     float moyenneNotes(String login) throws DivisionParZeroException;
-    Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces);
-    boolean supprimerVehicule(int idVehicule);
+    Vehicule ajouterVehicule(String login, String nomVehicule, String modele, String gabarit, int nbPlaces) throws VehiculeDejaExistantException;
+    boolean supprimerVehicule(String login, int idVehicule);
     List<VehiculeDTO> listeVehicules(String login);
     boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException;
     List<ReservationDTO> avoirReservationsAcceptees(String login, int idTrajet) throws PasConducteurException;

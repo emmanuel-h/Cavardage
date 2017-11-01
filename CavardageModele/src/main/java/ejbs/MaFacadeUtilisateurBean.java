@@ -2,10 +2,7 @@ package ejbs;
 
 import dtos.*;
 import entities.*;
-import exceptions.DivisionParZeroException;
-import exceptions.PasConducteurException;
-import exceptions.PrixInferieurException;
-import exceptions.VilleNonTrouvee;
+import exceptions.*;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -116,14 +113,22 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces) {
-        Utilisateur utilisateur = em.find(Utilisateur.class,login);
-        Gabarit gabarit = em.find(Gabarit.class,idGabarit);
+    public Vehicule ajouterVehicule(String login, String nomVehicule, String modele, String gabarit, int nbPlaces) throws VehiculeDejaExistantException {
+        Utilisateur utilisateur = em.find(Utilisateur.class, login);
+        for(Vehicule v : utilisateur.getListeVehicule()){
+            if(v.getNom().equals(nomVehicule)){
+                throw new VehiculeDejaExistantException("Vous avez déjà un véhicule portant ce nom");
+            }
+        }
+        Query q = em.createQuery("From Gabarit g where g.type=:gabarit");
+        q.setParameter("gabarit", gabarit);
+        Gabarit g = (Gabarit) q.getSingleResult();
         Vehicule vehicule = new Vehicule();
-        vehicule.setGabarit(gabarit);
+        vehicule.setGabarit(g);
         vehicule.setModele(modele);
         vehicule.setNom(nomVehicule);
         vehicule.setNombrePlaces(nbPlaces);
+        vehicule.setUtilisateur(utilisateur);
         utilisateur.ajouterVehicule(vehicule);
         em.persist(vehicule);
         em.persist(utilisateur);
@@ -131,9 +136,12 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public boolean supprimerVehicule(int idVehicule){
+    public boolean supprimerVehicule(String login, int idVehicule){
+        Utilisateur utilisateur = em.find(Utilisateur.class, login);
         Vehicule v = em.find(Vehicule.class, idVehicule);
+        utilisateur.supprimerVehicule(v);
         em.remove(v);
+        em.persist(utilisateur);
         return true;
     }
 
