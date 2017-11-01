@@ -54,11 +54,11 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "voirHistorique":
                     voirHistorique(request, response);
                     break;
+                case "detailHistorique":
+                    detailsHistorique(request, response);
+                    break;
                 case "enregistrerVehicule":
                     enregistrerVehicule(request, response);
-                    break;
-                case "supprimerVehicule":
-                    supprimerVehicule(request, response);
                     break;
                 case "voirAppreciations":
                     voirAppreciations(request, response);
@@ -117,6 +117,7 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+
     private void enregistrerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
         String villeDepart = request.getParameter("villeDepart");
@@ -171,6 +172,19 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    private void detailsHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("detail historique");
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
+        System.out.println("idTrajet : " + idTrajet);
+        HistoriqueDTO historique = maFacade.uniqueHistoriqueUtilisateur(login, idTrajet);
+        TrajetDTO trajet = maFacade.avoirTrajet(idTrajet);
+        request.setAttribute("histo", historique);
+        request.setAttribute("trajet", trajet);
+        request.setAttribute("aAfficher", "detailsHistorique");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+    }
+
     private void voirAppreciations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
         String noteMoyenne = "";
@@ -216,13 +230,6 @@ public class ControleurUtilisateur extends HttpServlet {
         }
         voirVehicules(request, response);
 
-    }
-
-    private void supprimerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getSession().getAttribute("utilisateur");
-        int idVehicule = Integer.parseInt(request.getParameter("idVehicule"));
-        maFacade.supprimerVehicule(login, idVehicule);
-        voirVehicules(request, response);
     }
 
     private void changerMotDepasse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

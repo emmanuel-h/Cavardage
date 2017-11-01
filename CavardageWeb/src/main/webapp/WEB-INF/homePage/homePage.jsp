@@ -65,6 +65,9 @@
             <c:if test="${aAfficher == 'historique'}">
                 <jsp:include page="historique.jsp"></jsp:include>
             </c:if>
+            <c:if test="${aAfficher == 'detailsHistorique'}">
+                <jsp:include page="detailsHistorique.jsp"></jsp:include>
+            </c:if>
             <c:if test="${aAfficher == 'appreciations'}">
                 <jsp:include page="appreciation/appreciations.jsp"></jsp:include>
             </c:if>

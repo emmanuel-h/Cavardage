@@ -26,6 +26,7 @@ public interface MaFacadeUtilisateur {
     boolean accepterReservation(String login, int idReservation) throws PasConducteurException;
     boolean supprimerNotification(String login, int idNotification);
     List<HistoriqueDTO> historiqueUtilisateur(String login);
+    HistoriqueDTO uniqueHistoriqueUtilisateur(String login, int id);
     List<Gabarit> listeGabarits();
     boolean changerMotDePasse(String login, String motDePasse);
     boolean verifierMotDePasse(String login, String motDePasse);

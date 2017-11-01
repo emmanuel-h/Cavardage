@@ -27,6 +27,9 @@
                 <div class="form-group">
                     <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
                 </div>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" name="boutonAdmin" value="statistiques">Statistiques</button>
+                </div>
                 <hr>
                 <div class="form-group">
                     <button class="btn btn-default" type="submit" name="boutonAdmin" value="deconnexion">Déconnexion</button>
@@ -35,11 +38,14 @@
         </div>
 
         <div class="col-lg-9">
-            <c:if test="${gestionVille}">
+            <c:if test="${aAfficher == 'gestionVille'}">
                 <jsp:include page="gestionVille.jsp"></jsp:include>
             </c:if>
-            <c:if test="${gestionGabarit}">
+            <c:if test="${aAfficher == 'gestionVille'}">
                 <jsp:include page="gestionGabarit.jsp"></jsp:include>
+            </c:if>
+            <c:if test="${aAfficher == 'statistiques'}">
+
             </c:if>
         </div>
     </div>

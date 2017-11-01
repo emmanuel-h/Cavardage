@@ -37,35 +37,38 @@
 
 <hr>
 
-<ul class="list-group">
-    <li class="list-group-item">
-    <table class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th class="col-lg-3">Nom</th>
-            <th class="col-lg-3">Modèle</th>
-            <th class="col-lg-3">Gabarit</th>
-            <th class="col-lg-3">Nombre de places</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${listeVehicules}" var="vehicule">
-                <tr>
-                    <td class="col-lg-3">${vehicule.nomVehicule}</td>
-                    <td class="col-lg-3">${vehicule.modele}</td>
-                    <td class="col-lg-3">${vehicule.nomGabarit}</td>
-                    <td class="col-lg-2">${vehicule.nbPlaces}</td>
-                    <td>
-                        <form method="post" action="ControleurUtilisateur">
-                            <input type="hidden" name="idVehicule" value="${vehicule.id}">
-                            <button class="btn btn-danger" type="submit" name="afaire" value="supprimerVehicule">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    </li>
-</form>
-</ul>
+<h3>Vos véhicules : </h3>
+<c:choose>
+    <c:when test="${!empty listeVehicules}">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="col-lg-3">Nom</th>
+                        <th class="col-lg-3">Modèle</th>
+                        <th class="col-lg-3">Gabarit</th>
+                        <th class="col-lg-3">Nombre de places</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${listeVehicules}" var="vehicule">
+                        <tr>
+                            <td class="col-lg-3">${vehicule.nomVehicule}</td>
+                            <td class="col-lg-3">${vehicule.modele}</td>
+                            <td class="col-lg-3">${vehicule.nomGabarit}</td>
+                            <td class="col-lg-3">${vehicule.nbPlaces}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </li>
+            </form>
+        </ul>
+    </c:when>
+    <c:otherwise>
+        <h4>Vous n'avez pas encore de véhicule enregistré</h4>
+    </c:otherwise>
+</c:choose>
+
 
