@@ -57,9 +57,6 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "enregistrerVehicule":
                     enregistrerVehicule(request, response);
                     break;
-                case "supprimerVehicule":
-                    supprimerVehicule(request, response);
-                    break;
                 case "voirAppreciations":
                     voirAppreciations(request, response);
                     break;
@@ -213,13 +210,6 @@ public class ControleurUtilisateur extends HttpServlet {
         }
         voirVehicules(request, response);
 
-    }
-
-    private void supprimerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getSession().getAttribute("utilisateur");
-        int idVehicule = Integer.parseInt(request.getParameter("idVehicule"));
-        maFacade.supprimerVehicule(login, idVehicule);
-        voirVehicules(request, response);
     }
 
     private void changerMotDepasse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
