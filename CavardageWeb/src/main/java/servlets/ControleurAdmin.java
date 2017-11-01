@@ -30,8 +30,6 @@ public class ControleurAdmin extends HttpServlet {
 
         if(null == test){
             request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
-            request.setAttribute("gestionVille", false);
-            request.setAttribute("gestionGabarit", false);
         }else{
             switch (test){
                 case "gererVille":
@@ -47,7 +45,6 @@ public class ControleurAdmin extends HttpServlet {
                 case "ajouterVille":
                     String nomVilleAjouter = request.getParameter("nomVilleAAjouter");
                     String departementVilleAjouter = request.getParameter("departementVilleAAjouter");
-                    System.out.println("Ville : " + nomVilleAjouter);
                     ajouterVille(nomVilleAjouter,departementVilleAjouter);
                     setGestionVille(request);
                     setListeVilles(request);
@@ -77,6 +74,9 @@ public class ControleurAdmin extends HttpServlet {
                     setListeVilles(request);
                     request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
                     break;
+                case "statistiques":
+                    voirStatistiques(request, response);
+                    break;
                 case "deconnexion":
                     test = null;
                     request.getSession().removeAttribute("utilisateur");
@@ -90,13 +90,15 @@ public class ControleurAdmin extends HttpServlet {
     }
 
     private void setGestionVille(HttpServletRequest request){
-        request.setAttribute("gestionVille", true);
-        request.setAttribute("gestionGabarit", false);
+        request.setAttribute("aAfficher", "gestionVille");
     }
 
     private void setGestionGabarit(HttpServletRequest request){
-        request.setAttribute("gestionVille", false);
-        request.setAttribute("gestionGabarit", true);
+        request.setAttribute("aAfficher", "gestionGabarit");
+    }
+
+    private void setStatistiques(HttpServletRequest request){
+        request.setAttribute("aAfficher", "statistiques");
     }
 
     private void setListeVilles(HttpServletRequest request){
@@ -123,5 +125,10 @@ public class ControleurAdmin extends HttpServlet {
 
     private boolean supprimerGabarit(String nomGabarit){
         return ejb.supprimerGabarit(nomGabarit);
+    }
+
+    private void voirStatistiques(HttpServletRequest request, HttpServletResponse response){
+        setStatistiques(request);
+
     }
 }

@@ -94,4 +94,8 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             return false;
         }
     }
+
+    public void recupererStatistiques(){
+
+    }
 }

@@ -22,4 +22,6 @@ public interface MaFacadeAdministrateur {
     List<String> getListeGabarits();
 
     List<VilleDTO> getListeVilleDTO();
+
+    void recupererStatistiques();
 }
