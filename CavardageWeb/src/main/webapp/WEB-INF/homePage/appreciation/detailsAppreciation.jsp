@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: emmanuelh
@@ -30,6 +31,7 @@
         </c:forEach>
     </table>
 </li>
+<c:if test="${(fn:length(listePersonnes) > 1)}">
 <form method="post" action="ControleurUtilisateur">
     <select name = "loginPersonneAppreciation">
         <c:forEach items="${listePersonnes}" var="personne">
@@ -39,7 +41,8 @@
         </c:forEach>
     </select>
     <label>Note : </label><input type="text" name="note" required/><br>
-    <label>Commentaire : </label><<textarea name="commentaire"></textarea>
+    <label>Commentaire : </label><textarea name="commentaire"></textarea>
     <input type="hidden" name="idTrajet" value="${trajet.id}"/>
     <button type="submit" name="afaire" value="noter">Noter</button>
 </form>
+</c:if>

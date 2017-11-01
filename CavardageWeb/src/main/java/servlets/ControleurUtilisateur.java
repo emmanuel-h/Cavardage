@@ -412,8 +412,9 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void apprecierTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
+        String login = (String) request.getSession().getAttribute("utilisateur");
         TrajetDTO trajet = maFacade.avoirTrajet(idTrajet);
-        List<UtilisateurDTO> listePersonnes = maFacade.avoirPersonnesTrajet(idTrajet);
+        List<UtilisateurDTO> listePersonnes = maFacade.avoirPersonnesTrajet(login,idTrajet);
         request.setAttribute("listePersonnes",listePersonnes);
         request.setAttribute("trajet",trajet);
         request.setAttribute("aAfficher", "detailsAppreciation");

@@ -482,6 +482,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             }
             String date_trajet = reservation.getTrajetReservation().getDate()+" "+reservation.getTrajetReservation().getHeure();
             if(reservation.getStatut().equals("enAttente") && compareDate(date_trajet)>=0 ){
+                reservation.setStatut("fini");
+                em.persist(reservation);
                 trajets.add(reservation.getTrajetReservation());
             }
         }
@@ -493,13 +495,38 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public List<UtilisateurDTO> avoirPersonnesTrajet(int idTrajet) {
+    public List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet) {
         Trajet trajet = em.find(Trajet.class,idTrajet);
         List<UtilisateurDTO> utilisateurs = new ArrayList<>();
+        Utilisateur utilisateurCourant = em.find(Utilisateur.class,login);
+        Query query = em.createQuery("SELECT a FROM Appreciation a, Trajet t WHERE " +
+                "t.idTrajet=:idTrajet and a.noteTrajet=t");
+        query.setParameter("idTrajet",idTrajet);
+        List<Appreciation> appreciations = query.getResultList();
         for(Reservation reservation : trajet.getListeReservation()){
             utilisateurs.add(new UtilisateurDTO(reservation.getUtilisateurReservation()));
         }
-        utilisateurs.add(new UtilisateurDTO(trajet.getVehiculeTrajet().getUtilisateur()));
+        for(Reservation reservation : trajet.getListeReservation()){
+            Utilisateur utilisateur = reservation.getUtilisateurReservation();
+            for (Appreciation appreciation : appreciations){
+                if((appreciation.getDonneNote().equals(utilisateurCourant) && appreciation.getEstNote().equals(utilisateur))){
+                    System.out.println("ICI"+utilisateur.getLogin());
+                    utilisateurs.remove(new UtilisateurDTO(utilisateur));
+                }
+            }
+        }
+        boolean test = true;
+        for(Appreciation appreciation : appreciations){
+            if(appreciation.getDonneNote().equals(utilisateurCourant) && appreciation.getEstNote().equals(trajet.getVehiculeTrajet().getUtilisateur())){
+                test = false;
+            }
+        }
+        if(test) {
+            utilisateurs.add(new UtilisateurDTO(trajet.getVehiculeTrajet().getUtilisateur()));
+        }
+        for(UtilisateurDTO utilisateurDTO:utilisateurs){
+            System.out.println(utilisateurDTO);
+        }
         return utilisateurs;
     }
 

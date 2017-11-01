@@ -39,5 +39,5 @@ public interface MaFacadeUtilisateur {
     Notification creerNotification(String login,String message);
     int avoirNbPlacesRestantes(int idTrajet);
     List<TrajetDTO> avoirListeTrajet(String login);
-    List<UtilisateurDTO> avoirPersonnesTrajet(int idTrajet);
+    List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet);
 }
