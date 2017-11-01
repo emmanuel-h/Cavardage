@@ -1,5 +1,6 @@
 package ejbs;
 
+import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import entities.Ville;
 
@@ -23,5 +24,5 @@ public interface MaFacadeAdministrateur {
 
     List<VilleDTO> getListeVilleDTO();
 
-    void recupererStatistiques();
+    StatistiquesDTO recupererStatistiques();
 }

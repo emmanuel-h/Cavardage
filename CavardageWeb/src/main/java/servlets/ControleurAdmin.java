@@ -1,5 +1,6 @@
 package servlets;
 
+import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAdministrateur;
 
@@ -127,8 +128,11 @@ public class ControleurAdmin extends HttpServlet {
         return ejb.supprimerGabarit(nomGabarit);
     }
 
-    private void voirStatistiques(HttpServletRequest request, HttpServletResponse response){
+    private void voirStatistiques(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         setStatistiques(request);
-
+        StatistiquesDTO stat = ejb.recupererStatistiques();
+        request.setAttribute("stat", stat);
+        setStatistiques(request);
+        request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
     }
 }
