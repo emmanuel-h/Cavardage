@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Stateless(name = "UtilisateurBean")
@@ -92,10 +93,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public List<Appreciation> avoirNotesTotal(String login) {
+    public List<AppreciationDTO> avoirToutesAppreciations(String login) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         List<Appreciation> appreciationListe = utilisateur.getEstNote();
-        return appreciationListe;
+        List<AppreciationDTO> appreciationDTOList = new ArrayList<>();
+        for (Appreciation appreciation : appreciationListe){
+            appreciationDTOList.add(new AppreciationDTO(appreciation));
+        }
+        return appreciationDTOList;
     }
 
     @Override
@@ -111,7 +116,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             throw new DivisionParZeroException();
         } else {
             moyenne = notes / appreciations.size();
-            return moyenne;
+            int moyenne_int = moyenne*10;
+            return moyenne_int/10;
         }
     }
 
@@ -431,6 +437,60 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             }
         }
         return  nbPlacesRestantes;
+    }
+
+    @Override
+    public List<TrajetDTO> avoirListeTrajet(String login) {
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        List<Vehicule> vehicules = utilisateur.getListeVehicule();
+        List<Trajet> trajets = new ArrayList<>();
+        for (Vehicule vehicule : vehicules){
+            for ( Trajet trajet : vehicule.getListeTrajet()){
+                trajets.add(trajet);
+            }
+        }
+        List<Reservation> reservations = utilisateur.getListeReservation();
+        for (Reservation reservation : reservations){
+            if(reservation.getStatut().equals("fini")){
+                trajets.add(reservation.getTrajetReservation());
+            }
+            String date_trajet = reservation.getTrajetReservation().getDate()+" "+reservation.getTrajetReservation().getHeure();
+            if(reservation.getStatut().equals("enAttente") && compareDate(date_trajet)>=0 ){
+                trajets.add(reservation.getTrajetReservation());
+            }
+        }
+        List<TrajetDTO> trajetDTOList = new ArrayList<>();
+        for (Trajet trajet: trajets){
+            trajetDTOList.add(new TrajetDTO(trajet));
+        }
+        return trajetDTOList;
+    }
+
+    /*
+    -1 date1 < date2
+    0 date1 = date2
+    1 date1 > date2
+     */
+    public int compareDate(String string_date) {
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        int result=0;
+        try {
+            Date current_date= new Date();
+            format.format(current_date);
+            Date date = format.parse((string_date));
+            if (date.compareTo(current_date) > 0) {
+                result=1;
+            } else if (date.compareTo(current_date) < 0) {
+                result=-1;
+            } else if (date.compareTo(current_date) == 0) {
+                result=0;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println(e.toString());
+        }
+        return result;
     }
 
 

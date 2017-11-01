@@ -4,6 +4,7 @@ import dtos.*;
 import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
 import entities.Ville;
+import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
 import exceptions.PrixInferieurException;
 import exceptions.VilleNonTrouvee;
@@ -54,6 +55,7 @@ public class ControleurUtilisateur extends HttpServlet {
                     break;
                 case "enregistrerVehicule":
                     enregistrerVehicule(request, response);
+                    break;
                 case "voirAppreciations":
                     voirAppreciations(request, response);
                     break;
@@ -162,8 +164,23 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
-    private void voirAppreciations(HttpServletRequest request, HttpServletResponse response) {
-
+    private void voirAppreciations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        String noteMoyenne = "";
+        try {
+            float noteMoyenneFloat = maFacade.moyenneNotes(login);
+            noteMoyenne = Float.toString(noteMoyenneFloat);
+        } catch (DivisionParZeroException e) {
+            noteMoyenne = "Pas encore de notes reçues.";
+            e.printStackTrace();
+        }
+        List<AppreciationDTO> appreciationDTOList = maFacade.avoirToutesAppreciations(login);
+        List<TrajetDTO> trajetDTOS = maFacade.avoirListeTrajet(login);
+        request.setAttribute("listeTrajetEffectues",trajetDTOS);
+        request.setAttribute("appreciations",appreciationDTOList);
+        request.setAttribute("noteMoyenne",noteMoyenne);
+        request.setAttribute("aAfficher", "appreciations");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
     private void parametres(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -17,7 +17,7 @@ public interface MaFacadeUtilisateur {
     Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee;
     Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note);
     List<Appreciation> avoirNotesTrajet(int idTrajet);
-    List<Appreciation> avoirNotesTotal(String login);
+    List<AppreciationDTO> avoirToutesAppreciations(String login);
     float moyenneNotes(String login) throws DivisionParZeroException;
     Vehicule ajouterVehicule(String login, String nomVehicule, String modele, int idGabarit, int nbPlaces);
     boolean supprimerVehicule(int idVehicule);
@@ -40,4 +40,5 @@ public interface MaFacadeUtilisateur {
     TrajetDTO avoirTrajet(int idTrajet);
     Notification creerNotification(String login,String message);
     int avoirNbPlacesRestantes(int idTrajet);
+    List<TrajetDTO> avoirListeTrajet(String login);
 }
