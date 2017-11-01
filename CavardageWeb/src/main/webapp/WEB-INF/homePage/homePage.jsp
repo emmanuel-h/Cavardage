@@ -52,7 +52,6 @@
                 </div>
             </form>
         </div>
-
         <div class="col-lg-9">
             <c:if test="${aAfficher == 'trajetsEnCours'}">
                 <jsp:include page="trajetsEnCours.jsp"></jsp:include>
@@ -67,7 +66,7 @@
                 <jsp:include page="historique.jsp"></jsp:include>
             </c:if>
             <c:if test="${aAfficher == 'appreciations'}">
-                <jsp:include page="appreciations.jsp"></jsp:include>
+                <jsp:include page="appreciation/appreciations.jsp"></jsp:include>
             </c:if>
             <c:if test="${aAfficher == 'parametres'}">
                 <jsp:include page="parametres.jsp"></jsp:include>
@@ -84,9 +83,10 @@
             <c:if test="${aAfficher == 'gestionTrajet'}">
                 <jsp:include page="gestionTrajet.jsp"></jsp:include>
             </c:if>
+            <c:if test="${aAfficher == 'detailsAppreciation'}">
+                <jsp:include page='appreciation/detailsAppreciation.jsp'></jsp:include>
+            </c:if>
         </div>
     </div>
-
-
 </body>
 </html>

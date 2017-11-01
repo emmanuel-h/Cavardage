@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -155,6 +156,45 @@ public class Utilisateur {
         } else {
             notifications.remove(notification);
             return true;
+        }
+    }
+
+    public boolean ajouterNoteRecue(Appreciation appreciation){
+        if (null == estNote){
+            estNote = new ArrayList<>();
+        }
+        if(estNote.contains(appreciation)){
+            return false;
+        } else {
+            estNote.add(appreciation);
+            return true;
+        }
+    }
+
+    public boolean ajouterNoteEnvoyee(Appreciation appreciation){
+        if(null == note){
+            note = new ArrayList<>();
+        }
+        if(note.contains(appreciation)){
+            return false;
+        } else {
+            note.add(appreciation);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        if(((Utilisateur)obj).getLogin().equals(this.login)){
+            return true;
+        } else {
+            return false;
         }
     }
 

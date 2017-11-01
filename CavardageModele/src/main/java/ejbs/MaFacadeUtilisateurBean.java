@@ -64,21 +64,25 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note) {
+    public Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note, String loginDestinataire) {
         Utilisateur donneNote = em.find(Utilisateur.class,login);
+        Utilisateur destinataireNote = em.find(Utilisateur.class,loginDestinataire);
         Trajet trajet = em.find(Trajet.class,idTrajet);
-
         // Le faire sur la bonne table
-        Vehicule vehicule = trajet.getVehiculeTrajet();
-        Utilisateur estNote = vehicule.getUtilisateur();
         Appreciation appreciation = new Appreciation();
         appreciation.setCommentaire(commentaire);
         appreciation.setNote(note);
         appreciation.setDonneNote(donneNote);
         appreciation.setNoteTrajet(trajet);
-        appreciation.setEstNote(estNote);
+        appreciation.setEstNote(destinataireNote);
         em.persist(appreciation);
+        donneNote.ajouterNoteEnvoyee(appreciation);
+        em.persist(donneNote);
+        destinataireNote.ajouterNoteRecue(appreciation);
+        em.persist(destinataireNote);
         return appreciation;
+       // AppreciationDTO appreciationDTO = new AppreciationDTO(appreciation);
+        //return appreciationDTO;
     }
 
     @Override
@@ -103,7 +107,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @Override
     public float moyenneNotes(String login) throws DivisionParZeroException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
-        List<Appreciation> appreciations = utilisateur.getNote();
+        List<Appreciation> appreciations = utilisateur.getEstNote();
         int notes=0;
         for (Appreciation appreciation:appreciations) {
             notes+=appreciation.getNote();
@@ -474,6 +478,17 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return trajetDTOList;
     }
 
+    @Override
+    public List<UtilisateurDTO> avoirPersonnesTrajet(int idTrajet) {
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+        List<UtilisateurDTO> utilisateurs = new ArrayList<>();
+        for(Reservation reservation : trajet.getListeReservation()){
+            utilisateurs.add(new UtilisateurDTO(reservation.getUtilisateurReservation()));
+        }
+        utilisateurs.add(new UtilisateurDTO(trajet.getVehiculeTrajet().getUtilisateur()));
+        return utilisateurs;
+    }
+
     /*
     -1 date1 < date2
     0 date1 = date2
@@ -500,6 +515,4 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
         return result;
     }
-
-
 }

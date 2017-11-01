@@ -118,7 +118,6 @@ public class Trajet {
         this.prix = prix;
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

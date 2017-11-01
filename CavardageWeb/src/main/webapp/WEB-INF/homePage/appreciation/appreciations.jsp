@@ -49,7 +49,8 @@
                         <td>${trajet.villeArrivee}(${trajet.departementArrivee})</td>
                         <td>${trajet.date}</td>
                         <td>${trajet.heure}</td>
-                        <td><button type="submit" name="afaire" value="detailsNoterTrajet">Noter</button> </td>
+                        <input type="hidden" name="idTrajet" value="${trajet.id}"/>
+                        <td><button type="submit" name="afaire" value="apprecierTrajet">Noter</button> </td>
                     </tr>
                 </c:forEach>
             </table>

@@ -78,6 +78,7 @@ INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (5,2
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (3,'10/07/2017','8:30','fini',150,5,'Perpignan_66','Blois_41');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (6,5,3,'Petaouchnok Les Bains_39');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (7,10,3,'La Rochelle_17');
+INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (3,1,'accepte',7,3,'eric');
 
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (4,'26/12/2017','0:00','aVenir',1050,3,'Lyon_69','Amiens_80');
 

@@ -77,4 +77,19 @@ public class Appreciation {
     public void setEstNote(Utilisateur estNote) {
         this.estNote = estNote;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        if(((Appreciation)obj).getEstNote().equals(this.estNote) && ((Appreciation)obj).getDonneNote().equals(this.donneNote) && ((Appreciation)obj).getNoteTrajet().equals(this.noteTrajet)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

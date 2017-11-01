@@ -12,7 +12,7 @@ import java.util.Map;
 public interface MaFacadeUtilisateur {
 
     Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee;
-    Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note);
+    Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note, String loginDestinataire);
     List<Appreciation> avoirNotesTrajet(int idTrajet);
     List<AppreciationDTO> avoirToutesAppreciations(String login);
     float moyenneNotes(String login) throws DivisionParZeroException;
@@ -38,4 +38,5 @@ public interface MaFacadeUtilisateur {
     Notification creerNotification(String login,String message);
     int avoirNbPlacesRestantes(int idTrajet);
     List<TrajetDTO> avoirListeTrajet(String login);
+    List<UtilisateurDTO> avoirPersonnesTrajet(int idTrajet);
 }

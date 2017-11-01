@@ -85,10 +85,7 @@ public class ControleurUtilisateur extends HttpServlet {
                     afficherRechercheTrajet(request, response);
                     break;
                 case "deconnexion":
-                    aFaire = null;
-                    request.getSession().removeAttribute("utilisateur");
-                    request.getSession().invalidate();
-                    response.sendRedirect(request.getContextPath());
+                    deconnexion(request,response);
                     break;
                 case "gererTrajet":
                     gererTrajet(request,response);
@@ -107,6 +104,12 @@ public class ControleurUtilisateur extends HttpServlet {
                     break;
                 case "refuserReservation":
                     refuserReservation(request, response);
+                    break;
+                case "apprecierTrajet":
+                    apprecierTrajet(request,response);
+                    break;
+                case "noter":
+                    noter(request,response);
                     break;
                 default:
                     //display homepage
@@ -392,5 +395,31 @@ public class ControleurUtilisateur extends HttpServlet {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         request.setAttribute("idTrajet", idTrajet);
         gererTrajet(request, response);
+    }
+
+    private void deconnexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getSession().removeAttribute("utilisateur");
+        request.getSession().invalidate();
+        response.sendRedirect(request.getContextPath());
+    }
+
+    private void apprecierTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
+        TrajetDTO trajet = maFacade.avoirTrajet(idTrajet);
+        List<UtilisateurDTO> listePersonnes = maFacade.avoirPersonnesTrajet(idTrajet);
+        request.setAttribute("listePersonnes",listePersonnes);
+        request.setAttribute("trajet",trajet);
+        request.setAttribute("aAfficher", "detailsAppreciation");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+    }
+
+    private void noter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        String loginDestinataire = request.getParameter("loginPersonneAppreciation");
+        int note = Integer.parseInt(request.getParameter("note"));
+        String commentaire = request.getParameter("commentaire");
+        int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
+        maFacade.donnerAppreciation(login,idTrajet,commentaire,note,loginDestinataire);
+        apprecierTrajet(request,response);
     }
 }
