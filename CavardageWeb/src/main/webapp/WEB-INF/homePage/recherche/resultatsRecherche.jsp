@@ -17,8 +17,9 @@
                 <tr>
                     <th class="col-lg-3">Ville de départ</th>
                     <th class="col-lg-3">Ville d'arrivée</th>
-                    <th class="col-lg-3">Date</th>
-                    <th class="col-lg-3">Heure</th>
+                    <th class="col-lg-2">Date</th>
+                    <th class="col-lg-1">Heure</th>
+                    <th class="col-lg-1">Places restantes</th>
                 </tr>
                 <c:forEach items="${listeTrajetRecherche}" var="trajet">
                 <tr>
@@ -26,6 +27,7 @@
                     <td>${trajet.villeArrivee}(${trajet.departementArrivee})</td>
                     <td>${trajet.date}</td>
                     <td>${trajet.heure}</td>
+                    <td>${trajet.nbPlaces}</td>
                     <c:if test="${!empty utilisateur}">
                         <c:if test="${trajet.loginConducteur eq utilisateur}">
                             <td class="col-lg-1">

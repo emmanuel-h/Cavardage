@@ -73,9 +73,6 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "parametres":
                     parametres(request, response);
                     break;
-                case "ajouterVehicule":
-                    ajouterVehicule(request, response);
-                    break;
                 case "enregistrerTrajetTemp":
                     voirCreerTrajet(request, response);
                     break;
@@ -236,14 +233,6 @@ public class ControleurUtilisateur extends HttpServlet {
     private void parametres(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("aAfficher", "parametres");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
-    }
-
-    //TODO supprimer cette méthode je crois qu'elle ne sert à rien
-    private void ajouterVehicule(HttpServletRequest request, HttpServletResponse response) {
-        String nomvehicule = request.getParameter("nomVehicule");
-        String modeleVehicule = request.getParameter("modeleVehicule");
-        String gabaritVehicule = request.getParameter("gabaritVehicule");
-        int nbPlaces = Integer.parseInt(request.getParameter("nbPlaces"));
     }
 
     private void enregistrerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
