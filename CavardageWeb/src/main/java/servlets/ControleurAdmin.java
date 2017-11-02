@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -78,6 +80,9 @@ public class ControleurAdmin extends HttpServlet {
                 case "statistiques":
                     voirStatistiques(request, response);
                     break;
+                case "actualiserStat":
+                    voirStatistiques(request, response);
+                    break;
                 case "deconnexion":
                     test = null;
                     request.getSession().removeAttribute("utilisateur");
@@ -131,7 +136,9 @@ public class ControleurAdmin extends HttpServlet {
     private void voirStatistiques(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         setStatistiques(request);
         StatistiquesDTO stat = ejb.recupererStatistiques();
+        LocalDate date = LocalDate.now();
         request.setAttribute("stat", stat);
+        request.setAttribute("date", date.getDayOfMonth() + " / " + date.getMonthValue() + " / " + date.getYear());
         setStatistiques(request);
         request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
     }

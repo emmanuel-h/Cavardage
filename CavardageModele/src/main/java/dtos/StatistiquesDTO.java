@@ -3,6 +3,8 @@ package dtos;
 public class StatistiquesDTO {
 
     private int nbUtilisateur;
+    private int nbPassagers;
+    private int nbConducteurs;
     private int nbTrajetsReserves;
     private int totalPrixTrajets;
     private int nbTrajetsFinis;
@@ -10,8 +12,10 @@ public class StatistiquesDTO {
     public StatistiquesDTO() {
     }
 
-    public StatistiquesDTO(int nbUtilisateur, int nbTrajetsReserves, int totalPrixTrajets, int nbTrajetsFinis) {
+    public StatistiquesDTO(int nbUtilisateur, int nbPassagers, int nbConducteurs, int nbTrajetsReserves, int totalPrixTrajets, int nbTrajetsFinis) {
         this.nbUtilisateur = nbUtilisateur;
+        this.nbPassagers = nbPassagers;
+        this.nbConducteurs = nbConducteurs;
         this.nbTrajetsReserves = nbTrajetsReserves;
         this.totalPrixTrajets = totalPrixTrajets;
         this.nbTrajetsFinis = nbTrajetsFinis;
@@ -23,6 +27,22 @@ public class StatistiquesDTO {
 
     public void setNbUtilisateur(int nbUtilisateur) {
         this.nbUtilisateur = nbUtilisateur;
+    }
+
+    public int getNbPassagers() {
+        return nbPassagers;
+    }
+
+    public void setNbPassagers(int nbPassagers) {
+        this.nbPassagers = nbPassagers;
+    }
+
+    public int getNbConducteurs() {
+        return nbConducteurs;
+    }
+
+    public void setNbConducteurs(int nbConducteurs) {
+        this.nbConducteurs = nbConducteurs;
     }
 
     public int getNbTrajetsReserves() {

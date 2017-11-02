@@ -102,6 +102,23 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         List<Utilisateur> listeUtilisateur = q.getResultList();
         int nbUtilisateur = listeUtilisateur.size();
 
+        int nbConducteurs = 0;
+        for(Utilisateur u : listeUtilisateur){
+            midLoop:
+            for(Vehicule v : u.getListeVehicule()){
+                for(Trajet t : v.getListeTrajet()){
+                    if(t.getStatut().equals("fini")){
+                        nbConducteurs++;
+                        break midLoop;
+                    }
+                }
+            }
+        }
+
+        q = em.createQuery("SELECT DISTINCT res.utilisateurReservation.login FROM Reservation res WHERE res.statut=:statutReservation");
+        q.setParameter("statutReservation", "accepte");
+        int nbPassagers = q.getResultList().size();
+
         q = em.createQuery("FROM Reservation res where res.statut=:statutReservation");
         q.setParameter("statutReservation", "accepte");
         int nbTrajetsAcceptes = q.getResultList().size();
@@ -118,8 +135,8 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         q = em.createQuery("FROM Trajet t");
         List<Trajet> listeTrajets = q.getResultList();
         int nbTrajetsFinis = 0;
-        Map<String, Integer> mapDeparts = new TreeMap<>();
-        Map<String, Integer> mapArrivees = new TreeMap<>();
+        //Map<String, Integer> mapDeparts = new TreeMap<>();
+        //Map<String, Integer> mapArrivees = new TreeMap<>();
         for(Trajet t : listeTrajets){
             if(t.getStatut().equals("fini")) {
                 nbTrajetsFinis++;
@@ -127,13 +144,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             //TODO trouver la ville avec le plus de départs et celle avec le plus d'arrivées
         }
 
-        /*
-        q = em.createQuery("From Trajet t where t.statut=:statutTrajet");
-        q.setParameter("statutTrajet", "fini");
-        int nbTrajetsFinis = q.getResultList().size();
-        */
-
-        StatistiquesDTO stat = new StatistiquesDTO(nbUtilisateur, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
+        StatistiquesDTO stat = new StatistiquesDTO(nbUtilisateur, nbPassagers, nbConducteurs, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
 
         return stat;
 
