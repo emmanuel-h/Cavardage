@@ -24,6 +24,7 @@ public interface MaFacadeUtilisateur {
     List<ReservationDTO> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException;
     boolean refuserReservation(String login, int idReservation) throws PasConducteurException;
     boolean accepterReservation(String login, int idReservation) throws PasConducteurException;
+    boolean annulerReservation(int idReservation);
     boolean supprimerNotification(String login, int idNotification);
     List<HistoriqueDTO> historiqueUtilisateur(String login);
     HistoriqueDTO uniqueHistoriqueUtilisateur(String login, int id);
@@ -39,8 +40,10 @@ public interface MaFacadeUtilisateur {
     Notification creerNotification(String login,String message);
     List<Notification> avoirListeNotification(String login);
     int avoirNbPlacesRestantes(int idTrajet);
+    ReservationDTO avoirReservationDTO(int idReservation);
     List<TrajetDTO> avoirListeTrajet(String login);
     List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet);
     List<PrixMoyenDTO> avoirPrixMoyen();
     float avoirPrixMoyen(String villeDepart, String villeArrivee);
+    Map<String, Object> avoirListeTrajetAVenir(String login);
 }

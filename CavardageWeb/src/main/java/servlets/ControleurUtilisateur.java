@@ -106,11 +106,17 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "supprimerTrajet":
                     supprimerTrajet(request, response);
                     break;
+                case "detailsReservation":
+                    detailsReservation(request, response);
+                    break;
                 case "accepterReservation":
                     accepterReservation(request, response);
                     break;
                 case "refuserReservation":
                     refuserReservation(request, response);
+                    break;
+                case "supprimerReservation":
+                    supprimerReservation(request, response);
                     break;
                 case "apprecierTrajet":
                     apprecierTrajet(request,response);
@@ -126,6 +132,7 @@ public class ControleurUtilisateur extends HttpServlet {
             }
         }
     }
+
 
     private void voirAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         afficherNotification(request, response);
@@ -156,8 +163,13 @@ public class ControleurUtilisateur extends HttpServlet {
         voirCreerTrajet(request, response);
     }
 
-    private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response) {
-
+    private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        Map<String,Object> listeTrajet = maFacade.avoirListeTrajetAVenir(login);
+        request.setAttribute("listeTrajetsConducteur", listeTrajet.get("conducteur"));
+        request.setAttribute("listeTrajetsPassager", listeTrajet.get("passager"));
+        request.setAttribute("aAfficher", "trajetsEnCours");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
     private void voirCreerTrajetTemp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -410,6 +422,12 @@ public class ControleurUtilisateur extends HttpServlet {
         gererTrajet(request, response);
     }
 
+    private void supprimerReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idReservation = Integer.parseInt(request.getParameter("idReservation"));
+        maFacade.annulerReservation(idReservation);
+        voirTrajetsEnCours(request, response);
+    }
+
     private void deconnexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().removeAttribute("utilisateur");
         request.getSession().invalidate();
@@ -449,5 +467,16 @@ public class ControleurUtilisateur extends HttpServlet {
         int idNotif = Integer.parseInt(request.getParameter("idNotif"));
         maFacade.supprimerNotification(login, idNotif);
         voirAccueil(request, response);
+    }
+
+    private void detailsReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
+        int idRes = Integer.parseInt(request.getParameter("idReservation"));
+        TrajetDTO trajetDTO = maFacade.avoirTrajet(idTrajet);
+        ReservationDTO reservationDTO = maFacade.avoirReservationDTO(idRes);
+        request.setAttribute("trajet", trajetDTO);
+        request.setAttribute("reservation", reservationDTO);
+        request.setAttribute("aAfficher", "detailsTrajet");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 }
