@@ -13,7 +13,6 @@
 <ul class="list-group">
 
         <li class="list-group-item">
-            <form action="ControleurUtilisateur" method="post">
             <table class="table table-bordered">
                 <tr>
                     <th class="col-lg-3">Ville de départ</th>
@@ -30,22 +29,25 @@
                     <c:if test="${!empty utilisateur}">
                         <c:if test="${trajet.loginConducteur eq utilisateur}">
                             <td class="col-lg-1">
-                                <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
-                                <input type="hidden" name="idTrajet" value="${trajet.id}">
-                                <button class="btn btn-primary" type="submit" name="afaire" value="gererTrajet">Gérer</button>
+                                <form action="ControleurUtilisateur" method="post">
+                                    <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
+                                    <input type="hidden" name="idTrajet" value="${trajet.id}">
+                                    <button class="btn btn-primary" type="submit" name="afaire" value="gererTrajet">Gérer</button>
+                                </form>
                             </td>
                         </c:if>
                         <c:if test="${trajet.loginConducteur ne utilisateur}">
                             <td class="col-lg-1">
-                                <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
-                                <input type="hidden" name="idTrajet" value="${trajet.id}">
-                                <button class="btn btn-primary" type="submit" name="afaire" value="detailsTrajet">Détails</button>
+                                <form action="ControleurUtilisateur" method="post">
+                                    <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
+                                    <input type="hidden" name="idTrajet" value="${trajet.id}">
+                                    <button class="btn btn-primary" type="submit" name="afaire" value="detailsTrajet">Détails</button>
+                                </form>
                             </td>
                         </c:if>
                     </c:if>
                 </tr>
                 </c:forEach>
             </table>
-            </form>
         </li>
 </ul>
