@@ -28,7 +28,7 @@
     <form class="form-inline" method="post" action="ControleurAnonyme" >
         <div class="form-group">
             <label>Login:</label>
-            <input class="form-control" type="text" name="login" required />
+            <input class="form-control" type="text" name="login" autocomplete="off" required />
         </div>
         <div class="form-group">
             <label>Mot de passe:</label>

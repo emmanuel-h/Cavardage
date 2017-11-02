@@ -40,8 +40,8 @@
             </c:if>
         </c:forEach>
     </select>
-    <label>Note : </label><input type="text" name="note" required/><br>
-    <label>Commentaire : </label><textarea name="commentaire"></textarea>
+    <label>Note : </label><input type="text" name="note" autocomplete="off" required/><br>
+    <label>Commentaire : </label><textarea name="commentaire" autocomplete="off"></textarea>
     <input type="hidden" name="idTrajet" value="${trajet.id}"/>
     <button type="submit" name="afaire" value="noter">Noter</button>
 </form>

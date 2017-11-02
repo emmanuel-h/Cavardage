@@ -13,15 +13,9 @@
     <title>HomePage</title>
 </head>
 <body>
-
-    <jsp:include page="js/ajouterEtape.js"></jsp:include>
-
     <b:kickstart title="Cavardage">
 
     </b:kickstart>
-
-    ${testLogin}
-
     <div class="container">
 
         <div class="col-lg-3">

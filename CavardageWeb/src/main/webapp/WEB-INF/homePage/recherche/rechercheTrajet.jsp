@@ -15,17 +15,12 @@
 <div>
         <h2>Recherche d'un trajet:</h2>
         <label>Ville de départ:</label>
-        <datalist id="listeVille">
-            <c:forEach items="${listeVilles}" var="ville">
-                <option value="${ville.nomVille}(${ville.departement})"/>
-            </c:forEach>
-        </datalist>
-        <input type="text" list="listeVille" class="form-control" name="nomVilleDepart" required>
+        <input type="text" list="listeVille" class="form-control" name="nomVilleDepart" autocomplete="off" required>
         <label>Ville d'arrivée:</label>
-        <input type="text" list="listeVille" class="form-control" name="nomVilleArrivee" required>
+        <input type="text" list="listeVille" class="form-control" name="nomVilleArrivee" autocomplete="off" required>
         <label>Date:</label>
-        <input type="text" name="date" placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}"/>
+        <input type="text" name="date" placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off"/>
         <label>Prix: (Optionnel)</label>
-        <input type="text" name="prix"/>
+        <input type="text" name="prix" autocomplete="off"/>
         <button type="submit" name="afaire" value="afficherRechercheTrajet">Rechercher</button>
 </div>

@@ -162,7 +162,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             creerNotification(login, "Le véhicule " + nomVehicule + " a bien été supprimé");
             return true;
         } else {
-            creerNotification(login, "Le vehicule "+nomVehicule + "n'a pas été trouvé et n'a pas pu être supprimé");
+            creerNotification(login, "Le vehicule "+nomVehicule + " n'a pas été trouvé et n'a pas pu être supprimé");
             return false;
         }
     }
@@ -402,7 +402,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 String nomVille = st.nextToken() + "_" + st.nextToken();
                 int prixEtape = Integer.parseInt(st.nextToken());
                 if(prixEtape > prixTrajet){
-                    throw new PrixInferieurException("Le prix des étapes est inférieur au prix du trajet");
+                    throw new PrixInferieurException("Une étape a un prix supérieur à celui du trajet");
                 }
                 mapPrix.put(nomVille, prixEtape);
             }

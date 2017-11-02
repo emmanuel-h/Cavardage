@@ -13,11 +13,16 @@
             <option value="${ville.nomVille}(${ville.departement})" />
         </c:forEach>
     </datalist>
-    <datalist id="listVehicule">
+    <datalist id="listeVehicule">
         <c:forEach items="${listeVehicules}" var="vehicule">
             <option value="${vehicule.nomVehicule}" />
         </c:forEach>
     </datalist>
+
+<c:if test="${not empty message}">
+<div class="alert alert-danger">${message}</div>
+</c:if>
+
     <form action="ControleurUtilisateur" method="post">
         <legend>Proposer un trajet</legend>
         <div>
@@ -43,20 +48,20 @@
             </div>
             <div class="form-group">
                 <label for="date">Le : </label>
-                <input class="form-control" type="text" id="date" name="date" required placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
+                <input class="form-control" type="text" id="date" name="date" required placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off">
             </div>
             <div class="form-group">
                 <label for="heure">À : </label>
-                <input style="width: 50px" class="form-control" type="text" id="heure" name="heure" placeholder="hh" required pattern="[0-9]{2}"> :
-                <input style="width: 50px" class="form-control" type="text" id="minute" name="minute" placeholder="mm" required pattern="[0-9]{2}">
+                <input style="width: 50px" class="form-control" type="text" id="heure" name="heure" placeholder="hh" autocomplete="off" required pattern="[0-9]{2}"> :
+                <input style="width: 50px" class="form-control" type="text" id="minute" name="minute" placeholder="mm" autocomplete="off" required pattern="[0-9]{2}">
             </div>
             <div class="form-group">
                 <label for="vehicule">Choix du véhicule : </label>
-                <input class="form-control" type="text" id="vehicule" list="listVehicule" name="vehicule" required>
+                <input class="form-control" type="text" id="vehicule" list="listeVehicule" name="vehicule" autocomplete="off" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="prixVoyage">Prix du voyage : </label>
-                <input class="form-control" placeholder="prix en €" type="text" id="prixVoyage" name="prixVoyage" required>
+                <input class="form-control" placeholder="prix en €" type="text" id="prixVoyage" autocomplete="off" name="prixVoyage" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerTrajet">Créer</button>
@@ -65,11 +70,11 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="inputEtape">Ville étape : </label>
-                <input class="form-control" type="text" list="listeVille" id="inputEtape">
+                <input class="form-control" type="text" list="listeVille" id="inputEtape" autocomplete="off">
             </div>
             <div class="form-group">
                 <label for="inputPrix">Prix : </label>
-                <input class="form-control" placeholder="prix en €" type="text" id="inputPrix" name="prix">
+                <input class="form-control" placeholder="prix en €" type="text" id="inputPrix" name="prix" autocomplete="off">
             </div>
             <div class="form-group">
                 <input type="button" name="afaire" class="btn btn-primary" value="Ajouter étape" onclick="ajouterEtape()" />
@@ -81,7 +86,6 @@
             </div>
         </div>
         </div>
-        ${message}
     </form>
 
-
+<jsp:include page="js/ajouterEtape.js"></jsp:include>

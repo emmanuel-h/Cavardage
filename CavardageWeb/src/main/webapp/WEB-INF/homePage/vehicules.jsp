@@ -11,11 +11,11 @@
     <legend>Ajouter un véhicule</legend>
     <div class="form-group">
         <label for="nomVehicule">Nom du véhicule : </label>
-        <input class="form-control" type="text" id="nomVehicule" name="nomVehicule" required>
+        <input class="form-control" type="text" id="nomVehicule" name="nomVehicule" autocomplete="off" required>
     </div>
     <div class="form-group">
         <label for="modeleVehicule">Modèle du véhicule : </label>
-        <input class="form-control" type="text" id="modeleVehicule" name="modeleVehicule" required>
+        <input class="form-control" type="text" id="modeleVehicule" name="modeleVehicule" autocomplete="off" required>
     </div>
     <div class="form-group">
         <datalist id="listeGabarit">
@@ -24,11 +24,11 @@
             </c:forEach>
         </datalist>
         <label for="gabaritVehicule">Gabarit du véhicule : </label>
-        <input class="form-control" type="text" list="listeGabarit" id="gabaritVehicule" name="gabaritVehicule" required>
+        <input class="form-control" type="text" list="listeGabarit" id="gabaritVehicule" name="gabaritVehicule" autocomplete="off" required>
     </div>
     <div class="form-group">
         <label for="nbPlaces">Nombre de places (hors conducteur) : </label>
-        <input class="form-control" type="text" id="nbPlaces" name="nbPlaces" required>
+        <input class="form-control" type="text" id="nbPlaces" name="nbPlaces" autocomplete="off" required>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerVehicule">Ajouter</button>

@@ -18,11 +18,11 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="villeDepart">Ville de départ : </label>
-                <input class="form-control" type="text" list="listeVille" id="villeDepart" name="villeDepart" required>
+                <input class="form-control" type="text" list="listeVille" id="villeDepart" name="villeDepart" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="villeArrivee">Ville d'arrivée : </label>
-                <input class="form-control" type="text" list="listeVille" id="villeArrivee" name="villeArrivee" required>
+                <input class="form-control" type="text" list="listeVille" id="villeArrivee" name="villeArrivee" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerTrajetTemp">Continuer</button>

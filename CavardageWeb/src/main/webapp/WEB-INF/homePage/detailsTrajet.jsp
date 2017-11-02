@@ -8,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div id="messageErreurDiv" class="alert alert-warning" hidden><label id="messageErreur"></label></div>
+<div id="messageErreurDiv" class="alert alert-danger" hidden><label id="messageErreur"></label></div>
 
 <div>
     <form action="ControleurUtilisateur" method="post" name="myForm" onsubmit="return verifForm(this)">
