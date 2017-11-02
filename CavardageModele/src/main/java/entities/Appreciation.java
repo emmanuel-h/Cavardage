@@ -92,4 +92,16 @@ public class Appreciation {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Appreciation{" +
+                "idAppreciation=" + idAppreciation +
+                ", note=" + note +
+                ", commentaire='" + commentaire + '\'' +
+                ", noteTrajet=" + noteTrajet +
+                ", donneNote=" + donneNote +
+                ", estNote=" + estNote +
+                '}';
+    }
 }
