@@ -143,6 +143,9 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         utilisateur.ajouterVehicule(vehicule);
         em.persist(vehicule);
         em.persist(utilisateur);
+
+        creerNotification(login,"Le véhicule "+nomVehicule+" a bien été ajouté à votre liste de véhicules");
+
         return vehicule;
     }
 
@@ -150,10 +153,17 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public boolean supprimerVehicule(String login, int idVehicule){
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         Vehicule v = em.find(Vehicule.class, idVehicule);
-        utilisateur.supprimerVehicule(v);
-        em.remove(v);
-        em.persist(utilisateur);
-        return true;
+        String nomVehicule = v.getNom();
+        boolean vehiculeSupprime = utilisateur.supprimerVehicule(v);
+        if(vehiculeSupprime) {
+            em.remove(v);
+            em.persist(utilisateur);
+            creerNotification(login, "Le véhicule " + nomVehicule + " a bien été supprimé");
+            return true;
+        } else {
+            creerNotification(login, "Le vehicule "+nomVehicule + "n'a pas été trouvé et n'a pas pu être supprimé");
+            return false;
+        }
     }
 
     @Override
@@ -164,7 +174,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             VehiculeDTO vDTO = new VehiculeDTO(v.getIdVehicule(), v.getModele(), v.getNom(), v.getGabarit().getType(), v.getNombrePlaces());
             listeVehicules.add(vDTO);
         }
-
         return listeVehicules;
     }
 
@@ -224,7 +233,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public boolean refuserReservation(String login, int idReservation) throws PasConducteurException {
         Reservation reservation = em.find(Reservation.class,idReservation);
         String messageNotification;
-        if(null == reservation.getDescendA() || reservation.getDescendA().equals("")){
+        if(null == reservation.getDescendA()){
             messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getTrajetReservation().getVilleArrivee().getNomVille()+" a été refusée";
         }else{
             messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getDescendA().getVilleEtape().getNomVille()+" a été refusée";
@@ -238,7 +247,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public boolean accepterReservation(String login, int idReservation) throws PasConducteurException{
         Reservation reservation = em.find(Reservation.class,idReservation);
         String messageNotification;
-        if(null == reservation.getDescendA() || reservation.getDescendA().equals("")){
+        if(null == reservation.getDescendA()){
             messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getTrajetReservation().getVilleArrivee().getNomVille()+" a été acceptée";
         }else{
             messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getDescendA().getVilleEtape().getNomVille()+" a été acceptée";
@@ -330,11 +339,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException {
-        System.out.println("la 3.5 login : " + login);
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
-        System.out.println("la 4");
         verifierUtilisateurEstConducteur(utilisateur, reservation.getTrajetReservation());
-        System.out.println("la 5");
         reservation.setStatut(statut);
         Utilisateur passager = reservation.getUtilisateurReservation();
         Notification notification = new Notification();
@@ -342,7 +348,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         passager.ajouterNotification(notification);
         em.persist(notification);
         em.persist(passager);
-        System.out.println("la 6");
     }
 
     private boolean verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
@@ -455,8 +460,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public List<Notification> avoirListeNotification(String login){
         Query q = em.createQuery("SELECT u.notifications FROM Utilisateur u WHERE u.login=:login");
         q.setParameter("login", login);
-        List<Notification> listeNotif = q.getResultList();
-        return listeNotif;
+        return q.getResultList();
     }
 
     @Override
@@ -473,7 +477,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @Override
     public List<TrajetDTO> avoirListeTrajet(String login) {
-        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        // On récupère tous les trajets finis ou à venir, où l'on était passager ou conducteur
         Query q = em.createQuery("SELECT DISTINCT t FROM Trajet t, Reservation r, Appreciation a WHERE" +
                 "((t.statut='fini' or t.statut='aVenir') and ((t.vehiculeTrajet.utilisateur.login=:login)" +
                 " or (r.trajetReservation=t and r.statut='accepte' and " +
@@ -481,22 +485,23 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         q.setParameter("login",login);
         List<TrajetDTO> trajetDTOList = new ArrayList<>();
         List<Trajet> trajets =  q.getResultList();
+
         for(Trajet t : trajets) {
             String date_trajet = t.getDate()+" "+t.getHeure();
+            // Si le statut est aVenir alors qu'il est passé, on le change en fini
             if((t.getStatut().equals("aVenir") && compareDate(date_trajet)<=0)){
                 t.setStatut("fini");
                 em.persist(t);
             }
+            // Si le trajet est fini et qu'il y a moins d'appreciations que de réservations, on l'ajouter à la liste car
+            // il reste des appreciations à faire dessus
             if(t.getStatut().equals("fini") ){
-               // System.out.println(t);
                 q = em.createQuery("SELECT count(a) FROM Appreciation a WHERE a.noteTrajet=:trajet");
                 q.setParameter("trajet", t);
                 long nbApp = (long) q.getResultList().get(0);
-                //System.out.println("nbApp " + nbApp);
                 q = em.createQuery("SELECT count(r.idReservation) FROM Reservation r WHERE r.trajetReservation=:trajet");
                 q.setParameter("trajet", t);
                 long nbReserv = (long) q.getResultList().get(0);
-                //System.out.println("nbReserv " + nbReserv);
                 if (nbReserv > nbApp) {
                     trajetDTOList.add(new TrajetDTO(t));
                 }
@@ -544,7 +549,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     0 date1 = date2
     1 date1 > date2
      */
-    public int compareDate(String string_date) {
+    private int compareDate(String string_date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         int result=0;
         try {
