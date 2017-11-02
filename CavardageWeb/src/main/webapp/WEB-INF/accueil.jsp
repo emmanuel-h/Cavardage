@@ -35,7 +35,7 @@
             <input class="form-control" type="password" name="mdp" required />
         </div>
         <div class="form-group">
-            <button class="btn btn-success" type="submit" name="afaire" value="connexion">Connexion</button>
+            <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
             <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
         </div>
     </form>

@@ -3,10 +3,7 @@ package ejbs;
 import dtos.TrajetDTO;
 import dtos.UtilisateurDTO;
 import dtos.VilleDTO;
-import entities.Role;
-import entities.Trajet;
-import entities.Utilisateur;
-import entities.Ville;
+import entities.*;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
 
@@ -88,5 +85,13 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     @Override
     public List<VilleDTO> getListeVilleDTO() {
         return rechercheBean.getListeVillesDTO();
+    }
+
+    @Override
+    public List<Notification> avoirListeNotification(String login){
+        Query q = em.createQuery("SELECT u.notifications FROM Utilisateur u WHERE u.login=:login");
+        q.setParameter("login", login);
+        List<Notification> listeNotif = q.getResultList();
+        return listeNotif;
     }
 }

@@ -252,6 +252,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public boolean supprimerNotification(String login, int idNotification) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Notification notification = em.find(Notification.class,idNotification);
+        em.remove(notification);
         return utilisateur.supprimerNotification(notification);
     }
 
@@ -451,6 +452,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         utilisateur.ajouterNotification(notification);
         em.persist(utilisateur);
         return notification;
+    }
+
+    @Override
+    public List<Notification> avoirListeNotification(String login){
+        Query q = em.createQuery("SELECT u.notifications FROM Utilisateur u WHERE u.login=:login");
+        q.setParameter("login", login);
+        List<Notification> listeNotif = q.getResultList();
+        return listeNotif;
     }
 
     @Override

@@ -37,6 +37,7 @@ public interface MaFacadeUtilisateur {
     void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException;
     TrajetDTO avoirTrajet(int idTrajet);
     Notification creerNotification(String login,String message);
+    List<Notification> avoirListeNotification(String login);
     int avoirNbPlacesRestantes(int idTrajet);
     List<TrajetDTO> avoirListeTrajet(String login);
     List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet);

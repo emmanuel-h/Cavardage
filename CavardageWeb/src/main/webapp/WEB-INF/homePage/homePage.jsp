@@ -23,8 +23,12 @@
     ${testLogin}
 
     <div class="container">
+
         <div class="col-lg-3">
             <form action="ControleurUtilisateur" method="post">
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" name="afaire" value="accueil">Accueil</button>
+                </div>
                 <div class="form-group">
                     <button class="btn btn-default" type="submit" name="afaire" value="trajetsEnCours">Trajets en cours</button>
                 </div>
@@ -53,6 +57,19 @@
             </form>
         </div>
         <div class="col-lg-9">
+            <c:if test="${aAfficher == 'accueil'}">
+                <div class="col-lg-12">
+                    <c:forEach items="${listeNotif}" var="notif">
+                        <div class="alert alert-warning">
+                            <strong>Info : &nbsp;</strong>${notif.message} <a href="
+                        <c:url value="ControleurUtilisateur">
+                            <c:param name="idNotif" value="${notif.notification}" />
+                            <c:param name="afaire" value="supprimerNotif" />
+                        </c:url>" style="color: #ffbb33; text-decoration: none" class="glyphicon glyphicon-remove"></a>
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:if>
             <c:if test="${aAfficher == 'trajetsEnCours'}">
                 <jsp:include page="trajetsEnCours.jsp"></jsp:include>
             </c:if>

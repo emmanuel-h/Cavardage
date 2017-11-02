@@ -4,6 +4,8 @@ import dtos.TrajetDTO;
 import dtos.UtilisateurDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAnonyme;
+import ejbs.MaFacadeUtilisateur;
+import entities.Notification;
 import entities.Ville;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
@@ -108,6 +110,8 @@ public class ControleurAnonyme extends HttpServlet {
             UtilisateurDTO utilisateurDTO = ejb.connexion(login, mdp);
             request.getSession().setAttribute("utilisateur",login);
             if(utilisateurDTO.getRole().equals("utilisateur")) {
+                afficherNotification(request);
+                request.setAttribute("aAfficher", "accueil");
                 request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
             }else {
                 request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
@@ -150,6 +154,12 @@ public class ControleurAnonyme extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/inscription.jsp")
                     .forward(request, response);
         }
+    }
+
+    private void afficherNotification(HttpServletRequest request){
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        List<Notification> listeNotif = ejb.avoirListeNotification(login);
+        request.setAttribute("listeNotif", listeNotif);
     }
 
 

@@ -3,7 +3,7 @@ package servlets;
 import dtos.*;
 import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
-import entities.Ville;
+import entities.Notification;
 import exceptions.DivisionParZeroException;
 import exceptions.PasConducteurException;
 import exceptions.PrixInferieurException;
@@ -34,14 +34,20 @@ public class ControleurUtilisateur extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String aFaire = request.getParameter("afaire");
+        afficherNotification(request, response);
         if (null == aFaire) {
             if (null != request.getSession().getAttribute("utilisateur")) {
                 //display homepage
+                afficherNotification(request, response);
             } else {
                 request.getRequestDispatcher("/WEB-INF/accueil.jsp");
             }
         } else {
+            //afficherNotification(request);
             switch (aFaire) {
+                case "accueil":
+                    voirAccueil(request, response);
+                    break;
                 case "trajetsEnCours":
                     voirTrajetsEnCours(request, response);
                     break;
@@ -111,10 +117,19 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "noter":
                     noter(request,response);
                     break;
+                case "supprimerNotif":
+                    supprimerNotification(request, response);
+                    break;
                 default:
                     //display homepage
             }
         }
+    }
+
+    private void voirAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        afficherNotification(request, response);
+        request.setAttribute("aAfficher", "accueil");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
 
@@ -429,5 +444,19 @@ public class ControleurUtilisateur extends HttpServlet {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         maFacade.donnerAppreciation(login,idTrajet,commentaire,note,loginDestinataire);
         apprecierTrajet(request,response);
+    }
+
+    private void afficherNotification(HttpServletRequest request, HttpServletResponse response){
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        List<Notification> listeNotif = maFacade.avoirListeNotification(login);
+        request.setAttribute("listeNotif", listeNotif);
+    }
+
+
+    private void supprimerNotification(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        int idNotif = Integer.parseInt(request.getParameter("idNotif"));
+        maFacade.supprimerNotification(login, idNotif);
+        voirAccueil(request, response);
     }
 }
