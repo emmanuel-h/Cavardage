@@ -19,6 +19,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     private EntityManager em;
     @EJB
     private RechercheBean recherche;
+    @EJB
+    private Automate automate;
 
     public MaFacadeUtilisateurBean() {
     }
@@ -568,5 +570,19 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             System.out.println(e.toString());
         }
         return result;
+    }
+
+    @Override
+    public List<PrixMoyenDTO> avoirPrixMoyen(){
+        return automate.prixMoyen();
+    }
+
+    @Override
+    public float avoirPrixMoyen(String villeDepart, String villeArrivee){
+        StringTokenizer st = new StringTokenizer(villeDepart, "()");
+        String villeDepart2 = st.nextToken() + "_" + st.nextToken();
+        st = new StringTokenizer(villeArrivee, "()");
+        String villeArrivee2 = st.nextToken() + "_" + st.nextToken();
+        return automate.prixMoyen(villeDepart2, villeArrivee2);
     }
 }

@@ -41,4 +41,6 @@ public interface MaFacadeUtilisateur {
     int avoirNbPlacesRestantes(int idTrajet);
     List<TrajetDTO> avoirListeTrajet(String login);
     List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet);
+    List<PrixMoyenDTO> avoirPrixMoyen();
+    float avoirPrixMoyen(String villeDepart, String villeArrivee);
 }

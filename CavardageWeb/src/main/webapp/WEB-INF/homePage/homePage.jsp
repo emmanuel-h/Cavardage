@@ -73,6 +73,9 @@
             <c:if test="${aAfficher == 'trajetsEnCours'}">
                 <jsp:include page="trajetsEnCours.jsp"></jsp:include>
             </c:if>
+            <c:if test="${aAfficher == 'creerTrajetTemp'}">
+                <jsp:include page="creationTrajetTemp.jsp"></jsp:include>
+            </c:if>
             <c:if test="${aAfficher == 'creerTrajet'}">
                 <jsp:include page="creationTrajet.jsp"></jsp:include>
             </c:if>

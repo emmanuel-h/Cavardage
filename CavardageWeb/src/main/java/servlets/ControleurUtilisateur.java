@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("ControleurUtilisateur")
 public class ControleurUtilisateur extends HttpServlet {
@@ -52,7 +53,7 @@ public class ControleurUtilisateur extends HttpServlet {
                     voirTrajetsEnCours(request, response);
                     break;
                 case "creerTrajet":
-                    voirCreerTrajet(request, response);
+                    voirCreerTrajetTemp(request, response);
                     break;
                 case "voirVehicules":
                     voirVehicules(request, response);
@@ -74,6 +75,9 @@ public class ControleurUtilisateur extends HttpServlet {
                     break;
                 case "ajouterVehicule":
                     ajouterVehicule(request, response);
+                    break;
+                case "enregistrerTrajetTemp":
+                    voirCreerTrajet(request, response);
                     break;
                 case "enregistrerTrajet":
                     enregistrerTrajet(request, response);
@@ -159,12 +163,25 @@ public class ControleurUtilisateur extends HttpServlet {
 
     }
 
+    private void voirCreerTrajetTemp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
+        request.setAttribute("listeVilles", listeVilles);
+        request.setAttribute("aAfficher", "creerTrajetTemp");
+        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+    }
+
     private void voirCreerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
+        String villeDepart = request.getParameter("villeDepart");
+        String villeArrivee = request.getParameter("villeArrivee");
         List<VehiculeDTO> vehiculeDTOS = maFacade.listeVehicules(login);
         List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
+        float prixMoyen = maFacade.avoirPrixMoyen(villeDepart, villeArrivee);
+        request.setAttribute("villeDepart", villeDepart);
+        request.setAttribute("villeArrivee", villeArrivee);
         request.setAttribute("listeVehicules", vehiculeDTOS);
         request.setAttribute("listeVilles", listeVilles);
+        request.setAttribute("prixMoyen", prixMoyen);
         request.setAttribute("aAfficher", "creerTrajet");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }

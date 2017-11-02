@@ -24,11 +24,22 @@
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="villeDepart">Ville de départ : </label>
-                <input class="form-control" type="text" list="listeVille" id="villeDepart" name="villeDepart" required>
+                <input class="form-control" type="text" list="listeVille" id="villeDepart" name="villeDepart" value="${villeDepart}" readonly>
             </div>
             <div class="form-group">
                 <label for="villeArrivee">Ville d'arrivée : </label>
-                <input class="form-control" type="text" list="listeVille" id="villeArrivee" name="villeArrivee" required>
+                <input class="form-control" type="text" list="listeVille" id="villeArrivee" name="villeArrivee" value="${villeArrivee}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="prixMoyen">Prix moyen pour ce trajet : </label>
+                <c:choose>
+                    <c:when test="${prixMoyen == -1}">
+                        <label>Il n'existe pas de moyenne de prix pour ce trajet</label>
+                    </c:when>
+                    <c:otherwise>
+                        <input class="form-control" type="text" id="prixMoyen" name="prixMoyen" value="${prixMoyen} €" readonly>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="form-group">
                 <label for="date">Le : </label>
