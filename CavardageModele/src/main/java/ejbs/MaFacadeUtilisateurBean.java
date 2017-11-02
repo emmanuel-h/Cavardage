@@ -40,7 +40,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         if(!trajet.getVilleArrivee().getNomVille().equals(idVilleArrivee)) {
             Etape arrivee = null;
             for (Etape etape : etapes) {
-                System.out.println(etape.getVilleEtape().getNomVille()+" "+idVilleArrivee);
                 if (etape.getVilleEtape().getNomVille().equals(idVilleArrivee)) {
                     arrivee = etape;
                 }
@@ -217,7 +216,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     private List<ReservationDTO> avoirReservation(String login, int idTrajet, String message) throws PasConducteurException{
-        System.out.println(idTrajet);
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
         verifierUtilisateurEstConducteur(utilisateur,trajet);
@@ -294,12 +292,9 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @Override
     public HistoriqueDTO uniqueHistoriqueUtilisateur(String login, int id){
-        System.out.println("trajet modele : " + id);
         List<HistoriqueDTO> liste = historiqueUtilisateur(login);
-        System.out.println("size : " + liste.size());
         for(HistoriqueDTO h : liste){
             if(h.getIdTrajet() == id){
-                System.out.println("id : " + h.getIdTrajet());
                 return h;
             }
         }
@@ -566,8 +561,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 result=0;
             }
         }catch(Exception e){
-            e.printStackTrace();
-            System.out.println(e.toString());
         }
         return result;
     }

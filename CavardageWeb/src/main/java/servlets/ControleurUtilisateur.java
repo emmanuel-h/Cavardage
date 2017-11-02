@@ -205,10 +205,8 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void detailsHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("detail historique");
         String login = (String) request.getSession().getAttribute("utilisateur");
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
-        System.out.println("idTrajet : " + idTrajet);
         HistoriqueDTO historique = maFacade.uniqueHistoriqueUtilisateur(login, idTrajet);
         TrajetDTO trajet = maFacade.avoirTrajet(idTrajet);
         request.setAttribute("histo", historique);
@@ -225,7 +223,6 @@ public class ControleurUtilisateur extends HttpServlet {
             noteMoyenne = Float.toString(noteMoyenneFloat);
         } catch (DivisionParZeroException e) {
             noteMoyenne = "Pas encore de notes reçues.";
-            e.printStackTrace();
         }
         List<AppreciationDTO> appreciationDTOList = maFacade.avoirToutesAppreciations(login);
         List<TrajetDTO> trajetDTOS = maFacade.avoirListeTrajet(login);
@@ -335,9 +332,6 @@ public class ControleurUtilisateur extends HttpServlet {
         if (!prix.equals("")) {
             request.setAttribute("prix", prix);
         }
-        for(TrajetDTO t : listeTrajetRecherche){
-            System.out.println(t.toString());
-        }
         request.setAttribute("aAfficher", "rechercherTrajet");
         request.setAttribute("resultatsRecherche", "afficher");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
@@ -364,7 +358,6 @@ public class ControleurUtilisateur extends HttpServlet {
         try {
             maFacade.reserverPlace(login, idTrajet, nbPlaces, idVilleArrivee);
         } catch (VilleNonTrouvee villeNonTrouvee) {
-            villeNonTrouvee.printStackTrace();
             maFacade.creerNotification(login, "La ville d'arrivée n'a pas été trouvée.");
         }
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
@@ -382,7 +375,6 @@ public class ControleurUtilisateur extends HttpServlet {
             reservationsAcceptees = maFacade.avoirReservationsAcceptees(login, idTrajet);
          }catch (PasConducteurException e){
             maFacade.creerNotification(login,"Vous avez essayé de modifier un trajet dont vous n'êtes pas le conducteur.");
-            e.printStackTrace();
         }
         request.setAttribute("reservationsAttente",reservationsAttente);
         request.setAttribute("reservationsAcceptees",reservationsAcceptees);
@@ -399,21 +391,17 @@ public class ControleurUtilisateur extends HttpServlet {
             maFacade.annulerTrajet(login, idTrajet);
         }catch(PasConducteurException e){
             maFacade.creerNotification(login, "Vous avez essayé d'annuler un trajet dont vous n'êtes pas le conducteur");
-            e.printStackTrace();
         }
         rechercherTrajet(request, response);
     }
 
     private void accepterReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
-        System.out.println("login : " + login);
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
-        System.out.println("res : " + idReservation);
         try {
             maFacade.accepterReservation(login, idReservation);
         } catch (PasConducteurException e) {
             maFacade.creerNotification(login,"Vous avez essayé d'accepter la réservation d'un trajet donc vous n'êtes pas le conducteur");
-            e.printStackTrace();
         }
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         request.setAttribute("idTrajet", idTrajet);
@@ -422,14 +410,11 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void refuserReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = (String) request.getSession().getAttribute("utilisateur");
-        System.out.println("login : " + login);
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
-        System.out.println("res : " + idReservation);
         try {
             maFacade.refuserReservation(login, idReservation);
         } catch (PasConducteurException e) {
             maFacade.creerNotification(login,"Vous avez essayé d'accepter la réservation d'un trajet donc vous n'êtes pas le conducteur");
-            e.printStackTrace();
         }
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         request.setAttribute("idTrajet", idTrajet);
