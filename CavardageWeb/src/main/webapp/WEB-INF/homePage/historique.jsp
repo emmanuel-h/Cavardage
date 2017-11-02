@@ -22,7 +22,7 @@
                     <tbody>
                         <c:forEach items="${listeHistorique}" var="histo">
                             <c:if test="${histo.role == 'conducteur'}">
-                                <tr class="table-warning">
+                                <tr class="warning">
                                     <td class="col-lg-3">${histo.villeDepart}</td>
                                     <td class="col-lg-3">${histo.villeArrivee}</td>
                                     <td class="col-lg-2">${histo.dateDepart}</td>
@@ -37,7 +37,7 @@
                                 </tr>
                             </c:if>
                             <c:if test="${histo.role == 'passager'}">
-                                <tr class="table-success">
+                                <tr class="success">
                                     <td class="col-lg-3">${histo.villeDepart}</td>
                                     <td class="col-lg-3">${histo.villeArrivee}</td>
                                     <td class="col-lg-2">${histo.dateDepart}</td>

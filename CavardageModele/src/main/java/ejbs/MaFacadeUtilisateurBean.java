@@ -260,6 +260,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
+    public boolean annulerReservation(int idReservation) {
+        Reservation res = em.find(Reservation.class, idReservation);
+        res.setStatut("annule");
+        em.persist(res);
+        return true;
+    }
+
+    @Override
     public boolean supprimerNotification(String login, int idNotification) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Notification notification = em.find(Notification.class,idNotification);
@@ -475,6 +483,38 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             }
         }
         return  nbPlacesRestantes;
+    }
+
+    @Override
+    public Map<String, Object> avoirListeTrajetAVenir(String login){
+        Query q = em.createQuery("SELECT DISTINCT t FROM Trajet t WHERE t.statut=:statutTrajet " +
+                "AND t.vehiculeTrajet.utilisateur.login=:loginUtilisateur");
+        q.setParameter("statutTrajet", "aVenir");
+        q.setParameter("loginUtilisateur", login);
+        Map<String,Object> map = new TreeMap<>();
+        List<Trajet> listeTrajets = q.getResultList();
+        List<TrajetDTO> listeTrajetsDTO = new ArrayList<>();
+        for(Trajet t : listeTrajets){
+            listeTrajetsDTO.add(new TrajetDTO(t));
+        }
+        map.put("conducteur",listeTrajetsDTO);
+        q = em.createQuery("SELECT DISTINCT r FROM Reservation r WHERE (r.statut='accepte' or r.statut='enAttente')" +
+                "AND r.trajetReservation.statut=:statutTrajet and r.utilisateurReservation.login=:login");
+        q.setParameter("statutTrajet", "aVenir");
+        q.setParameter("login", login);
+        List<Reservation> reservations = q.getResultList();
+        List<ReservationDTO> listeReservationDTO = new ArrayList<>();
+        for(Reservation reservation : reservations){
+            listeReservationDTO.add(new ReservationDTO(reservation));
+        }
+        map.put("passager",listeReservationDTO);
+        return  map;
+    }
+
+    @Override
+    public ReservationDTO avoirReservationDTO(int idReservation){
+        Reservation res = em.find(Reservation.class, idReservation);
+        return new ReservationDTO(res);
     }
 
     @Override

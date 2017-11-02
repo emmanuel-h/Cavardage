@@ -17,11 +17,14 @@
     <label>Véhicule:</label> <label>${trajet.vehicule}</label><br>
     <label>Nombre de places disponibles:</label> <label>${trajet.nbPlaces}</label><br>
         <label id="label_etape" hidden>Etape choisie:</label><input type="hidden" name="afficherEtape" readonly  /><input type="hidden" value="Supprimer" name="supprimerEtape" onclick="supprimerChampsEtape()"/> <br>
-    <label>Nombre de places réservées:</label> <input type="text" name="nbPlacesReservees" required/>
+
+        <c:if test="${empty reservation}">
+        <label>Nombre de places réservées:</label> <input type="text" name="nbPlacesReservees" required/>
         <input type="hidden" name="etapeArrivee" />
         <input type="hidden" name="villeArrivee" value="${trajet.villeArrivee}_${trajet.departementArrivee}"/>
         <input type="hidden" name="idTrajet" value="${trajet.id}" />
-     <button type="submit" value="reserverTrajet" name="afaire">Réserver le trajet</button>
+        <button type="submit" value="reserverTrajet" name="afaire">Réserver le trajet</button>
+        </c:if>
     </form>
     <label>Etapes:</label>
     <li class="list-group-item">
@@ -34,11 +37,37 @@
                 <tr>
                     <td>${etape.nomVilleArrivee}(${etape.departementArrivee})</td>
                     <td>${etape.prix}€</td>
+                    <c:if test="${empty reservation}">
                     <td><input type="button" value="Descendre à cette étape" name="descenteEtape" onclick="saveAttribute('${etape.nomVilleArrivee}_${etape.departementArrivee}','${etape.nomVilleArrivee}')"/></td>
+                    </c:if>
                 </tr>
             </c:forEach>
         </table>
     </li>
+
+    <c:if test="${!empty reservation}">
+        <h3>Vos informations de réservation</h3>
+        <div>
+            <label>Nombre de places réservées : </label>
+            <input type="text" value="${reservation.nbPlaces}" readonly />
+        </div>
+        <div>
+            <label>Ville d'arrivée : </label>
+            <input type="text" value="${reservation.nomVilleArrivee}(${reservation.departementArrivee})" readonly />
+        </div>
+        <div>
+            <label>État de la demande : </label>
+            <input type="text" value="${reservation.statut}" readonly />
+        </div>
+        <div>
+            <form method="post" action="ControleurUtilisateur">
+                <input type="hidden" name="idReservation" value="${reservation.idReservation}"/>
+                <button type="submit" name="afaire" value="supprimerReservation">Supprimer la réservation</button>
+            </form>
+        </div>
+
+
+    </c:if>
 
 
 </div>
