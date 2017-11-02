@@ -57,7 +57,7 @@ public class RechercheBean {
     }
 
     public List<VilleDTO> getListeVillesDTO(){
-        Query q = em.createQuery("From Ville v");
+        Query q = em.createQuery("SELECT v FROM Ville v");
         List<Ville> listeVille = q.getResultList();
         if(!listeVille.isEmpty()){
             List<VilleDTO> villeDTOS = new ArrayList<>();
@@ -70,7 +70,7 @@ public class RechercheBean {
     }
 
     public List<Ville> getListeVilles() {
-        Query q = em.createQuery("From Ville v");
+        Query q = em.createQuery("SELECT v FROM Ville v");
         List<Ville> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
             return listeTemp;

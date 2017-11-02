@@ -16,9 +16,9 @@ import java.util.*;
 public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @PersistenceContext(unitName = "monUnite")
-    EntityManager em;
+    private EntityManager em;
     @EJB
-    RechercheBean recherche;
+    private RechercheBean recherche;
 
     public MaFacadeUtilisateurBean() {
     }
@@ -80,17 +80,18 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         em.persist(donneNote);
         destinataireNote.ajouterNoteRecue(appreciation);
         em.persist(destinataireNote);
+
+        creerNotification(login,"Votre appréciation concernant le trajet partant de "+trajet.getVilleDepart().getNomVille()
+                +" le "+trajet.getDate()+" pour l'utilisateur " +destinataireNote.getNom()+ " a bien été envoyée");
+
         return appreciation;
-       // AppreciationDTO appreciationDTO = new AppreciationDTO(appreciation);
-        //return appreciationDTO;
     }
 
     @Override
     public List<Appreciation> avoirNotesTrajet(int idTrajet) {
-        Query q = em.createQuery("FROM Appreciation a WHERE a.noteTrajet:=trajet");
+        Query q = em.createQuery("SELECT a FROM Appreciation a WHERE a.noteTrajet=:trajet");
         q.setParameter("trajet",idTrajet);
-        List<Appreciation> appreciationListe = q.getResultList();
-        return appreciationListe;
+        return q.getResultList();
     }
 
     @Override
@@ -130,7 +131,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 throw new VehiculeDejaExistantException("Vous avez déjà un véhicule portant ce nom");
             }
         }
-        Query q = em.createQuery("From Gabarit g where g.type=:gabarit");
+        Query q = em.createQuery("SELECT g FROM Gabarit g where g.type=:gabarit");
         q.setParameter("gabarit", gabarit);
         Gabarit g = (Gabarit) q.getSingleResult();
         Vehicule vehicule = new Vehicule();
@@ -217,13 +218,12 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             }
         }
         return reservationListe;
-
     }
 
     @Override
     public boolean refuserReservation(String login, int idReservation) throws PasConducteurException {
         Reservation reservation = em.find(Reservation.class,idReservation);
-        String messageNotification = "";
+        String messageNotification;
         if(null == reservation.getDescendA() || reservation.getDescendA().equals("")){
             messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getTrajetReservation().getVilleArrivee().getNomVille()+" a été refusée";
         }else{
@@ -237,7 +237,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @Override
     public boolean accepterReservation(String login, int idReservation) throws PasConducteurException{
         Reservation reservation = em.find(Reservation.class,idReservation);
-        String messageNotification = "";
+        String messageNotification;
         if(null == reservation.getDescendA() || reservation.getDescendA().equals("")){
             messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getTrajetReservation().getVilleArrivee().getNomVille()+" a été acceptée";
         }else{
@@ -278,13 +278,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 listeHisto.add(hist);
             }
         }
-
-        //HistoriqueDTO hist1 = new HistoriqueDTO(1, "clio", 0, "conducteur", "Orleans", "Tours", "26/10/2017");
-        //HistoriqueDTO hist2 = new HistoriqueDTO(2, "", 2, "passager", "Paris", "Marseille", "15/10/2017");
-
-        //listeHisto.add(hist1);
-        //listeHisto.add(hist2);
-
         return listeHisto;
     }
 
@@ -304,9 +297,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @Override
     public List<Gabarit> listeGabarits(){
-        Query q = em.createQuery("FROM Gabarit g");
-        List<Gabarit> gabaritListe = q.getResultList();
-        return gabaritListe;
+        Query q = em.createQuery("SELECT g FROM Gabarit g");
+        return q.getResultList();
     }
 
     @Override
@@ -378,6 +370,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException{
         Utilisateur user = em.find(Utilisateur.class, login);
         List<Vehicule> vListe = user.getListeVehicule();
+
+        // On récupère l'id du véhicule utilisé pour le trajet
         int idVehicule = 0;
         for(Vehicule v : vListe){
             if(v.getNom().equals(nomVehicule)){
@@ -388,23 +382,23 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
         Trajet trajet = new Trajet(date, heure+":"+minute);
 
+        // On crée une map associant les villes-étapes à leur prix.
         StringTokenizer st;
         Map<String, Integer> mapPrix = new TreeMap<>();
-        int sumpPrix = 0;
+        int prixTrajet = Integer.parseInt(prix);
         if(null != etapes){
             for(String etape : etapes){
                 st = new StringTokenizer(etape, "()/€");
                 String nomVille = st.nextToken() + "_" + st.nextToken();
                 int prixEtape = Integer.parseInt(st.nextToken());
-                sumpPrix += prixEtape;
+                if(prixEtape > prixTrajet){
+                    throw new PrixInferieurException("Le prix des étapes est inférieur au prix du trajet");
+                }
                 mapPrix.put(nomVille, prixEtape);
             }
         }
 
-        if(Integer.parseInt(prix) < sumpPrix){
-            throw new PrixInferieurException("Le prix des étapes est inférieur au prix du trajet");
-        }
-
+        // Si on a des étapes, on les persiste
         if(!mapPrix.isEmpty()){
             List<Etape> listeEtapes = new ArrayList<>();
             mapPrix.forEach((etape, prixEtape) -> {
@@ -419,13 +413,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             trajet.setListeEtape(listeEtapes);
         }
 
+        // On crée le trajet à partir des données
         st = new StringTokenizer(villeDepart, "()");
         String idVilleDepart = st.nextToken() + "_" + st.nextToken();
         st = new StringTokenizer(villeArrivee, "()");
         String idVilleArrivee = st.nextToken() + "_" + st.nextToken();
-
         Ville ville1 = em.find(Ville.class, idVilleDepart);
         Ville ville2 = em.find(Ville.class, idVilleArrivee);
+
         Vehicule vehicule = em.find(Vehicule.class, idVehicule);
 
         trajet.setVehiculeTrajet(vehicule);
@@ -435,6 +430,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         trajet.setStatut("aVenir");
 
         em.persist(trajet);
+
+        creerNotification(login,"Le trajet "+villeDepart+" - "+villeArrivee+" a été créé");
     }
 
     @Override
