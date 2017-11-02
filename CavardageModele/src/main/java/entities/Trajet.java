@@ -133,4 +133,19 @@ public class Trajet {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Trajet{" +
+                "idTrajet=" + idTrajet +
+                ", date='" + date + '\'' +
+                ", heure='" + heure + '\'' +
+                ", statut='" + statut + '\'' +
+                ", prix=" + prix +
+                ", villeDepart=" + villeDepart +
+                ", villeArrivee=" + villeArrivee +
+                ", listeReservation=" + listeReservation +
+                ", vehiculeTrajet=" + vehiculeTrajet +
+                ", listeEtape=" + listeEtape +
+                '}';
+    }
 }

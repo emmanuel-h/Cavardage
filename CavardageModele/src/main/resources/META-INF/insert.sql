@@ -79,6 +79,9 @@ INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (6,5,3,'Petaouchnok Les Bains_39');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (7,10,3,'La Rochelle_17');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (3,1,'accepte',7,3,'eric');
+INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (7,1,'accepte',7,3,'herve');
+INSERT INTO Appreciation (idAppreciation, commentaire, note, donnenote_login, estnote_login, notetrajet_idtrajet) VALUES (1,'ok',3,'bob','eric',3);
+
 
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (4,'26/12/2017','0:00','aVenir',1050,3,'Lyon_69','Amiens_80');
 
@@ -90,7 +93,9 @@ INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,
 
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (7,'21/12/2017','12:15','aVenir',75,8,'Amiens_80','Orleans_45');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (10,25,7,'Lille_59');
-
+INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (4,1,'accepte',null,7,'bob');
+INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (5,1,'enAttente',null,7,'alice');
+INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (6,1,'refuse',null,7,'charlie');
 
 INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (8,'21/12/2017','15:00','aVenir',30,6,'Amiens_80','Paris_75');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (11,15,8,'Orleans_45');

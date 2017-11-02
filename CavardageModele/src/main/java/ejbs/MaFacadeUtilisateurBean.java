@@ -468,66 +468,69 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @Override
     public List<TrajetDTO> avoirListeTrajet(String login) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
-        List<Vehicule> vehicules = utilisateur.getListeVehicule();
-        List<Trajet> trajets = new ArrayList<>();
-        for (Vehicule vehicule : vehicules){
-            for ( Trajet trajet : vehicule.getListeTrajet()){
-                trajets.add(trajet);
-            }
-        }
-        List<Reservation> reservations = utilisateur.getListeReservation();
-        for (Reservation reservation : reservations){
-            if(reservation.getStatut().equals("fini")){
-                trajets.add(reservation.getTrajetReservation());
-            }
-            String date_trajet = reservation.getTrajetReservation().getDate()+" "+reservation.getTrajetReservation().getHeure();
-            if(reservation.getStatut().equals("enAttente") && compareDate(date_trajet)>=0 ){
-                reservation.setStatut("fini");
-                em.persist(reservation);
-                trajets.add(reservation.getTrajetReservation());
-            }
-        }
+        Query q = em.createQuery("SELECT DISTINCT t FROM Trajet t, Reservation r, Appreciation a WHERE" +
+                "((t.statut='fini' or t.statut='aVenir') and ((t.vehiculeTrajet.utilisateur.login=:login)" +
+                " or (r.trajetReservation=t and r.statut='accepte' and " +
+                "r.utilisateurReservation.login=:login)))");
+        q.setParameter("login",login);
         List<TrajetDTO> trajetDTOList = new ArrayList<>();
-        for (Trajet trajet: trajets){
-            trajetDTOList.add(new TrajetDTO(trajet));
+        List<Trajet> trajets =  q.getResultList();
+        for(Trajet t : trajets) {
+            String date_trajet = t.getDate()+" "+t.getHeure();
+            if((t.getStatut().equals("aVenir") && compareDate(date_trajet)<=0)){
+                t.setStatut("fini");
+                em.persist(t);
+            }
+            if(t.getStatut().equals("fini") ){
+               // System.out.println(t);
+                q = em.createQuery("SELECT count(a) FROM Appreciation a WHERE a.noteTrajet=:trajet");
+                q.setParameter("trajet", t);
+                long nbApp = (long) q.getResultList().get(0);
+                //System.out.println("nbApp " + nbApp);
+                q = em.createQuery("SELECT count(r.idReservation) FROM Reservation r WHERE r.trajetReservation=:trajet");
+                q.setParameter("trajet", t);
+                long nbReserv = (long) q.getResultList().get(0);
+                //System.out.println("nbReserv " + nbReserv);
+                if (nbReserv > nbApp) {
+                    trajetDTOList.add(new TrajetDTO(t));
+                }
+            }
+
         }
         return trajetDTOList;
     }
 
     @Override
     public List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet) {
-        Trajet trajet = em.find(Trajet.class,idTrajet);
-        List<UtilisateurDTO> utilisateurs = new ArrayList<>();
-        Utilisateur utilisateurCourant = em.find(Utilisateur.class,login);
-        Query query = em.createQuery("SELECT a FROM Appreciation a, Trajet t WHERE " +
-                "t.idTrajet=:idTrajet and a.noteTrajet=t");
-        query.setParameter("idTrajet",idTrajet);
-        List<Appreciation> appreciations = query.getResultList();
-        for(Reservation reservation : trajet.getListeReservation()){
-            utilisateurs.add(new UtilisateurDTO(reservation.getUtilisateurReservation()));
-        }
-        for(Reservation reservation : trajet.getListeReservation()){
-            Utilisateur utilisateur = reservation.getUtilisateurReservation();
-            for (Appreciation appreciation : appreciations){
-                if((appreciation.getDonneNote().equals(utilisateurCourant) && appreciation.getEstNote().equals(utilisateur))){
-                    System.out.println("ICI"+utilisateur.getLogin());
-                    utilisateurs.remove(new UtilisateurDTO(utilisateur));
-                }
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+
+        // On récupère tous les utilisateurs du trajet
+        Query queryUtilisateurs = em.createQuery("SELECT DISTINCT u FROM Trajet t, Reservation r, Utilisateur u WHERE " +
+                "t.idTrajet=:idTrajet and ((r.trajetReservation=t and r.utilisateurReservation=u and r.statut='accepte') " +
+                "or (t.vehiculeTrajet.utilisateur = u))");
+        queryUtilisateurs.setParameter("idTrajet",idTrajet);
+        List<Utilisateur> utilisateurs = queryUtilisateurs.getResultList();
+
+        // On récupère toutes les appréciations du trajet
+        Query queryAppreciations = em.createQuery("SELECT DISTINCT a FROM Appreciation a WHERE " +
+                "a.noteTrajet.idTrajet= :idTrajet");
+        queryAppreciations.setParameter("idTrajet",idTrajet);
+        List<Appreciation> appreciations = queryAppreciations.getResultList();
+
+        // Si on a déjà donné une appreciation à un utilisateur pour ce trajet,
+        // on enlève cet utilisateur de la liste des utilisateurs à noter
+        for (Appreciation appreciation : appreciations){
+            if(appreciation.getDonneNote().equals(utilisateur)){
+                utilisateurs.remove(appreciation.getEstNote());
             }
         }
-        boolean test = true;
-        for(Appreciation appreciation : appreciations){
-            if(appreciation.getDonneNote().equals(utilisateurCourant) && appreciation.getEstNote().equals(trajet.getVehiculeTrajet().getUtilisateur())){
-                test = false;
-            }
+
+        // On transforme la liste des utilisateurs en utilisateurDTO
+        List<UtilisateurDTO> utilisateurDTOS = new ArrayList<>();
+        for(Utilisateur u : utilisateurs){
+            utilisateurDTOS.add(new UtilisateurDTO(u));
         }
-        if(test) {
-            utilisateurs.add(new UtilisateurDTO(trajet.getVehiculeTrajet().getUtilisateur()));
-        }
-        for(UtilisateurDTO utilisateurDTO:utilisateurs){
-            System.out.println(utilisateurDTO);
-        }
-        return utilisateurs;
+        return utilisateurDTOS;
     }
 
     /*
@@ -536,7 +539,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     1 date1 > date2
      */
     public int compareDate(String string_date) {
-
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         int result=0;
         try {

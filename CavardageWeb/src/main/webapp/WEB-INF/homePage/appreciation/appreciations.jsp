@@ -18,9 +18,9 @@
         <tr>
             <th>Note</th>
             <th>Commentaire</th>
+        <tr>
         </tr>
         <c:forEach items="${appreciations}" var="appreciation">
-            <tr>
                 <td>${appreciation.note}</td>
                 <td>${appreciation.commentaire}</td>
             </tr>
