@@ -1,0 +1,99 @@
+package ejbs;
+
+import dtos.PrixMoyenDTO;
+import entities.Trajet;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+@Stateless(name = "Automate")
+public class Automate {
+
+    @PersistenceContext(unitName="monUnite")
+    private EntityManager em;
+
+    public List<PrixMoyenDTO> prixMoyen(){
+        Query q = em.createQuery("FROM Trajet t WHERE t.statut=:statutFini OR t.statut=:statutAVenir");
+        q.setParameter("statutFini", "fini");
+        q.setParameter("statutAVenir", "aVenir");
+        List<Trajet> listeTrajets = q.getResultList();
+
+        List<PrixMoyenDTO> listePrixMoyen = new ArrayList<>();
+        boolean update = false;
+        int listePrixMoyenSize = 0;
+        for(Trajet t : listeTrajets){
+            for(int i = 0; i < listePrixMoyenSize; i++){
+                PrixMoyenDTO p = listePrixMoyen.get(i);
+                if(t.getVilleDepart().getNomVille().equals(p.getVille1()) && t.getVilleArrivee().getNomVille().equals(p.getVille2())){
+                    p.setPrix((p.getPrix() + t.getPrix()) / 2f);
+                    update = true;
+                    break;
+                }
+            }
+            if(!update){
+                PrixMoyenDTO p = new PrixMoyenDTO(t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille(), t.getPrix());
+                listePrixMoyen.add(p);
+                listePrixMoyenSize++;
+            }
+            update = false;
+        }
+
+        return listePrixMoyen;
+
+    }
+
+    public float prixMoyen(String villeDepart, String villeArrivee){
+        Query q = em.createQuery("SELECT t.prix FROM Trajet t where t.villeDepart.nomVille=:villeDepart AND t.villeArrivee.nomVille=:villeArrivee");
+        q.setParameter("villeDepart", villeDepart);
+        q.setParameter("villeArrivee", villeArrivee);
+        List<Integer> listePrix = q.getResultList();
+
+        if(listePrix.isEmpty()){
+            return -1;
+        }else {
+            int prixMoyen = 0;
+            for (int n : listePrix) {
+                prixMoyen += n;
+            }
+            prixMoyen /= listePrix.size();
+
+            return prixMoyen;
+        }
+    }
+
+    public float prixMoyen(Trajet t){
+        return prixMoyen(t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille());
+    }
+
+    private class CoupleVilles{
+        private String ville1;
+        private String ville2;
+
+        public CoupleVilles(String ville1, String ville2){
+            this.ville1 = ville1;
+            this.ville2 = ville2;
+        }
+
+        public String getVille1() {
+            return ville1;
+        }
+
+        public void setVille1(String ville1) {
+            this.ville1 = ville1;
+        }
+
+        public String getVille2() {
+            return ville2;
+        }
+
+        public void setVille2(String ville2) {
+            this.ville2 = ville2;
+        }
+    }
+}
