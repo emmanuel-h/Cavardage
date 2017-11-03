@@ -139,18 +139,18 @@ public class ControleurAnonyme extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp")
                             .forward(request, response);
                 }else{
-                    request.setAttribute("messageErreur","L'inscription n'a pas réussi.");
+                    request.setAttribute("messageErreur","L'inscription n'a pas réussi");
                     request.getRequestDispatcher("/WEB-INF/inscription.jsp")
                             .forward(request, response);
                 }
             }catch(LoginExistantException e){
-                request.setAttribute("messageErreur","Le login est déjà pris.");
+                request.setAttribute("messageErreur","Le login est déjà pris");
                 request.getRequestDispatcher("/WEB-INF/inscription.jsp")
                         .forward(request, response);
             }
         }else{
 
-            request.setAttribute("messageErreur","Les mots de passe est différent.");
+            request.setAttribute("messageErreur","Les mots de passe sont différents");
             request.getRequestDispatcher("/WEB-INF/inscription.jsp")
                     .forward(request, response);
         }

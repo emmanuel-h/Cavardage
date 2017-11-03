@@ -98,7 +98,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public StatistiquesDTO recupererStatistiques(){
-        Query q = em.createQuery("From Utilisateur u");
+        Query q = em.createQuery("SELECT u FROM Utilisateur u WHERE u.roleUtilisateur.message = 'utilisateur'");
         List<Utilisateur> listeUtilisateur = q.getResultList();
         int nbUtilisateur = listeUtilisateur.size();
 
@@ -119,7 +119,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         q.setParameter("statutReservation", "accepte");
         int nbPassagers = q.getResultList().size();
 
-        q = em.createQuery("FROM Reservation res where res.statut=:statutReservation");
+        q = em.createQuery("SELECT res FROM Reservation res where res.statut=:statutReservation");
         q.setParameter("statutReservation", "accepte");
         int nbTrajetsAcceptes = q.getResultList().size();
 
@@ -132,17 +132,14 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             prixTotal += n;
         }
 
-        q = em.createQuery("FROM Trajet t");
-        List<Trajet> listeTrajets = q.getResultList();
-        int nbTrajetsFinis = 0;
-        //Map<String, Integer> mapDeparts = new TreeMap<>();
-        //Map<String, Integer> mapArrivees = new TreeMap<>();
-        for(Trajet t : listeTrajets){
+        q = em.createQuery("SELECT COUNT (t) FROM Trajet t WHERE t.statut = 'fini'");
+        int nbTrajetsFinis = ((Long)q.getSingleResult()).intValue();
+        /*for(Trajet t : listeTrajets){
             if(t.getStatut().equals("fini")) {
                 nbTrajetsFinis++;
             }
             //TODO trouver la ville avec le plus de départs et celle avec le plus d'arrivées
-        }
+        }*/
 
         StatistiquesDTO stat = new StatistiquesDTO(nbUtilisateur, nbPassagers, nbConducteurs, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
 

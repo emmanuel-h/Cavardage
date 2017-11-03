@@ -36,7 +36,12 @@
         </div>
         <div class="form-group">
             <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
-            <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
+        </div>
+    </form>
+
+    <form class="form-inline" method="post" action="ControleurAnonyme" >
+        <div class="form-group">
+        <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
         </div>
     </form>
 

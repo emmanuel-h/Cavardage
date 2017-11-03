@@ -82,6 +82,9 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         destinataireNote.ajouterNoteRecue(appreciation);
         em.persist(destinataireNote);
 
+        creerNotification(loginDestinataire,"Vous avez reçu une appréciation concernant le trajet partant de "+trajet.getVilleDepart().getNomVille()
+                +" le "+trajet.getDate()+" de l'utilisateur " +donneNote.getNom());
+
         creerNotification(login,"Votre appréciation concernant le trajet partant de "+trajet.getVilleDepart().getNomVille()
                 +" le "+trajet.getDate()+" pour l'utilisateur " +destinataireNote.getNom()+ " a bien été envoyée");
 
