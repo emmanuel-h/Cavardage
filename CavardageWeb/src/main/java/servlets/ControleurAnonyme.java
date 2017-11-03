@@ -114,7 +114,7 @@ public class ControleurAnonyme extends HttpServlet {
                 request.setAttribute("aAfficher", "accueil");
                 request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
             }else {
-                request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
             }
         }catch (UtilisateurNonInscritException exception){
             getListeDernierTrajet(request);

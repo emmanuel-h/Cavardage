@@ -32,18 +32,18 @@ public class ControleurAdmin extends HttpServlet {
         String test = request.getParameter("boutonAdmin");
 
         if(null == test){
-            request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
         }else{
             switch (test){
                 case "gererVille":
                     setListeVilles(request);
                     setGestionVille(request);
-                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "gererGabarit":
                     setListeGabarits(request);
                     setGestionGabarit(request);
-                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "ajouterVille":
                     String nomVilleAjouter = request.getParameter("nomVilleAAjouter");
@@ -51,21 +51,21 @@ public class ControleurAdmin extends HttpServlet {
                     ajouterVille(nomVilleAjouter,departementVilleAjouter);
                     setGestionVille(request);
                     setListeVilles(request);
-                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "ajouterGabarit":
                     String nomGabaritAjouter = request.getParameter("nomGabaritAAjouter");
                     ajouterGabarit(nomGabaritAjouter);
                     setGestionGabarit(request);
                     setListeGabarits(request);
-                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "supprimerGabarit":
                     String nomGabaritSupp = request.getParameter("nomGabaritASupprimer");
                     supprimerGabarit(nomGabaritSupp);
                     setGestionGabarit(request);
                     setListeGabarits(request);
-                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "supprimerVille":
                     String villeSupp = request.getParameter("nomVilleASupprimer");
@@ -75,7 +75,7 @@ public class ControleurAdmin extends HttpServlet {
                     supprimerVille(nomVilleSupp,departementVilleSupp);
                     setGestionVille(request);
                     setListeVilles(request);
-                    request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "statistiques":
                     voirStatistiques(request, response);
@@ -140,6 +140,6 @@ public class ControleurAdmin extends HttpServlet {
         request.setAttribute("stat", stat);
         request.setAttribute("date", date.getDayOfMonth() + " / " + date.getMonthValue() + " / " + date.getYear());
         setStatistiques(request);
-        request.getRequestDispatcher("/WEB-INF/accueilAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
     }
 }
