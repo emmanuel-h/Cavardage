@@ -62,7 +62,8 @@ public class ControleurAdmin extends HttpServlet {
                     break;
                 case "supprimerGabarit":
                     String nomGabaritSupp = request.getParameter("nomGabaritASupprimer");
-                    supprimerGabarit(nomGabaritSupp);
+                    String nomGabaritRemp = request.getParameter("nomGabaritARemplacer");
+                    supprimerGabarit(nomGabaritSupp, nomGabaritRemp);
                     setGestionGabarit(request);
                     setListeGabarits(request);
                     request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
@@ -84,7 +85,6 @@ public class ControleurAdmin extends HttpServlet {
                     voirStatistiques(request, response);
                     break;
                 case "deconnexion":
-                    test = null;
                     request.getSession().removeAttribute("utilisateur");
                     request.getSession().invalidate();
                     response.sendRedirect(request.getContextPath());
@@ -129,8 +129,8 @@ public class ControleurAdmin extends HttpServlet {
         return ejb.supprimerVille(nomVille, departement);
     }
 
-    private boolean supprimerGabarit(String nomGabarit){
-        return ejb.supprimerGabarit(nomGabarit);
+    private boolean supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer){
+        return ejb.supprimerGabarit(gabaritASupprimer,gabaritARemplacer);
     }
 
     private void voirStatistiques(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -16,7 +16,7 @@ public interface MaFacadeAdministrateur {
 
     boolean ajouterGabarit(String nomGabarit);
 
-    boolean supprimerGabarit(String nomGabarit);
+    boolean supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer);
 
     List<Ville> getListeVilles();
 

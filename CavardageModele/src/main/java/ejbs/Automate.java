@@ -1,7 +1,9 @@
 package ejbs;
 
 import dtos.PrixMoyenDTO;
+import entities.Notification;
 import entities.Trajet;
+import entities.Utilisateur;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,6 +19,16 @@ public class Automate {
 
     @PersistenceContext(unitName="monUnite")
     private EntityManager em;
+
+    public Notification creerNotification(String login, String message) {
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        Notification notification = new Notification();
+        notification.setMessage(message);
+        em.persist(notification);
+        utilisateur.ajouterNotification(notification);
+        em.persist(utilisateur);
+        return notification;
+    }
 
     public List<PrixMoyenDTO> prixMoyen(){
         Query q = em.createQuery("FROM Trajet t WHERE t.statut=:statutFini OR t.statut=:statutAVenir");

@@ -19,6 +19,8 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     EntityManager em;
     @EJB
     RechercheBean recherche;
+    @EJB
+    Automate automate;
 
     public MaFacadeAdministrateurBean(){
 
@@ -85,12 +87,25 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         return false;
     }
 
-    public boolean supprimerGabarit(String nomGabarit){
-        Query q = em.createQuery("From Gabarit g where g.type=:gabarit");
-        q.setParameter("gabarit", nomGabarit);
+    public boolean supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer){
+        System.out.println(gabaritASupprimer+"-"+gabaritARemplacer);
+        Query qSupp = em.createQuery("SELECT g FROM Gabarit g where g.type=:gabarit");
+        qSupp.setParameter("gabarit", gabaritASupprimer);
+        Query qRemp = em.createQuery("SELECT g FROM Gabarit g where g.type=:gabarit");
+        qRemp.setParameter("gabarit", gabaritARemplacer);
         try {
-            Gabarit g = (Gabarit) q.getSingleResult();
-            em.remove(g);
+            Gabarit gSupp = (Gabarit) qSupp.getSingleResult();
+            Gabarit gRemp = (Gabarit) qRemp.getSingleResult();
+            Query vehiculesAChanger = em.createQuery("SELECT v FROM Vehicule v WHERE v.gabarit= :gabarit");
+            vehiculesAChanger.setParameter("gabarit",gSupp);
+            List<Vehicule> vehicules = vehiculesAChanger.getResultList();
+            for (Vehicule vehicule : vehicules){
+                vehicule.setGabarit(gRemp);
+                automate.creerNotification(vehicule.getUtilisateur().getLogin(),"L'administrateur du site a supprimé " +
+                        "le gabarit "+gSupp.getType()+" et l'a remplacé par "+gRemp.getType()+". Ce gabarit était celui " +
+                        "de votre véhicule "+vehicule.getNom()+".");
+            }
+            em.remove(gSupp);
             return true;
         }catch(NoResultException e){
             return false;

@@ -455,13 +455,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @Override
     public Notification creerNotification(String login, String message) {
-        Utilisateur utilisateur = em.find(Utilisateur.class,login);
-        Notification notification = new Notification();
-        notification.setMessage(message);
-        em.persist(notification);
-        utilisateur.ajouterNotification(notification);
-        em.persist(utilisateur);
-        return notification;
+        return automate.creerNotification(login,message);
     }
 
     @Override

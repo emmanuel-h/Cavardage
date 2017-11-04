@@ -11,7 +11,7 @@ INSERT INTO Utilisateur (login, nom, motDePasse, idRole) VALUES ('fiona','fiona'
 INSERT INTO Utilisateur (login, nom, motDePasse, idRole) VALUES ('gaston','gaston','gaston',2);
 INSERT INTO Utilisateur (login, nom, motDePasse, idRole) VALUES ('herve','herve','herve',2);
 
-INSERT INTO Gabarit (idGabarit, type) VALUES (1,'coupé');
+INSERT INTO Gabarit (idGabarit, type) VALUES (1,'coupe');
 INSERT INTO Gabarit (idGabarit, type) VALUES (2,'break');
 INSERT INTO Gabarit (idGabarit, type) VALUES (3,'cabriolet');
 INSERT INTO Gabarit (idGabarit, type) VALUES (4,'citadine');

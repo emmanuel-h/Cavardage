@@ -21,13 +21,15 @@
 <form method="post" action="ControleurAdmin">
     <legend>Supprimer un gabarit</legend>
     <div class="form-group">
-        <label>Nom du gabarit : </label>
         <datalist id="nomGabaritList">
             <c:forEach items="${listeGabarits}" var="gabarit">
                 <option value="${gabarit}"/>
             </c:forEach>
         </datalist>
+        <label>Nom du gabarit à supprimer : </label>
         <input type="text" list="nomGabaritList" class="form-control" name="nomGabaritASupprimer" autocomplete="off" required>
+        <label>Nom du gabarit remplaçant : </label>
+        <input type="text" list="nomGabaritList" class="form-control" name="nomGabaritARemplacer" autocomplete="off" required>
     </div>
     <div class="form-group">
         <button class="btn btn-primary" type="submit" name="boutonAdmin" value="supprimerGabarit">Supprimer un gabarit</button>
