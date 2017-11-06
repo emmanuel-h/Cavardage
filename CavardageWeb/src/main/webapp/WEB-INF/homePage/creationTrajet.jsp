@@ -23,7 +23,7 @@
 <div class="alert alert-warning">${message}</div>
 </c:if>
 
-    <form action="ControleurUtilisateur" method="post">
+    <form action="ControleurUtilisateur" method="post" >
         <legend>Proposer un trajet</legend>
         <div>
         <div class="col-lg-6">
@@ -33,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label for="villeArrivee">Ville d'arrivée : </label>
-                <input class="form-control" type="text" list="listeVille" id="villeArrivee" name="villeArrivee" value="${villeArrivee}" readonly>
+                <input class="form-control" type="text" list="listeVille" id="villeArrivee" name="villeArrivee" value="${villeArrivee}" onblur="verifierVille()" readonly>
             </div>
             <div class="form-group">
                 <label for="prixMoyen">Prix moyen pour ce trajet : </label>
