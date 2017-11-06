@@ -3,14 +3,12 @@ package ejbs;
 import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import entities.*;
+import exceptions.VilleNonTrouvee;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Stateless(name = "AdministrateurBean")
 public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
@@ -62,7 +60,47 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         return new ArrayList<>();
     }
 
-    public boolean supprimerVille(String nomVille, String departement){
+    public boolean supprimerVille(String nomVille, String departement) throws VilleNonTrouvee {
+        String idVille = nomVille + "_" + departement;
+        Ville ville = em.find(Ville.class, idVille);
+        if(null == ville){
+            throw new VilleNonTrouvee();
+        }else{
+            List<Utilisateur> utilisateursANotifier = new ArrayList<>();
+            Query q = em.createQuery("SELECT t FROM Trajet t WHERE t.villeDepart.nomVille=:villeSupp OR t.villeArrivee.nomVille=:villeSupp");
+            q.setParameter("villeSupp", idVille);
+            List<Trajet> listeTrajets = q.getResultList();
+            for(Trajet t : listeTrajets){
+                Vehicule v = t.getVehiculeTrajet();
+                v.getListeTrajet().remove(t);
+
+                List<Etape> listeEtapes = t.getListeEtape();
+                for(Etape e : listeEtapes){
+                    em.remove(e);
+                }
+
+                //utilisateursANotifier.addAll(supprimerReservation(t));
+                supprimerReservation(t);
+
+                em.remove(t);
+
+            }
+
+            q = em.createQuery("SELECT e FROM Etape e WHERE e.villeEtape.nomVille=:villeSupp");
+            q.setParameter("villeSupp", idVille);
+            List<Etape> listeEtapes = q.getResultList();
+            for(Etape e : listeEtapes){
+                Trajet t = e.getTrajet();
+                //utilisateursANotifier.addAll(supprimerReservation(t));
+                supprimerReservation(t);
+                t.getListeEtape().remove(e);
+                em.remove(e);
+            }
+
+            em.remove(ville);
+            return true;
+        }
+        /*
         String idVille = nomVille + "_" + departement;
         Ville v = em.find(Ville.class, idVille);
         if(null != v){
@@ -71,6 +109,44 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }else{
             return false;
         }
+        */
+    }
+
+    private void supprimerReservation(Trajet t){
+        List<Utilisateur> utilisateursANotifier = new ArrayList<>();
+        List<Reservation> listeReservation = t.getListeReservation();
+        for(Reservation r : listeReservation){
+            Utilisateur u = r.getUtilisateurReservation();
+            utilisateursANotifier.add(u);
+            u.getListeReservation().remove(r);
+
+            List<Appreciation> listeAppreciations = u.getEstNote();
+            for(Appreciation a : listeAppreciations){
+                if(a.getNoteTrajet().getIdTrajet() == t.getIdTrajet()){
+                    u.getEstNote().remove(a);
+                    em.remove(a);
+                }
+            }
+            listeAppreciations = u.getNote();
+            for(Appreciation a : listeAppreciations){
+                if(a.getNoteTrajet().getIdTrajet() == t.getIdTrajet()){
+                    u.getNote().remove(a);
+                    em.remove(a);
+                }
+            }
+            String villeDepartTemp = t.getVilleDepart().getNomVille();
+            String villeArriveeTemp = t.getVilleArrivee().getNomVille();
+            StringTokenizer st = new StringTokenizer(villeDepartTemp, "_");
+            String villeDepart = st.nextToken() + "(" + st.nextToken() + ")";
+            st = new StringTokenizer(villeArriveeTemp, "_");
+            String villeArrivee = st.nextToken() + "(" + st.nextToken() + ")";
+            automate.creerNotification(u.getLogin(), "Votre réservation au départ de " + villeDepart
+                    + " le " + t.getDate() + " et arrivant à " + villeArrivee + " a été annulée par l'administrateur "
+                    + "du site car cette ville n'est plus desservie actuellement.");
+            em.remove(r);
+        }
+
+        //return utilisateursANotifier;
     }
 
     public boolean ajouterGabarit(String nomGabarit){
