@@ -3,6 +3,7 @@ package servlets;
 import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAdministrateur;
+import exceptions.VilleNonTrouvee;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -126,7 +127,13 @@ public class ControleurAdmin extends HttpServlet {
     }
 
     private boolean supprimerVille(String nomVille,String departement){
-        return ejb.supprimerVille(nomVille, departement);
+        try {
+            ejb.supprimerVille(nomVille, departement);
+            return true;
+        } catch (VilleNonTrouvee villeNonTrouvee) {
+            villeNonTrouvee.printStackTrace();
+            return false;
+        }
     }
 
     private boolean supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer){
