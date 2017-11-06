@@ -19,21 +19,31 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
-                        <th class="col-lg-3">Ville de départ</th>
-                        <th class="col-lg-3">Ville d'arrivée</th>
+                        <th class="col-lg-4">Ville de départ</th>
+                        <th class="col-lg-4">Ville d'arrivée</th>
                         <th class="col-lg-2">Date de départ</th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach items="${listeTrajetsConducteur}" var="trajet">
                         <tr>
-                            <td class="col-lg-3">${trajet.villeDepart}(${trajet.departementDepart})</td>
-                            <td class="col-lg-3">${trajet.villeArrivee}(${trajet.departementArrivee})</td>
-                            <td class="col-lg-3">${trajet.date}</td>
-                            <td class="col-lg-1">
+                            <td class="col-lg-4">
+                                ${trajet.villeDepart}(${trajet.departementDepart})
+                            </td>
+                            <td class="col-lg-4">${trajet.villeArrivee}(${trajet.departementArrivee})</td>
+                            <td class="col-lg-2">${trajet.date}</td>
+                            <td class="col-lg-2">
                                 <form method="post" action="ControleurUtilisateur">
                                     <input type="hidden" name="idTrajet" value="${trajet.id}">
-                                    <button class="btn btn-primary" type="submit" name="afaire" value="gererTrajet">Gérer</button>
+
+                                        <button class="btn btn-primary" style="width: 100%" type="submit" name="afaire" value="gererTrajet"><span>Gérer
+                                        <c:if test="${reservationEnAttente[trajet.id] gt 0}">
+                                            <span class="notification-icon">
+                                                <span class="badge">${reservationEnAttente[trajet.id]}</span>
+                                            </span>
+                                        </c:if>
+                                    </span>
+                                    </button>
                                 </form>
                             </td>
                         </tr>

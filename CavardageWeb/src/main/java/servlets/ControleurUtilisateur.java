@@ -36,16 +36,15 @@ public class ControleurUtilisateur extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String aFaire = request.getParameter("afaire");
-        afficherNotification(request, response);
+        afficherNotification(request);
         if (null == aFaire) {
             if (null != request.getSession().getAttribute("utilisateur")) {
                 //display homepage
-                afficherNotification(request, response);
+                afficherNotification(request);
             } else {
                 request.getRequestDispatcher("/WEB-INF/accueil.jsp");
             }
         } else {
-            //afficherNotification(request);
             switch (aFaire) {
                 case "accueil":
                     voirAccueil(request, response);
@@ -136,7 +135,7 @@ public class ControleurUtilisateur extends HttpServlet {
 
 
     private void voirAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        afficherNotification(request, response);
+        afficherNotification(request);
         request.setAttribute("aAfficher", "accueil");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
@@ -154,6 +153,7 @@ public class ControleurUtilisateur extends HttpServlet {
         String[] etapes = request.getParameterValues("etape");
         String message;
         try {
+<<<<<<< HEAD
             if (maFacade.datePosterieure(date + " " + heure + ":" + minute)) {
                 try {
                     //maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
@@ -171,6 +171,12 @@ public class ControleurUtilisateur extends HttpServlet {
         }catch (ParseException e){
             request.setAttribute("messageDate","La date rentrée n'est pas valide");
             voirCreerTrajet(request, response);
+=======
+            maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
+            message = "Trajet créé";
+        } catch (PrixInferieurException e) {
+            message = "Erreur : " + e.getMessage();
+>>>>>>> Manu
         }
     }
 
@@ -179,6 +185,7 @@ public class ControleurUtilisateur extends HttpServlet {
         Map<String,Object> listeTrajet = maFacade.avoirListeTrajetAVenir(login);
         request.setAttribute("listeTrajetsConducteur", listeTrajet.get("conducteur"));
         request.setAttribute("listeTrajetsPassager", listeTrajet.get("passager"));
+        request.setAttribute("reservationEnAttente",listeTrajet.get("reservationEnAttente"));
         request.setAttribute("aAfficher", "trajetsEnCours");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
@@ -466,7 +473,7 @@ public class ControleurUtilisateur extends HttpServlet {
         apprecierTrajet(request,response);
     }
 
-    private void afficherNotification(HttpServletRequest request, HttpServletResponse response){
+    private void afficherNotification(HttpServletRequest request){
         String login = (String) request.getSession().getAttribute("utilisateur");
         List<Notification> listeNotif = maFacade.avoirListeNotification(login);
         request.setAttribute("listeNotif", listeNotif);
