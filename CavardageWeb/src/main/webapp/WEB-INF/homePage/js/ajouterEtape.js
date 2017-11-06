@@ -45,4 +45,6 @@ function supprimerEtape(nomEtape){
     n.parentNode.removeChild(n);
 }
 
+
+
 </script>
