@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -153,14 +154,24 @@ public class ControleurUtilisateur extends HttpServlet {
         String[] etapes = request.getParameterValues("etape");
         String message;
         try {
-            //maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
-            maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
-            message = "Trajet créé";
-        } catch (PrixInferieurException e) {
-            message = "Erreur : " + e.getMessage();
+            if (maFacade.datePosterieure(date + " " + heure + ":" + minute)) {
+                try {
+                    //maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
+                    maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
+                    message = "Trajet créé";
+                } catch (PrixInferieurException e) {
+                    message = "Erreur : " + e.getMessage();
+                }
+                request.setAttribute("message", message);
+                request.setAttribute("messageDate",null);
+            } else {
+                request.setAttribute("messageDate", "La date rentrée est antérieure à ajourd'hui");
+            }
+            voirCreerTrajet(request, response);
+        }catch (ParseException e){
+            request.setAttribute("messageDate","La date rentrée n'est pas valide");
+            voirCreerTrajet(request, response);
         }
-        request.setAttribute("message", message);
-        voirCreerTrajet(request, response);
     }
 
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

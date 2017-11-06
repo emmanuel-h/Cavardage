@@ -20,7 +20,7 @@
     </datalist>
 
 <c:if test="${not empty message}">
-<div class="alert alert-danger">${message}</div>
+<div class="alert alert-warning">${message}</div>
 </c:if>
 
     <form action="ControleurUtilisateur" method="post">
@@ -47,7 +47,7 @@
                 </c:choose>
             </div>
             <div class="form-group">
-                <label for="date">Le : </label>
+                <label>${messageDate}</label>
                 <input class="form-control" type="text" id="date" name="date" required placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off">
             </div>
             <div class="form-group">

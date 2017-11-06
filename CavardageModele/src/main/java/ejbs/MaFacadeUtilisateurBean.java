@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -614,5 +615,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         st = new StringTokenizer(villeArrivee, "()");
         String villeArrivee2 = st.nextToken() + "_" + st.nextToken();
         return automate.prixMoyen(villeDepart2, villeArrivee2);
+    }
+
+    @Override
+    public boolean datePosterieure(String dateTest)  throws ParseException {
+        return automate.datePosterieure(dateTest);
     }
 }

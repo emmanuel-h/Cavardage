@@ -5,6 +5,7 @@ import entities.*;
 import exceptions.*;
 
 import javax.ejb.Local;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -46,4 +47,5 @@ public interface MaFacadeUtilisateur {
     List<PrixMoyenDTO> avoirPrixMoyen();
     float avoirPrixMoyen(String villeDepart, String villeArrivee);
     Map<String, Object> avoirListeTrajetAVenir(String login);
+    boolean datePosterieure(String dateTest)  throws ParseException;
 }

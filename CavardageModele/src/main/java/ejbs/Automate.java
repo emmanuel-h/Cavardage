@@ -9,10 +9,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Stateless(name = "Automate")
 public class Automate {
@@ -82,6 +81,20 @@ public class Automate {
     public float prixMoyen(Trajet t){
         return prixMoyen(t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille());
     }
+
+    public boolean datePosterieure(String dateTest) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        format.setLenient(false);
+        boolean result = false;
+        Date current_date = new Date();
+        format.format(current_date);
+        Date date = format.parse(dateTest);
+        if (date.compareTo(current_date) > 0) {
+            result = true;
+        }
+        return result;
+    }
+
 
     private class CoupleVilles{
         private String ville1;
