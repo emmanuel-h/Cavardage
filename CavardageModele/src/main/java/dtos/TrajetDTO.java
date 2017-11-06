@@ -164,19 +164,12 @@ public class TrajetDTO implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         int result=0;
         try {
-            Date date1 = format.parse(this.getDate()+" "+this.getHeure());
-            Date date2 = format.parse(((TrajetDTO)o).getDate()+" "+((TrajetDTO)o).getHeure());
-            if (date1.compareTo(date2) > 0) {
-                result=1;
-            } else if (date1.compareTo(date2) < 0) {
-                result=-1;
-            } else if (date1.compareTo(date2) == 0) {
-                result=0;
-            }
+            Date dateThis = format.parse(this.getDate()+" "+this.getHeure());
+            Date dateObject = format.parse(((TrajetDTO)o).getDate()+" "+((TrajetDTO)o).getHeure());
+            result = dateThis.compareTo(dateObject);
         }catch(Exception e){
             e.printStackTrace();
             System.out.println(e.toString());

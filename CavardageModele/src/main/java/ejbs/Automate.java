@@ -13,6 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
+
 @Stateless(name = "Automate")
 public class Automate {
 
@@ -30,7 +32,7 @@ public class Automate {
     }
 
     public List<PrixMoyenDTO> prixMoyen(){
-        Query q = em.createQuery("FROM Trajet t WHERE t.statut=:statutFini OR t.statut=:statutAVenir");
+        Query q = em.createQuery("SELECT t FROM Trajet t WHERE t.statut=:statutFini OR t.statut=:statutAVenir");
         q.setParameter("statutFini", "fini");
         q.setParameter("statutAVenir", "aVenir");
         List<Trajet> listeTrajets = q.getResultList();
@@ -93,32 +95,5 @@ public class Automate {
             result = true;
         }
         return result;
-    }
-
-
-    private class CoupleVilles{
-        private String ville1;
-        private String ville2;
-
-        public CoupleVilles(String ville1, String ville2){
-            this.ville1 = ville1;
-            this.ville2 = ville2;
-        }
-
-        public String getVille1() {
-            return ville1;
-        }
-
-        public void setVille1(String ville1) {
-            this.ville1 = ville1;
-        }
-
-        public String getVille2() {
-            return ville2;
-        }
-
-        public void setVille2(String ville2) {
-            this.ville2 = ville2;
-        }
     }
 }

@@ -2,7 +2,7 @@ package exceptions;
 
 public class UtilisateurNonInscritException extends Exception {
 
-    public UtilisateurNonInscritException() {
-        super();
+    public UtilisateurNonInscritException(String m) {
+        super(m);
     }
 }

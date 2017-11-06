@@ -1,7 +1,8 @@
 package entities;
 
 import javax.persistence.*;
-import java.util.List;
+
+@SuppressWarnings({"unused", "RedundantIfStatement"})
 
 @Entity
 public class Etape {

@@ -12,40 +12,41 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.text.SimpleDateFormat;
 import java.util.*;
+
+@SuppressWarnings("unchecked")
 
 @Stateless(name = "AnonymeBean")
 public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
 
     @PersistenceContext(unitName="monUnite")
-    EntityManager em;
+    private EntityManager em;
     @EJB
-    RechercheBean rechercheBean;
+    private RechercheBean rechercheBean;
 
     public MaFacadeAnonymeBean() {
     }
 
     @Override
     public UtilisateurDTO connexion(String login, String mdp) throws UtilisateurNonInscritException {
-        Query query = em.createQuery("From Utilisateur u where u.login=:login and u.motDePasse=:mdp");
+        Query query = em.createQuery("SELECT u FROM Utilisateur u WHERE u.login=:login AND u.motDePasse=:mdp");
         query.setParameter("login",login);
         query.setParameter("mdp",mdp);
         List<Utilisateur> p = query.getResultList();
         if(!p.isEmpty()) {
             return new UtilisateurDTO(p.get(0));
         }else{
-            throw new UtilisateurNonInscritException();
+            throw new UtilisateurNonInscritException("Echec à la connexion");
         }
     }
 
     @Override
     public boolean inscription(String login,String nom, String mdp) throws LoginExistantException {
-        Query query = em.createQuery("From Utilisateur u where u.login=:login ");
+        Query query = em.createQuery("SELECT u FROM Utilisateur u WHERE u.login=:login ");
         query.setParameter("login", login);
         List<Utilisateur> u = query.getResultList();
         if (u.isEmpty()) {
-            query = em.createQuery("From Role u where u.message=:message ");
+            query = em.createQuery("SELECT r FROM Role r WHERE r.message=:message ");
             query.setParameter("message", "utilisateur");
             List<Role> r = query.getResultList();
             if(!r.isEmpty()) {
@@ -55,7 +56,7 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
             }
             return false;
         } else {
-            throw new LoginExistantException();
+            throw new LoginExistantException("L'utilisateur veut un login déjà pris");
         }
     }
 
@@ -67,7 +68,7 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     @Override
     public List<TrajetDTO> dernierAjout() {
 
-        List<Trajet>lt = em.createQuery("From Trajet t WHERE t.statut='aVenir' ORDER BY t.idTrajet DESC").setMaxResults(10).getResultList();
+        List<Trajet>lt = em.createQuery("SELECT t FROM Trajet t WHERE t.statut='aVenir' ORDER BY t.idTrajet DESC").setMaxResults(10).getResultList();
         List<TrajetDTO> ltd = new ArrayList<>();
         for(Trajet t :lt){
             ltd.add(new TrajetDTO(t));
@@ -91,7 +92,6 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     public List<Notification> avoirListeNotification(String login){
         Query q = em.createQuery("SELECT u.notifications FROM Utilisateur u WHERE u.login=:login");
         q.setParameter("login", login);
-        List<Notification> listeNotif = q.getResultList();
-        return listeNotif;
+        return q.getResultList();
     }
 }

@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@SuppressWarnings({"unused", "RedundantIfStatement"})
+
 @Entity
 public class Role {
 

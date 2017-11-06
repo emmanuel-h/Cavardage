@@ -1,8 +1,9 @@
 package entities;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+
+@SuppressWarnings({"unused", "RedundantIfStatement"})
 
 @Entity
 public class Utilisateur {
@@ -141,12 +142,9 @@ public class Utilisateur {
         return false;
     }
 
-    public boolean ajouterNotification(Notification notification){
-        if(this.notifications.contains(notification)){
-            return false;
-        } else {
+    public void ajouterNotification(Notification notification){
+        if(!this.notifications.contains(notification)){
             this.notifications.add(notification);
-            return true;
         }
     }
 
@@ -159,27 +157,15 @@ public class Utilisateur {
         }
     }
 
-    public boolean ajouterNoteRecue(Appreciation appreciation){
-        if (null == estNote){
-            estNote = new ArrayList<>();
-        }
-        if(estNote.contains(appreciation)){
-            return false;
-        } else {
+    public void ajouterNoteRecue(Appreciation appreciation){
+        if(!estNote.contains(appreciation)){
             estNote.add(appreciation);
-            return true;
         }
     }
 
-    public boolean ajouterNoteEnvoyee(Appreciation appreciation){
-        if(null == note){
-            note = new ArrayList<>();
-        }
-        if(note.contains(appreciation)){
-            return false;
-        } else {
+    public void ajouterNoteEnvoyee(Appreciation appreciation){
+        if(!note.contains(appreciation)){
             note.add(appreciation);
-            return true;
         }
     }
 

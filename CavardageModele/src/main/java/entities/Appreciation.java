@@ -2,6 +2,8 @@ package entities;
 
 import javax.persistence.*;
 
+@SuppressWarnings({"unused", "RedundantIfStatement"})
+
 @Entity
 public class Appreciation {
 
@@ -20,11 +22,6 @@ public class Appreciation {
     private Utilisateur estNote;
 
     public Appreciation() {
-    }
-
-    public Appreciation(int note, String commentaire) {
-        this.note = note;
-        this.commentaire = commentaire;
     }
 
     public int getIdAppreciation() {

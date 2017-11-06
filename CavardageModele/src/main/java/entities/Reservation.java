@@ -2,6 +2,8 @@ package entities;
 
 import javax.persistence.*;
 
+@SuppressWarnings({"unused", "RedundantIfStatement"})
+
 @Entity
 public class Reservation {
 

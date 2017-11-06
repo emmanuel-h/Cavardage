@@ -1,7 +1,7 @@
 package exceptions;
 
 public class VilleNonTrouvee extends Exception {
-    public VilleNonTrouvee(){
-        super();
+    public VilleNonTrouvee(String m){
+        super(m);
     }
 }

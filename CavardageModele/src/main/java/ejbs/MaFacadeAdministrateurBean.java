@@ -10,28 +10,24 @@ import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
+
 @Stateless(name = "AdministrateurBean")
 public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
 
     @PersistenceContext(unitName = "monUnite")
-    EntityManager em;
+    private EntityManager em;
     @EJB
-    RechercheBean recherche;
+    private RechercheBean recherche;
     @EJB
-    Automate automate;
+    private Automate automate;
 
     public MaFacadeAdministrateurBean(){
-
     }
 
-
     public boolean ajouterVille(String nomVille,String departement){
-        Query q = em.createQuery("From Ville v where v.nomVille=:nom");
-        q.setParameter("nom", nomVille + "_" + departement);
-        Ville v;
-        try{
-            v = (Ville) q.getSingleResult();
-        }catch(NoResultException e){
+        Ville v = em.find(Ville.class,nomVille + "_" + departement);
+        if(null == v){
             v = new Ville(nomVille,Integer.parseInt(departement));
             em.persist(v);
             return true;
@@ -48,7 +44,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public List<String> getListeGabarits(){
-        Query q = em.createQuery("From Gabarit g");
+        Query q = em.createQuery("SELECT g FROM Gabarit g");
         List<Gabarit> listeTemp = q.getResultList();
         if(!listeTemp.isEmpty()){
             List<String> listeGabarits = new ArrayList<>();
@@ -64,28 +60,29 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         String idVille = nomVille + "_" + departement;
         Ville ville = em.find(Ville.class, idVille);
         if(null == ville){
-            throw new VilleNonTrouvee();
+            throw new VilleNonTrouvee("La ville n'existe pas dans la base de données");
         }else{
             List<Utilisateur> utilisateursANotifier = new ArrayList<>();
+
+            // On commence par chercher tous les trajets dont la ville à supprimer est celle de départ ou d'arrivée
             Query q = em.createQuery("SELECT t FROM Trajet t WHERE t.villeDepart.nomVille=:villeSupp OR t.villeArrivee.nomVille=:villeSupp");
             q.setParameter("villeSupp", idVille);
             List<Trajet> listeTrajets = q.getResultList();
             for(Trajet t : listeTrajets){
+                // On supprime le trajet associé dans véhicule
                 Vehicule v = t.getVehiculeTrajet();
                 v.getListeTrajet().remove(t);
-
+                // On supprime les étapes du trajet
                 List<Etape> listeEtapes = t.getListeEtape();
                 for(Etape e : listeEtapes){
                     em.remove(e);
                 }
-
-                //utilisateursANotifier.addAll(supprimerReservation(t));
+                // On supprime les réservations du trajet puis enfin le trajet lui-même
                 supprimerReservation(t);
-
                 em.remove(t);
-
             }
 
+            // On cherche ensuite tous les trajets dont la ville à supprimer est une étape
             q = em.createQuery("SELECT e FROM Etape e WHERE e.villeEtape.nomVille=:villeSupp");
             q.setParameter("villeSupp", idVille);
             List<Etape> listeEtapes = q.getResultList();
@@ -100,16 +97,6 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             em.remove(ville);
             return true;
         }
-        /*
-        String idVille = nomVille + "_" + departement;
-        Ville v = em.find(Ville.class, idVille);
-        if(null != v){
-            em.remove(v);
-            return true;
-        }else{
-            return false;
-        }
-        */
     }
 
     private void supprimerReservation(Trajet t){
@@ -150,14 +137,12 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     }
 
     public boolean ajouterGabarit(String nomGabarit){
-        Query q = em.createQuery("From Gabarit g where g.type=:gabarit");
+        Query q = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
         q.setParameter("gabarit", nomGabarit);
-        Gabarit g;
-        try{
-            g = (Gabarit) q.getSingleResult();
-        }catch(NoResultException e){
-            g = new Gabarit(nomGabarit);
-            em.persist(g);
+        List<Gabarit> gabarits = q.getResultList();
+        if(gabarits.isEmpty()){
+            Gabarit gabarit = new Gabarit(nomGabarit);
+            em.persist(gabarit);
             return true;
         }
         return false;
@@ -165,9 +150,9 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
 
     public boolean supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer){
         System.out.println(gabaritASupprimer+"-"+gabaritARemplacer);
-        Query qSupp = em.createQuery("SELECT g FROM Gabarit g where g.type=:gabarit");
+        Query qSupp = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
         qSupp.setParameter("gabarit", gabaritASupprimer);
-        Query qRemp = em.createQuery("SELECT g FROM Gabarit g where g.type=:gabarit");
+        Query qRemp = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
         qRemp.setParameter("gabarit", gabaritARemplacer);
         try {
             Gabarit gSupp = (Gabarit) qSupp.getSingleResult();
@@ -232,9 +217,6 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             //TODO trouver la ville avec le plus de départs et celle avec le plus d'arrivées
         }*/
 
-        StatistiquesDTO stat = new StatistiquesDTO(nbUtilisateur, nbPassagers, nbConducteurs, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
-
-        return stat;
-
+        return new StatistiquesDTO(nbUtilisateur, nbPassagers, nbConducteurs, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
     }
 }

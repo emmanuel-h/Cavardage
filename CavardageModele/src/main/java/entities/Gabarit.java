@@ -2,10 +2,8 @@ package entities;
 
 import javax.persistence.*;
 
-/*@NamedQueries({
-        @NamedQuery(name = "selectGabarit", query = "SELECT Gabarit AS g FROM Gabarit where g.type=:gabarit"),
-        @NamedQuery(name = "selectAllGabarits", query = "SELECT Gabarit AS g FROM Gabarit")
-})*/
+@SuppressWarnings({"unused", "RedundantIfStatement"})
+
 @Entity
 public class Gabarit {
 

@@ -1,7 +1,7 @@
 package exceptions;
 
 public class DivisionParZeroException extends Exception {
-    public DivisionParZeroException(){
-        super();
+    public DivisionParZeroException(String m){
+        super(m);
     }
 }

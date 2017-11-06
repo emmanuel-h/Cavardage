@@ -12,6 +12,10 @@ import javax.persistence.Query;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@SuppressWarnings("unchecked")
 
 @Stateless(name = "UtilisateurBean")
 public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
@@ -46,7 +50,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 }
             }
             if(null == arrivee){
-                throw new VilleNonTrouvee();
+                throw new VilleNonTrouvee("La ville d'arrivée n'a pas été trouvée");
             }
             reservation.setDescendA(arrivee);
         } else {
@@ -120,7 +124,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
         int moyenne;
         if(appreciations.size() == 0){
-            throw new DivisionParZeroException();
+            throw new DivisionParZeroException("Il n'y a pas eu d'appreciations pour le moment");
         } else {
             moyenne = notes / appreciations.size();
             int moyenne_int = moyenne*10;
@@ -145,7 +149,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         vehicule.setNom(nomVehicule);
         vehicule.setNombrePlaces(nbPlaces);
         vehicule.setUtilisateur(utilisateur);
-        utilisateur.ajouterVehicule(vehicule);
+        boolean nomPris = utilisateur.ajouterVehicule(vehicule);
+        if(!nomPris){
+            throw new VehiculeDejaExistantException("Vous avez déjà un véhicule portant ce nom");
+        }
         em.persist(vehicule);
         em.persist(utilisateur);
 
@@ -359,11 +366,9 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         em.persist(passager);
     }
 
-    private boolean verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
+    private void verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
         if(!trajet.getVehiculeTrajet().getUtilisateur().getLogin().equals(utilisateur.getLogin())) {
-            throw new PasConducteurException();
-        } else {
-            return true;
+            throw new PasConducteurException("Vous n'êtes pas le conducteur de ce trajet");
         }
     }
 
@@ -615,7 +620,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             } else if (date.compareTo(current_date) == 0) {
                 result=0;
             }
-        }catch(Exception e){
+        }catch(ParseException e){
+            Logger.getAnonymousLogger().log(Level.INFO,"La date n'a pas pu être parsée");
         }
         return result;
     }

@@ -153,10 +153,8 @@ public class ControleurUtilisateur extends HttpServlet {
         String[] etapes = request.getParameterValues("etape");
         String message;
         try {
-<<<<<<< HEAD
             if (maFacade.datePosterieure(date + " " + heure + ":" + minute)) {
                 try {
-                    //maFacade.preAjoutVille(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
                     maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
                     message = "Trajet créé";
                 } catch (PrixInferieurException e) {
@@ -171,12 +169,6 @@ public class ControleurUtilisateur extends HttpServlet {
         }catch (ParseException e){
             request.setAttribute("messageDate","La date rentrée n'est pas valide");
             voirCreerTrajet(request, response);
-=======
-            maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
-            message = "Trajet créé";
-        } catch (PrixInferieurException e) {
-            message = "Erreur : " + e.getMessage();
->>>>>>> Manu
         }
     }
 

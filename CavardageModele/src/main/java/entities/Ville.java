@@ -2,10 +2,8 @@ package entities;
 
 import javax.persistence.*;
 
-/*@NamedQueries({
-        @NamedQuery(name = "selectVille", query = "SELECT Ville AS v FROM Ville where v.nomVille=:nom"),
-        @NamedQuery(name = "selectAllVilles", query = "SELECT Ville AS v FROM Ville")
-})*/
+@SuppressWarnings({"unused", "RedundantIfStatement"})
+
 @Entity
 public class Ville {
 
