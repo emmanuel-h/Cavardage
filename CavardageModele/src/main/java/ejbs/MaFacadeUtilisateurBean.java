@@ -479,6 +479,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @Override
     public Map<String, Object> avoirListeTrajetAVenir(String login){
+        // On recherche tous les trajets faits en tant que conducteur
         Query q = em.createQuery("SELECT DISTINCT t FROM Trajet t WHERE t.statut=:statutTrajet " +
                 "AND t.vehiculeTrajet.utilisateur.login=:loginUtilisateur");
         q.setParameter("statutTrajet", "aVenir");
@@ -486,10 +487,25 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Map<String,Object> map = new TreeMap<>();
         List<Trajet> listeTrajets = q.getResultList();
         List<TrajetDTO> listeTrajetsDTO = new ArrayList<>();
+
+        Map<Integer,Integer> reservationEnAttente = new HashMap<>();
+
+        int enAttente = 0;
         for(Trajet t : listeTrajets){
             listeTrajetsDTO.add(new TrajetDTO(t));
+            for(Reservation reservation : t.getListeReservation()){
+                if(reservation.getStatut().equals("enAttente")){
+                    enAttente++;
+                }
+            }
+            reservationEnAttente.put(t.getIdTrajet(),enAttente);
+            enAttente = 0;
         }
         map.put("conducteur",listeTrajetsDTO);
+        map.put("reservationEnAttente",reservationEnAttente);
+
+
+        // On recherche tous les trajets faits en tant que passager
         q = em.createQuery("SELECT DISTINCT r FROM Reservation r WHERE (r.statut='accepte' or r.statut='enAttente')" +
                 "AND r.trajetReservation.statut=:statutTrajet and r.utilisateurReservation.login=:login");
         q.setParameter("statutTrajet", "aVenir");
@@ -500,6 +516,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             listeReservationDTO.add(new ReservationDTO(reservation));
         }
         map.put("passager",listeReservationDTO);
+
         return  map;
     }
 

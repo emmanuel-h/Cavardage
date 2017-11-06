@@ -82,30 +82,4 @@ public class Automate {
     public float prixMoyen(Trajet t){
         return prixMoyen(t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille());
     }
-
-    private class CoupleVilles{
-        private String ville1;
-        private String ville2;
-
-        public CoupleVilles(String ville1, String ville2){
-            this.ville1 = ville1;
-            this.ville2 = ville2;
-        }
-
-        public String getVille1() {
-            return ville1;
-        }
-
-        public void setVille1(String ville1) {
-            this.ville1 = ville1;
-        }
-
-        public String getVille2() {
-            return ville2;
-        }
-
-        public void setVille2(String ville2) {
-            this.ville2 = ville2;
-        }
-    }
 }

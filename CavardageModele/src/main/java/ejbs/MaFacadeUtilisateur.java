@@ -46,4 +46,5 @@ public interface MaFacadeUtilisateur {
     List<PrixMoyenDTO> avoirPrixMoyen();
     float avoirPrixMoyen(String villeDepart, String villeArrivee);
     Map<String, Object> avoirListeTrajetAVenir(String login);
+
 }
