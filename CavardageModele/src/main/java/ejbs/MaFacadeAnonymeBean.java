@@ -4,6 +4,7 @@ import dtos.TrajetDTO;
 import dtos.UtilisateurDTO;
 import dtos.VilleDTO;
 import entities.*;
+import exceptions.DatePosterieureException;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
 
@@ -12,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.text.ParseException;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
@@ -61,7 +63,7 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) {
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DatePosterieureException, ParseException {
         return rechercheBean.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
     }
 

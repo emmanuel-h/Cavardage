@@ -89,11 +89,34 @@ public class Automate {
         format.setLenient(false);
         boolean result = false;
         Date current_date = new Date();
-        format.format(current_date);
+        String dateCourante = format.format(current_date);
         Date date = format.parse(dateTest);
-        if (date.compareTo(current_date) > 0) {
+        Date temp = new Date(3600 * 1000);
+        Date dateFinale = new Date(current_date.getTime() + temp.getTime());
+        System.out.println("date 1 : " + dateTest);
+        System.out.println("date 2 : " + dateCourante);
+        System.out.println("date 3 : " + dateFinale);
+        if (date.compareTo(dateFinale) >= 0) {
             result = true;
         }
         return result;
+    }
+
+    public boolean testDate(String dateString) throws ParseException {
+
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        formatDate.setLenient(false);
+        Date dateCourante = new Date();
+        SimpleDateFormat formatHeure = new SimpleDateFormat("HH:mm");
+        Date heureCourante = new Date();
+        String heure2 = formatHeure.format(heureCourante);
+        formatDate.format(dateCourante);
+        Date dateTest = formatDate.parse(dateString+" "+heure2);
+        Date temp = new Date(3600 * 1000);
+        Date dateFinale = new Date(dateTest.getTime() + temp.getTime());
+        System.out.println("date courante "+ dateCourante);
+        System.out.println("date test "+ dateTest);
+        return dateFinale.compareTo(dateCourante)>=0;
+
     }
 }

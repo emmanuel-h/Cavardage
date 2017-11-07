@@ -48,6 +48,7 @@
             </div>
             <div class="form-group">
                 <label>${messageDate}</label>
+                <label for="date">Le : </label>
                 <input class="form-control" type="text" id="date" name="date" required placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off">
             </div>
             <div class="form-group">
@@ -57,7 +58,7 @@
             </div>
             <div class="form-group">
                 <label for="vehicule">Choix du véhicule : </label>
-                <input class="form-control" type="text" id="vehicule" list="listeVehicule" name="vehicule" autocomplete="off" autocomplete="off" required>
+                <input class="form-control" type="text" id="vehicule" list="listeVehicule" name="vehicule" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="prixVoyage">Prix du voyage : </label>

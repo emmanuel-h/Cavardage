@@ -4,11 +4,15 @@ import dtos.TrajetDTO;
 import dtos.VilleDTO;
 import entities.Trajet;
 import entities.Ville;
+import exceptions.DatePosterieureException;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
@@ -18,12 +22,18 @@ public class RechercheBean {
 
     @PersistenceContext(unitName="monUnite")
     private EntityManager em;
+    @EJB
+    Automate automate;
 
     public RechercheBean() {
     }
 
     public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrivee,
-                                           String departementArrivee, String date, String prix) {
+                                           String departementArrivee, String date, String prix) throws ParseException, DatePosterieureException {
+
+            if(!automate.testDate(date)){
+                throw new DatePosterieureException("Vous ne pouvez pas rechercher un trajet à une date antérieure");
+            }
             String mq="SELECT DISTINCT t From Trajet t, Etape e WHERE " +
                     "t.villeDepart.nomVille=:villeDepart" +
                     " and ((t.villeArrivee.nomVille=:villeArrivee) or" +

@@ -23,4 +23,10 @@
         <label>Prix: (Optionnel)</label>
         <input type="text" name="prix" autocomplete="off"/>
         <button type="submit" name="afaire" value="afficherRechercheTrajet">Rechercher</button>
+
+    <c:if test="${!empty messageErreur}">
+        <div class="alert alert-danger">
+            <strong>Erreur : </strong> ${messageErreur}
+        </div>
+    </c:if>
 </div>

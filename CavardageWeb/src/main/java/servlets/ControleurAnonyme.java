@@ -7,6 +7,7 @@ import ejbs.MaFacadeAnonyme;
 import ejbs.MaFacadeUtilisateur;
 import entities.Notification;
 import entities.Ville;
+import exceptions.DatePosterieureException;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 @WebServlet("ControleurAnonyme")
@@ -75,17 +77,32 @@ public class ControleurAnonyme extends HttpServlet {
         String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
         String date = request.getParameter("date");
         String prix = request.getParameter("prix");
-        List<TrajetDTO> listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date, prix);
-        request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
-        getListeDernierTrajet(request);
-        getListeVilles(request);
-        request.setAttribute("villeDepart",villeDepart);
-        request.setAttribute("villeArrivee",villeArrive);
-        request.setAttribute("date",date);
-        if(!prix.equals("")) {
-            request.setAttribute("prix", prix);
+        List<TrajetDTO> listeTrajetRecherche = null;
+        try {
+            listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date, prix);
+            request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
+            getListeDernierTrajet(request);
+            getListeVilles(request);
+            request.setAttribute("villeDepart",villeDepart);
+            request.setAttribute("villeArrivee",villeArrive);
+            request.setAttribute("date",date);
+            if(!prix.equals("")) {
+                request.setAttribute("prix", prix);
+            }
+            request.setAttribute("resultatsRecherche","afficher");
+            request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
+        } catch (DatePosterieureException e) {
+            request.setAttribute("messageErreur", e.getMessage());
+            retournerAccueil(request, response);
+        } catch (ParseException e) {
+            request.setAttribute("messageErreur", "Merci de rentrer une date valide (jj/mm/aaaa)");
+            retournerAccueil(request, response);
         }
-        request.setAttribute("resultatsRecherche","afficher");
+    }
+
+    private void retournerAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        getListeVilles(request);
+        getListeDernierTrajet(request);
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
     }
 
@@ -161,6 +178,7 @@ public class ControleurAnonyme extends HttpServlet {
         List<Notification> listeNotif = ejb.avoirListeNotification(login);
         request.setAttribute("listeNotif", listeNotif);
     }
+
 
 
 }

@@ -4,11 +4,7 @@ import dtos.*;
 import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
 import entities.Notification;
-import exceptions.DivisionParZeroException;
-import exceptions.PasConducteurException;
-import exceptions.PrixInferieurException;
-import exceptions.VehiculeDejaExistantException;
-import exceptions.VilleNonTrouvee;
+import exceptions.*;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -163,7 +159,7 @@ public class ControleurUtilisateur extends HttpServlet {
                 request.setAttribute("message", message);
                 request.setAttribute("messageDate",null);
             } else {
-                request.setAttribute("messageDate", "La date rentrée est antérieure à ajourd'hui");
+                request.setAttribute("messageDate", "Vous ne pouvez pas proposer un trajet qui commence dans moins d'une heure");
             }
             voirCreerTrajet(request, response);
         }catch (ParseException e){
@@ -333,19 +329,29 @@ public class ControleurUtilisateur extends HttpServlet {
         String departementVilleArrivee = villeArrive.substring(villeArrive.length() - 3, villeArrive.length() - 1);
         String date = request.getParameter("date");
         String prix = request.getParameter("prix");
-        List<TrajetDTO> listeTrajetRecherche = maFacade.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date, prix);
-        request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
-        List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
-        request.setAttribute("listeVilles", listeVilles);
-        request.setAttribute("villeDepart", villeDepart);
-        request.setAttribute("villeArrivee", villeArrive);
-        request.setAttribute("date", date);
-        if (!prix.equals("")) {
-            request.setAttribute("prix", prix);
+        List<TrajetDTO> listeTrajetRecherche = null;
+        try {
+            listeTrajetRecherche = maFacade.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date, prix);
+            request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
+            List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
+            request.setAttribute("listeVilles", listeVilles);
+            request.setAttribute("villeDepart", villeDepart);
+            request.setAttribute("villeArrivee", villeArrive);
+            request.setAttribute("date", date);
+            if (!prix.equals("")) {
+                request.setAttribute("prix", prix);
+            }
+            request.setAttribute("aAfficher", "rechercherTrajet");
+            request.setAttribute("resultatsRecherche", "afficher");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        } catch (DatePosterieureException e) {
+            request.setAttribute("messageErreur", e.getMessage());
+            rechercherTrajet(request, response);
+        } catch (ParseException e) {
+            request.setAttribute("messageErreur", "Merci de rentrer une date valide (jj/mm/aaaa)");
+            rechercherTrajet(request, response);
         }
-        request.setAttribute("aAfficher", "rechercherTrajet");
-        request.setAttribute("resultatsRecherche", "afficher");
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+
     }
 
     private void detailsTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
