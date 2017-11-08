@@ -82,7 +82,6 @@
                     </tr>
                 </form>
             </c:forEach>
-            <
             <form name="formQuelBouton">
             <input type="hidden" name="quelBouton" value="refuser">
             </form>

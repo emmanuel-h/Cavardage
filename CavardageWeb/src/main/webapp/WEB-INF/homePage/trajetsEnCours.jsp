@@ -13,7 +13,7 @@
         <h4>Vous ne proposez pas encore de trajet</h4>
     </c:when>
     <c:otherwise>
-        <h4>Vos trajets en tant que conducteurs : </h4>
+        <h4>Vos trajets en tant que conducteur : </h4>
         <ul class="list-group">
             <li class="list-group-item">
                 <table class="table table-bordered table-hover">
