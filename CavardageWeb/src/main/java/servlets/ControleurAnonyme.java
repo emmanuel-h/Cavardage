@@ -1,18 +1,10 @@
 package servlets;
 
 import dtos.TrajetDTO;
-import dtos.UtilisateurDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAnonyme;
-import ejbs.MaFacadeUtilisateur;
-import entities.Notification;
-import entities.Ville;
 import exceptions.DatePosterieureException;
 import exceptions.LoginExistantException;
-import exceptions.UtilisateurNonInscritException;
-
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,12 +15,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-@DeclareRoles({"utilisateur","admin"})
 @WebServlet("ControleurAnonyme")
 public class ControleurAnonyme extends HttpServlet {
 
     @EJB
-    MaFacadeAnonyme ejb;
+    private MaFacadeAnonyme ejb;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -58,7 +49,6 @@ public class ControleurAnonyme extends HttpServlet {
                     getListeDernierTrajet(request);
                     break;
                 case "deconnexion":
-                    test = null;
                     request.getSession().removeAttribute("utilisateur");
                     request.getSession().invalidate();
                     response.sendRedirect(request.getContextPath());
@@ -81,7 +71,7 @@ public class ControleurAnonyme extends HttpServlet {
         String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
         String date = request.getParameter("date");
         String prix = request.getParameter("prix");
-        List<TrajetDTO> listeTrajetRecherche = null;
+        List<TrajetDTO> listeTrajetRecherche;
         try {
             listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date, prix);
             request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
@@ -110,45 +100,21 @@ public class ControleurAnonyme extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
     }
 
-
     private void getListeDernierTrajet(HttpServletRequest request) {
         List<TrajetDTO> listeDernierTrajet = ejb.dernierAjout();
         request.setAttribute("listeDernierTrajet",listeDernierTrajet);
     }
-
 
     private void getListeVilles(HttpServletRequest request){
         List<VilleDTO> listeVilles = ejb.getListeVilleDTO();
         request.setAttribute("listeVilles",listeVilles);
     }
 
-    @RolesAllowed("utilisateur")
-    public void connexion(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
-/*
-        String login,mdp;
-        login = request.getParameter("login");
-        mdp = request.getParameter("mdp");
-        try {
-            UtilisateurDTO utilisateurDTO = ejb.connexion(login, mdp);
-            request.getSession().setAttribute("utilisateur",login);
-            if(utilisateurDTO.getRole().equals("utilisateur")) {
-                afficherNotification(request);
-                request.setAttribute("aAfficher", "accueil");
-                request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
-            }else {
-                request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
-            }
-        }catch (UtilisateurNonInscritException exception){
-            getListeDernierTrajet(request);
-            request.getRequestDispatcher("/WEB-INF/accueil.jsp")
-                    .forward(request, response);
-        }*/
+    private void connexion(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         request.getRequestDispatcher("ControleurGeneral").forward(request,response);
     }
 
-
-
-    public void inscription(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+    private void inscription(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         String login,mdp,nom,mdp_confirmer;
         login = request.getParameter("login");
         nom = request.getParameter("nom");
@@ -178,13 +144,4 @@ public class ControleurAnonyme extends HttpServlet {
                     .forward(request, response);
         }
     }
-
-    private void afficherNotification(HttpServletRequest request){
-        String login = (String) request.getSession().getAttribute("utilisateur");
-        List<Notification> listeNotif = ejb.avoirListeNotification(login);
-        request.setAttribute("listeNotif", listeNotif);
-    }
-
-
-
 }

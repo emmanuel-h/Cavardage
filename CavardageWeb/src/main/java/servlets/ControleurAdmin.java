@@ -6,7 +6,6 @@ import ejbs.MaFacadeAdministrateur;
 import exceptions.GabaritException;
 import exceptions.VilleExistante;
 import exceptions.VilleNonTrouvee;
-
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -23,7 +21,7 @@ import java.util.StringTokenizer;
 public class ControleurAdmin extends HttpServlet {
 
     @EJB
-    MaFacadeAdministrateur ejb;
+    private MaFacadeAdministrateur ejb;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

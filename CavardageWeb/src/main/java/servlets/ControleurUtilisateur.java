@@ -5,7 +5,6 @@ import ejbs.MaFacadeUtilisateur;
 import entities.Gabarit;
 import entities.Notification;
 import exceptions.*;
-
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +21,7 @@ import java.util.Map;
 public class ControleurUtilisateur extends HttpServlet {
 
     @EJB
-    MaFacadeUtilisateur maFacade;
+    private MaFacadeUtilisateur maFacade;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,8 +30,6 @@ public class ControleurUtilisateur extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(request.getUserPrincipal().getName()+"Utilisateur");
-        System.out.println(request.getParameter("afaire"));
         String aFaire = request.getParameter("afaire");
         afficherNotification(request);
         if (null == aFaire) {
@@ -130,7 +127,9 @@ public class ControleurUtilisateur extends HttpServlet {
                     supprimerVehicule(request, response);
                     break;
                 default:
-                    //display homepage
+                    afficherNotification(request);
+                    request.setAttribute("aAfficher", "accueil");
+                    request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
             }
         }
     }
@@ -140,7 +139,6 @@ public class ControleurUtilisateur extends HttpServlet {
         request.setAttribute("aAfficher", "accueil");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
-
 
     private void enregistrerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
@@ -178,7 +176,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         Map<String,Object> listeTrajet = maFacade.avoirListeTrajetAVenir(login);
         request.setAttribute("listeTrajetsConducteur", listeTrajet.get("conducteur"));
         request.setAttribute("listeTrajetsPassager", listeTrajet.get("passager"));
@@ -195,7 +193,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void voirCreerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         String villeDepart = request.getParameter("villeDepart");
         String villeArrivee = request.getParameter("villeArrivee");
         List<VehiculeDTO> vehiculeDTOS = maFacade.listeVehicules(login);
@@ -216,7 +214,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void voirVehicules(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         List<VehiculeDTO> vehiculesDTO = maFacade.listeVehicules(login);
         request.setAttribute("listeVehicules", vehiculesDTO);
         List<Gabarit> gabarits = maFacade.listeGabarits();
@@ -226,7 +224,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void voirHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         List<HistoriqueDTO> listeHistorique = maFacade.historiqueUtilisateur(login);
         request.setAttribute("listeHistorique", listeHistorique);
         request.setAttribute("aAfficher", "historique");
@@ -234,7 +232,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void detailsHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         HistoriqueDTO historique = maFacade.uniqueHistoriqueUtilisateur(login, idTrajet);
         try{
@@ -250,8 +248,8 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void voirAppreciations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
-        String noteMoyenne = "";
+        String login = request.getUserPrincipal().getName();
+        String noteMoyenne;
         try {
             float noteMoyenneFloat = maFacade.moyenneNotes(login);
             noteMoyenne = Float.toString(noteMoyenneFloat);
@@ -273,7 +271,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void enregistrerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         String nomVehicule = request.getParameter("nomVehicule");
         String modeleVehicule = request.getParameter("modeleVehicule");
         String gabaritVehicule = request.getParameter("gabaritVehicule");
@@ -290,7 +288,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void changerMotDepasse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         String motDePasse1 = request.getParameter("nouveauMdP1");
         String motDePasse2 = request.getParameter("nouveauMdP2");
         String message;
@@ -318,7 +316,7 @@ public class ControleurUtilisateur extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
         } else {
             if (confirmation.equals("ok")) {
-                String login = (String) request.getUserPrincipal().getName();
+                String login = request.getUserPrincipal().getName();
                 String motDePasse = request.getParameter("motDePasse");
                 if (maFacade.verifierMotDePasse(login, motDePasse)) {
                     maFacade.supprimerUtilisateur(login);
@@ -350,7 +348,7 @@ public class ControleurUtilisateur extends HttpServlet {
         String departementVilleArrivee = villeArrive.substring(villeArrive.length() - 3, villeArrive.length() - 1);
         String date = request.getParameter("date");
         String prix = request.getParameter("prix");
-        List<TrajetDTO> listeTrajetRecherche = null;
+        List<TrajetDTO> listeTrajetRecherche;
         try {
             listeTrajetRecherche = maFacade.rechercheTrajet(nomVilleDepart, departementVilleDepart, nomVilleArrivee, departementVilleArrivee, date, prix);
             request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
@@ -377,7 +375,7 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void detailsTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
-        String login = (String) request.getUserPrincipal().getName();;
+        String login = request.getUserPrincipal().getName();
         try{
             TrajetDTO trajetDTO = maFacade.avoirTrajet(login,idTrajet,"passager");
             request.setAttribute("trajet", trajetDTO);
@@ -398,7 +396,7 @@ public class ControleurUtilisateur extends HttpServlet {
         }
         int nbPlaces = Integer.parseInt(request.getParameter("nbPlacesReservees"));
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         try {
             maFacade.reserverPlace(login, idTrajet, nbPlaces, idVilleArrivee);
         } catch (VilleNonTrouvee villeNonTrouvee) {
@@ -409,7 +407,7 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void gererTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
-        String login = (String) request.getUserPrincipal().getName();;
+        String login = request.getUserPrincipal().getName();
         try{
             TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet,"conducteur");
             int nbPlacesRestantes = maFacade.avoirNbPlacesRestantes(idTrajet);
@@ -434,7 +432,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void supprimerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         try{
             maFacade.annulerTrajet(login, idTrajet);
@@ -445,7 +443,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void accepterReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
         try {
             maFacade.accepterReservation(login, idReservation);
@@ -458,7 +456,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void refuserReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
         try {
             maFacade.refuserReservation(login, idReservation);
@@ -472,7 +470,7 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void supprimerReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
-        String login = (String) request.getUserPrincipal().getName();;
+        String login = request.getUserPrincipal().getName();
         maFacade.annulerReservation(login,idReservation);
         voirTrajetsEnCours(request, response);
     }
@@ -485,7 +483,7 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void apprecierTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
-        String login = (String) request.getUserPrincipal().getName();;
+        String login = request.getUserPrincipal().getName();
         try {
             TrajetDTO trajet = maFacade.avoirTrajet(login, idTrajet,"tous");
             List<UtilisateurDTO> listePersonnes = maFacade.avoirPersonnesTrajet(login, idTrajet);
@@ -500,7 +498,7 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void noter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         String loginDestinataire = request.getParameter("loginPersonneAppreciation");
         int note = Integer.parseInt(request.getParameter("note"));
         String commentaire = request.getParameter("commentaire");
@@ -510,14 +508,14 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     private void afficherNotification(HttpServletRequest request){
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         List<Notification> listeNotif = maFacade.avoirListeNotification(login);
         request.setAttribute("listeNotif", listeNotif);
     }
 
 
     private void supprimerNotification(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getUserPrincipal().getName();
+        String login = request.getUserPrincipal().getName();
         int idNotif = Integer.parseInt(request.getParameter("idNotif"));
         maFacade.supprimerNotification(login, idNotif);
         voirAccueil(request, response);
@@ -526,7 +524,7 @@ public class ControleurUtilisateur extends HttpServlet {
     private void detailsReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         int idRes = Integer.parseInt(request.getParameter("idReservation"));
-        String login = (String) request.getUserPrincipal().getName();;
+        String login = request.getUserPrincipal().getName();
         try {
             TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet,"passager");
             ReservationDTO reservationDTO = maFacade.avoirReservationDTO(login,idRes);
