@@ -191,14 +191,19 @@ public class ControleurUtilisateur extends HttpServlet {
         String villeArrivee = request.getParameter("villeArrivee");
         List<VehiculeDTO> vehiculeDTOS = maFacade.listeVehicules(login);
         List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
-        float prixMoyen = maFacade.avoirPrixMoyen(villeDepart, villeArrivee);
-        request.setAttribute("villeDepart", villeDepart);
-        request.setAttribute("villeArrivee", villeArrivee);
-        request.setAttribute("listeVehicules", vehiculeDTOS);
-        request.setAttribute("listeVilles", listeVilles);
-        request.setAttribute("prixMoyen", prixMoyen);
-        request.setAttribute("aAfficher", "creerTrajet");
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        try{
+            float prixMoyen = maFacade.avoirPrixMoyen(villeDepart, villeArrivee);
+            request.setAttribute("villeDepart", villeDepart);
+            request.setAttribute("villeArrivee", villeArrivee);
+            request.setAttribute("listeVehicules", vehiculeDTOS);
+            request.setAttribute("listeVilles", listeVilles);
+            request.setAttribute("prixMoyen", prixMoyen);
+            request.setAttribute("aAfficher", "creerTrajet");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        }catch(VilleNonTrouvee e){
+            request.setAttribute("messageErreur","Veuillez choisir des villes appartenant à la liste");
+            voirCreerTrajetTemp(request,response);
+        }
     }
 
     private void voirVehicules(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -263,6 +268,9 @@ public class ControleurUtilisateur extends HttpServlet {
             maFacade.ajouterVehicule(login, nomVehicule, modeleVehicule, gabaritVehicule, nbPlaces);
         }catch(VehiculeDejaExistantException e){
             request.setAttribute("message", e.getMessage());
+        }
+        catch (GabaritException e){
+            request.setAttribute("message","Gabarit non trouvé");
         }
         voirVehicules(request, response);
 
@@ -409,7 +417,7 @@ public class ControleurUtilisateur extends HttpServlet {
         }catch(PasConducteurException e){
             maFacade.creerNotification(login, "Vous avez essayé d'annuler un trajet dont vous n'êtes pas le conducteur");
         }
-        rechercherTrajet(request, response);
+        voirTrajetsEnCours(request, response);
     }
 
     private void accepterReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -440,7 +448,8 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void supprimerReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
-        maFacade.annulerReservation(idReservation);
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        maFacade.annulerReservation(login,idReservation);
         voirTrajetsEnCours(request, response);
     }
 

@@ -17,7 +17,7 @@ public interface MaFacadeUtilisateur {
     List<Appreciation> avoirNotesTrajet(int idTrajet);
     List<AppreciationDTO> avoirToutesAppreciations(String login);
     float moyenneNotes(String login) throws DivisionParZeroException;
-    Vehicule ajouterVehicule(String login, String nomVehicule, String modele, String gabarit, int nbPlaces) throws VehiculeDejaExistantException;
+    Vehicule ajouterVehicule(String login, String nomVehicule, String modele, String gabarit, int nbPlaces) throws VehiculeDejaExistantException, GabaritException;
     boolean supprimerVehicule(String login, int idVehicule);
     List<VehiculeDTO> listeVehicules(String login);
     boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException;
@@ -25,7 +25,7 @@ public interface MaFacadeUtilisateur {
     List<ReservationDTO> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException;
     boolean refuserReservation(String login, int idReservation) throws PasConducteurException;
     boolean accepterReservation(String login, int idReservation) throws PasConducteurException;
-    boolean annulerReservation(int idReservation);
+    boolean annulerReservation(String login,int idReservation);
     boolean supprimerNotification(String login, int idNotification);
     List<HistoriqueDTO> historiqueUtilisateur(String login);
     HistoriqueDTO uniqueHistoriqueUtilisateur(String login, int id);
@@ -45,7 +45,7 @@ public interface MaFacadeUtilisateur {
     List<TrajetDTO> avoirListeTrajet(String login);
     List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet);
     List<PrixMoyenDTO> avoirPrixMoyen();
-    float avoirPrixMoyen(String villeDepart, String villeArrivee);
+    float avoirPrixMoyen(String villeDepart, String villeArrivee) throws VilleNonTrouvee;
     Map<String, Object> avoirListeTrajetAVenir(String login);
     boolean datePosterieure(String dateTest)  throws ParseException;
 }

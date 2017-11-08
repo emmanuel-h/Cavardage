@@ -133,7 +133,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public Vehicule ajouterVehicule(String login, String nomVehicule, String modele, String gabarit, int nbPlaces) throws VehiculeDejaExistantException {
+    public Vehicule ajouterVehicule(String login, String nomVehicule, String modele, String gabarit, int nbPlaces) throws VehiculeDejaExistantException, GabaritException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         for(Vehicule v : utilisateur.getListeVehicule()){
             if(v.getNom().equals(nomVehicule)){
@@ -142,23 +142,27 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
         Query q = em.createQuery("SELECT g FROM Gabarit g where g.type=:gabarit");
         q.setParameter("gabarit", gabarit);
-        Gabarit g = (Gabarit) q.getSingleResult();
-        Vehicule vehicule = new Vehicule();
-        vehicule.setGabarit(g);
-        vehicule.setModele(modele);
-        vehicule.setNom(nomVehicule);
-        vehicule.setNombrePlaces(nbPlaces);
-        vehicule.setUtilisateur(utilisateur);
-        boolean nomPris = utilisateur.ajouterVehicule(vehicule);
-        if(!nomPris){
-            throw new VehiculeDejaExistantException("Vous avez déjà un véhicule portant ce nom");
+        try {
+            Gabarit g = (Gabarit) q.getSingleResult();
+            Vehicule vehicule = new Vehicule();
+            vehicule.setGabarit(g);
+            vehicule.setModele(modele);
+            vehicule.setNom(nomVehicule);
+            vehicule.setNombrePlaces(nbPlaces);
+            vehicule.setUtilisateur(utilisateur);
+            boolean nomPris = utilisateur.ajouterVehicule(vehicule);
+            if(!nomPris){
+                throw new VehiculeDejaExistantException("Vous avez déjà un véhicule portant ce nom");
+            }
+            em.persist(vehicule);
+            em.persist(utilisateur);
+
+            creerNotification(login,"Le véhicule "+nomVehicule+" a bien été ajouté à votre liste de véhicules");
+
+            return vehicule;
+        }catch (Exception e){
+            throw new GabaritException("gabarit non existant");
         }
-        em.persist(vehicule);
-        em.persist(utilisateur);
-
-        creerNotification(login,"Le véhicule "+nomVehicule+" a bien été ajouté à votre liste de véhicules");
-
-        return vehicule;
     }
 
     @Override
@@ -270,10 +274,21 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public boolean annulerReservation(int idReservation) {
-        Reservation res = em.find(Reservation.class, idReservation);
-        res.setStatut("annule");
-        em.persist(res);
+    public boolean annulerReservation(String login, int idReservation) {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.idReservation =:idReservation and r.utilisateurReservation.login =:login");
+        query.setParameter("idReservation",idReservation);
+        query.setParameter("login",login);
+        try {
+            Reservation res = (Reservation) query.getSingleResult();
+            res.setStatut("annule");
+            em.persist(res);
+        }catch(Exception e){
+            Utilisateur passager = em.find(Utilisateur.class,login);
+            Notification notification = new Notification();
+            notification.setMessage("Vous avez essayé de supprimer une réservation qui ne vous appartient pas");
+            passager.ajouterNotification(notification);
+            em.persist(notification);
+        }
         return true;
     }
 
@@ -633,12 +648,16 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public float avoirPrixMoyen(String villeDepart, String villeArrivee){
-        StringTokenizer st = new StringTokenizer(villeDepart, "()");
-        String villeDepart2 = st.nextToken() + "_" + st.nextToken();
-        st = new StringTokenizer(villeArrivee, "()");
-        String villeArrivee2 = st.nextToken() + "_" + st.nextToken();
-        return automate.prixMoyen(villeDepart2, villeArrivee2);
+    public float avoirPrixMoyen(String villeDepart, String villeArrivee) throws VilleNonTrouvee{
+        try {
+            StringTokenizer st = new StringTokenizer(villeDepart, "()");
+            String villeDepart2 = st.nextToken() + "_" + st.nextToken();
+            st = new StringTokenizer(villeArrivee, "()");
+            String villeArrivee2 = st.nextToken() + "_" + st.nextToken();
+            return automate.prixMoyen(villeDepart2, villeArrivee2);
+        }catch (Exception e){
+            throw new VilleNonTrouvee("ville non trouvee");
+        }
     }
 
     @Override

@@ -12,11 +12,14 @@
         <option value="${ville.nomVille}(${ville.departement})" />
     </c:forEach>
 </datalist>
+<c:if test="${not empty messageErreur}">
+    <div class="alert alert-danger" >${messageErreur}</div>
+</c:if>
+<div id="villeIdentique" hidden class="alert alert-warning">La ville de départ est la même que la ville d'arrivée</div>
 <form action="ControleurUtilisateur" method="post" name="myFormVille" onsubmit="return verifierVille()">
     <legend>Proposer un trajet</legend>
     <div>
         <div class="col-lg-6">
-            <label hidden id="erreurVille">La ville de départ est la même que la ville d'arrivée</label>
             <div class="form-group">
                 <label for="villeDepart">Ville de départ : </label>
                 <input class="form-control" type="text" list="listeVille" id="villeDepart" name="villeDepart" autocomplete="off"  required>
@@ -39,10 +42,10 @@
         var villeDepart = document.getElementById("villeDepart").value;
         var villeArrivee = document.getElementById("villeArrivee").value;
         if(villeDepart == villeArrivee || villeDepart == "" || villeArrivee == ""){
-            document.getElementById("erreurVille").style.display = "block";
+            document.getElementById("villeIdentique").style.display = "block";
             return false;
         }else{
-            document.getElementById("erreurVille").style.display = "none";
+            document.getElementById("villeIdentique").style.display = "none";
             return true;
         }
     }

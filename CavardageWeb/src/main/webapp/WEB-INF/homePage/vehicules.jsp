@@ -7,6 +7,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:if test="${not empty message}">
+    <div class="alert alert-danger">${message}</div>
+</c:if>
+
 <form action="ControleurUtilisateur" method="post">
     <legend>Ajouter un véhicule</legend>
     <div class="form-group">
@@ -28,7 +33,7 @@
     </div>
     <div class="form-group">
         <label for="nbPlaces">Nombre de places (hors conducteur) : </label>
-        <input class="form-control" type="text" id="nbPlaces" name="nbPlaces" autocomplete="off" required>
+        <input class="form-control" type="text" id="nbPlaces" name="nbPlaces" autocomplete="off" pattern="[0-9]{1,2}" required>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerVehicule">Ajouter</button>

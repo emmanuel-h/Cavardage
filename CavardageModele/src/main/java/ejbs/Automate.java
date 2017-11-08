@@ -62,11 +62,13 @@ public class Automate {
     }
 
     public float prixMoyen(String villeDepart, String villeArrivee){
+        System.out.println("1");
         Query q = em.createQuery("SELECT t.prix FROM Trajet t where t.villeDepart.nomVille=:villeDepart AND t.villeArrivee.nomVille=:villeArrivee");
         q.setParameter("villeDepart", villeDepart);
         q.setParameter("villeArrivee", villeArrivee);
+        System.out.println("2");
         List<Integer> listePrix = q.getResultList();
-
+        System.out.println("3");
         if(listePrix.isEmpty()){
             return -1;
         }else {
