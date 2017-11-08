@@ -73,7 +73,7 @@ public class Automate {
             for (int n : listePrix) {
                 prixMoyen += n;
             }
-            prixMoyen /= listePrix.size();
+            prixMoyen /= (float)listePrix.size();
 
             return prixMoyen;
         }

@@ -65,35 +65,44 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         if(null == ville){
             throw new VilleNonTrouvee("La ville n'existe pas dans la base de données");
         }else{
-            List<Utilisateur> utilisateursANotifier = new ArrayList<>();
-
-            // On commence par chercher tous les trajets dont la ville à supprimer est celle de départ ou d'arrivée
-            Query q = em.createQuery("SELECT t FROM Trajet t WHERE t.villeDepart.nomVille=:villeSupp OR t.villeArrivee.nomVille=:villeSupp");
+            Query q = em.createQuery("SELECT t FROM Trajet t where t.villeDepart.nomVille=:villeSupp or t.villeArrivee.nomVille=:villeSupp");
             q.setParameter("villeSupp", idVille);
             List<Trajet> listeTrajets = q.getResultList();
             for(Trajet t : listeTrajets){
-                // On supprime le trajet associé dans véhicule
+                // On récupère le véhicule du trajet, et on supprime le trajet de ce dernier
                 Vehicule v = t.getVehiculeTrajet();
+                automate.creerNotification(v.getUtilisateur().getLogin(), "Votre trajet au départ de " + t.getVilleDepart().getNomVille()
+                        + " le " + t.getDate() + " et arrivant à " + t.getVilleArrivee().getNomVille() + " a été annulée par l'administrateur "
+                        + "du site car cette ville n'est plus desservie actuellement.");
                 v.getListeTrajet().remove(t);
-                // On supprime les étapes du trajet
+
+                List<Reservation> listeRes = t.getListeReservation();
+                for(Reservation r : listeRes){
+                    supprimerReservation(r, t);
+                }
+
                 List<Etape> listeEtapes = t.getListeEtape();
                 for(Etape e : listeEtapes){
                     em.remove(e);
                 }
-                // On supprime les réservations du trajet puis enfin le trajet lui-même
-                supprimerReservation(t);
+
                 em.remove(t);
             }
 
-            // On cherche ensuite tous les trajets dont la ville à supprimer est une étape
-            q = em.createQuery("SELECT e FROM Etape e WHERE e.villeEtape.nomVille=:villeSupp");
+            q = em.createQuery("SELECT e FROM Etape e where e.villeEtape.nomVille=:villeSupp");
             q.setParameter("villeSupp", idVille);
             List<Etape> listeEtapes = q.getResultList();
             for(Etape e : listeEtapes){
                 Trajet t = e.getTrajet();
-                //utilisateursANotifier.addAll(supprimerReservation(t));
-                supprimerReservation(t);
                 t.getListeEtape().remove(e);
+
+                List<Reservation> listeRes = t.getListeReservation();
+                for(Reservation r : listeRes){
+                    if(null != r.getDescendA() && r.getDescendA().getVilleEtape().getNomVille().equals(idVille)){
+                        supprimerReservation(r, t);
+                    }
+                }
+
                 em.remove(e);
             }
 
@@ -102,41 +111,30 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }
     }
 
-    private void supprimerReservation(Trajet t){
-        List<Utilisateur> utilisateursANotifier = new ArrayList<>();
-        List<Reservation> listeReservation = t.getListeReservation();
-        for(Reservation r : listeReservation){
-            Utilisateur u = r.getUtilisateurReservation();
-            utilisateursANotifier.add(u);
-            u.getListeReservation().remove(r);
+    private void supprimerReservation(Reservation r, Trajet t){
+        Utilisateur u = r.getUtilisateurReservation();
+        u.getListeReservation().remove(r);
 
-            List<Appreciation> listeAppreciations = u.getEstNote();
-            for(Appreciation a : listeAppreciations){
-                if(a.getNoteTrajet().getIdTrajet() == t.getIdTrajet()){
-                    u.getEstNote().remove(a);
-                    em.remove(a);
-                }
+        List<Appreciation> listeAppreciation = u.getNote();
+        for(Appreciation a : listeAppreciation){
+            if(a.getNoteTrajet().getIdTrajet() == t.getIdTrajet()){
+                u.getNote().remove(a);
+                em.remove(a);
             }
-            listeAppreciations = u.getNote();
-            for(Appreciation a : listeAppreciations){
-                if(a.getNoteTrajet().getIdTrajet() == t.getIdTrajet()){
-                    u.getNote().remove(a);
-                    em.remove(a);
-                }
-            }
-            String villeDepartTemp = t.getVilleDepart().getNomVille();
-            String villeArriveeTemp = t.getVilleArrivee().getNomVille();
-            StringTokenizer st = new StringTokenizer(villeDepartTemp, "_");
-            String villeDepart = st.nextToken() + "(" + st.nextToken() + ")";
-            st = new StringTokenizer(villeArriveeTemp, "_");
-            String villeArrivee = st.nextToken() + "(" + st.nextToken() + ")";
-            automate.creerNotification(u.getLogin(), "Votre réservation au départ de " + villeDepart
-                    + " le " + t.getDate() + " et arrivant à " + villeArrivee + " a été annulée par l'administrateur "
-                    + "du site car cette ville n'est plus desservie actuellement.");
-            em.remove(r);
         }
 
-        //return utilisateursANotifier;
+        listeAppreciation = u.getEstNote();
+        for(Appreciation a : listeAppreciation){
+            if(a.getNoteTrajet().getIdTrajet() == t.getIdTrajet()){
+                u.getEstNote().remove(a);
+                em.remove(a);
+            }
+        }
+
+        automate.creerNotification(u.getLogin(), "Votre réservation au départ de " + t.getVilleDepart().getNomVille()
+                + " le " + t.getDate() + " et arrivant à " + t.getVilleArrivee().getNomVille() + " a été annulée par l'administrateur "
+                + "du site car cette ville n'est plus desservie actuellement.");
+        em.remove(r);
     }
 
     public boolean ajouterGabarit(String nomGabarit) throws GabaritException {

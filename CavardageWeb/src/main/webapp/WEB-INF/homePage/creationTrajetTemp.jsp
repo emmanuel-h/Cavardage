@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <datalist id="listeVille">
     <c:forEach items="${listeVilles}" var="ville">
-        <option value="${ville.nomVille}(${ville.departement})" />
+        <option value="${ville.nomVille}(${ville.departement})" ></option>
     </c:forEach>
 </datalist>
 <c:if test="${not empty messageErreur}">
