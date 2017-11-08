@@ -31,7 +31,7 @@
         </div>
         <div class="form-group col-lg-3">
             <label for="prix">Prix : (Optionnel)</label>
-            <input type="text" class="form-control" id="prix" name="prix" placeholder="€" autocomplete="off"/>
+            <input type="text" class="form-control" id="prix" name="prix" placeholder="€" pattern="[0-9]{1,3}" autocomplete="off"/>
         </div>
         <div class="form-group col-lg-2">
             <button type="submit" class="btn btn-primary pull-right" style="margin-top: 20px" id="bouton" name="afaire" value="afficherRechercheTrajet">Rechercher</button>

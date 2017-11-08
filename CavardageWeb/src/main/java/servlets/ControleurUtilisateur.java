@@ -147,25 +147,29 @@ public class ControleurUtilisateur extends HttpServlet {
         String nomVehicule = request.getParameter("vehicule");
         String prixVoyage = request.getParameter("prixVoyage");
         String[] etapes = request.getParameterValues("etape");
-        String message;
+        String message = "";
+        String messageErreur = null;
         try {
             if (maFacade.datePosterieure(date + " " + heure + ":" + minute)) {
                 try {
                     maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
                     message = "Trajet créé";
                 } catch (PrixInferieurException e) {
-                    message = "Erreur : " + e.getMessage();
+                    messageErreur = e.getMessage();
+                } catch (EtapeException e) {
+                    messageErreur = "Erreur dans la liste des étapes";
+                } catch (VehiculeException e){
+                    messageErreur = "Vous n'avez pas choisi un bon vehicule";
                 }
                 request.setAttribute("message", message);
-                request.setAttribute("messageDate",null);
             } else {
-                request.setAttribute("messageDate", "Vous ne pouvez pas proposer un trajet qui commence dans moins d'une heure");
+                messageErreur = "Vous ne pouvez pas proposer un trajet qui commence dans moins d'une heure";
             }
-            voirCreerTrajet(request, response);
         }catch (ParseException e){
-            request.setAttribute("messageDate","La date rentrée n'est pas valide");
-            voirCreerTrajet(request, response);
+            messageErreur = "La date rentrée n'est pas valide";
         }
+        request.setAttribute("messageErreur",messageErreur);
+        voirCreerTrajet(request, response);
     }
 
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
