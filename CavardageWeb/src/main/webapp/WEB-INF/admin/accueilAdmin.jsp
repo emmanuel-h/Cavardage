@@ -19,35 +19,48 @@
 
     </b:kickstart>
 
-    <div class="container">
-        <div class="col-lg-3">
-            <form method="post" action="ControleurAdmin">
-                <div class="form-group">
-                    <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererVille">Gérer les villes</button>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-default" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-default" type="submit" name="boutonAdmin" value="statistiques">Statistiques</button>
-                </div>
-                <hr>
-                <div class="form-group">
-                    <button class="btn btn-default" type="submit" name="boutonAdmin" value="deconnexion">Déconnexion</button>
-                </div>
-            </form>
+    <div class="col-lg-12" style="margin-bottom: 50px">
+        <div class="col-lg-6">
+            <img src="img/logo_xs.png" id="logoHeader"  height="100">
         </div>
 
-        <div class="col-lg-9">
-            <c:if test="${aAfficher == 'gestionVille'}">
-                <jsp:include page="gestionVille.jsp"></jsp:include>
-            </c:if>
-            <c:if test="${aAfficher == 'gestionGabarit'}">
-                <jsp:include page="gestionGabarit.jsp"></jsp:include>
-            </c:if>
-            <c:if test="${aAfficher == 'statistiques'}">
-                <jsp:include page="statistiques.jsp"></jsp:include>
-            </c:if>
+        <!-- mettre le bouton de deconnexion eventuellement -->
+
+    </div>
+
+    <div class="container">
+        <div class="col-lg-3" style="background-color: #66ccff">
+            <div style="margin-top: 15px">
+                <form method="post" action="ControleurAdmin">
+                    <div class="form-group">
+                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="gererVille">Gérer les villes</button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="statistiques">Statistiques</button>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="deconnexion">Déconnexion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-9" style="background: #99ddff">
+            <div style="margin-top: 15px">
+                <c:if test="${aAfficher == 'gestionVille'}">
+                    <jsp:include page="gestionVille.jsp"></jsp:include>
+                </c:if>
+                <c:if test="${aAfficher == 'gestionGabarit'}">
+                    <jsp:include page="gestionGabarit.jsp"></jsp:include>
+                </c:if>
+                <c:if test="${aAfficher == 'statistiques'}">
+                    <jsp:include page="statistiques.jsp"></jsp:include>
+                </c:if>
+            </div>
         </div>
     </div>
 

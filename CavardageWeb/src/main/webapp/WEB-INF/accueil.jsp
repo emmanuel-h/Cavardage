@@ -47,6 +47,10 @@
 
 <div class="container">
 
+    <div class="col-lg-12" align="middle" style="margin-bottom: 15px">
+        <img src="img/caravage_accueil.png" id="imageAccueil" width="800" height="500">
+    </div>
+
     <form action="ControleurAnonyme" method="post">
         <jsp:include page="homePage/recherche/rechercheTrajet.jsp"></jsp:include>
     </form>
