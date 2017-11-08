@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -86,6 +87,8 @@ public class ControleurAdmin extends HttpServlet {
                     voirStatistiques(request, response);
                     break;
                 case "deconnexion":
+                    request.logout();
+                    request.getSession().invalidate();
                     request.getSession().removeAttribute("utilisateur");
                     request.getSession().invalidate();
                     response.sendRedirect(request.getContextPath());

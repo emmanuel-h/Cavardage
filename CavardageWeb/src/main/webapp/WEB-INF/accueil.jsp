@@ -25,15 +25,7 @@
 
 <div class="container">
 
-    <form class="form-inline" method="post" action="ControleurAnonyme" >
-        <div class="form-group">
-            <label>Login:</label>
-            <input class="form-control" type="text" name="login" autocomplete="off" required />
-        </div>
-        <div class="form-group">
-            <label>Mot de passe:</label>
-            <input class="form-control" type="password" name="mdp" required />
-        </div>
+    <form class="form-inline" method="post" action="ControleurGeneral" >
         <div class="form-group">
             <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
         </div>

@@ -10,6 +10,8 @@ import entities.Ville;
 import exceptions.LoginExistantException;
 import exceptions.UtilisateurNonInscritException;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@DeclareRoles({"utilisateur","admin"})
 @WebServlet("ControleurAnonyme")
 public class ControleurAnonyme extends HttpServlet {
 
@@ -36,8 +39,7 @@ public class ControleurAnonyme extends HttpServlet {
         if(null == test){
             getListeVilles(request);
             getListeDernierTrajet(request);
-            request.getRequestDispatcher("/WEB-INF/accueil.jsp")
-                    .forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
         }else{
             switch (test){
                 case "connexion":
@@ -60,7 +62,9 @@ public class ControleurAnonyme extends HttpServlet {
                     response.sendRedirect(request.getContextPath());
                     break;
                 default:
-
+                    getListeVilles(request);
+                    getListeDernierTrajet(request);
+                    request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
                     break;
             }
         }
@@ -101,8 +105,9 @@ public class ControleurAnonyme extends HttpServlet {
         request.setAttribute("listeVilles",listeVilles);
     }
 
-
+    @RolesAllowed("utilisateur")
     public void connexion(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+/*
         String login,mdp;
         login = request.getParameter("login");
         mdp = request.getParameter("mdp");
@@ -120,7 +125,8 @@ public class ControleurAnonyme extends HttpServlet {
             getListeDernierTrajet(request);
             request.getRequestDispatcher("/WEB-INF/accueil.jsp")
                     .forward(request, response);
-        }
+        }*/
+        request.getRequestDispatcher("ControleurGeneral").forward(request,response);
     }
 
 
