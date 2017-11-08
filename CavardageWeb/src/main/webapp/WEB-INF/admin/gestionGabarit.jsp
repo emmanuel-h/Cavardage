@@ -7,6 +7,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:if test="${!empty messageErreur}">
+    <div class="alert alert-danger">
+        <strong>Erreur : </strong>${messageErreur}
+    </div>
+</c:if>
 <form method="post" action="ControleurAdmin">
     <legend>Ajouter un gabarit</legend>
     <div class="form-group">

@@ -3,6 +3,8 @@ package ejbs;
 import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import entities.*;
+import exceptions.GabaritException;
+import exceptions.VilleExistante;
 import exceptions.VilleNonTrouvee;
 
 import javax.ejb.EJB;
@@ -25,14 +27,15 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     public MaFacadeAdministrateurBean(){
     }
 
-    public boolean ajouterVille(String nomVille,String departement){
+    public boolean ajouterVille(String nomVille,String departement) throws VilleExistante {
         Ville v = em.find(Ville.class,nomVille + "_" + departement);
         if(null == v){
             v = new Ville(nomVille,Integer.parseInt(departement));
             em.persist(v);
             return true;
+        }else{
+            throw new VilleExistante("Cette ville existe déjà");
         }
-        return false;
     }
 
     public List<Ville> getListeVilles(){
@@ -136,9 +139,19 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         //return utilisateursANotifier;
     }
 
-    public boolean ajouterGabarit(String nomGabarit){
+    public boolean ajouterGabarit(String nomGabarit) throws GabaritException {
         Query q = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
         q.setParameter("gabarit", nomGabarit);
+        try {
+            Gabarit g = (Gabarit) q.getSingleResult();
+        }catch (NoResultException e){
+            Gabarit gabarit = new Gabarit(nomGabarit);
+            em.persist(gabarit);
+            return true;
+        }
+        throw new GabaritException("Ce gabarit existe déjà");
+
+        /*
         List<Gabarit> gabarits = q.getResultList();
         if(gabarits.isEmpty()){
             Gabarit gabarit = new Gabarit(nomGabarit);
@@ -146,9 +159,11 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
             return true;
         }
         return false;
+        */
     }
 
-    public boolean supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer){
+    @Override
+    public void supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer) throws GabaritException {
         System.out.println(gabaritASupprimer+"-"+gabaritARemplacer);
         Query qSupp = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
         qSupp.setParameter("gabarit", gabaritASupprimer);
@@ -167,9 +182,8 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
                         "de votre véhicule "+vehicule.getNom()+".");
             }
             em.remove(gSupp);
-            return true;
         }catch(NoResultException e){
-            return false;
+            throw new GabaritException("Le gabarit que vous essayez de supprimer n'existe pas");
         }
     }
 

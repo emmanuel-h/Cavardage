@@ -3,6 +3,8 @@ package servlets;
 import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAdministrateur;
+import exceptions.GabaritException;
+import exceptions.VilleExistante;
 import exceptions.VilleNonTrouvee;
 
 import javax.ejb.EJB;
@@ -13,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -47,37 +48,16 @@ public class ControleurAdmin extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "ajouterVille":
-                    String nomVilleAjouter = request.getParameter("nomVilleAAjouter");
-                    String departementVilleAjouter = request.getParameter("departementVilleAAjouter");
-                    ajouterVille(nomVilleAjouter,departementVilleAjouter);
-                    setGestionVille(request);
-                    setListeVilles(request);
-                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
+                    ajouterVille(request, response);
                     break;
                 case "ajouterGabarit":
-                    String nomGabaritAjouter = request.getParameter("nomGabaritAAjouter");
-                    ajouterGabarit(nomGabaritAjouter);
-                    setGestionGabarit(request);
-                    setListeGabarits(request);
-                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
+                    ajouterGabarit(request, response);
                     break;
                 case "supprimerGabarit":
-                    String nomGabaritSupp = request.getParameter("nomGabaritASupprimer");
-                    String nomGabaritRemp = request.getParameter("nomGabaritARemplacer");
-                    supprimerGabarit(nomGabaritSupp, nomGabaritRemp);
-                    setGestionGabarit(request);
-                    setListeGabarits(request);
-                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
+                    supprimerGabarit(request, response);
                     break;
                 case "supprimerVille":
-                    String villeSupp = request.getParameter("nomVilleASupprimer");
-                    StringTokenizer st = new StringTokenizer(villeSupp, "()");
-                    String nomVilleSupp = st.nextToken();
-                    String departementVilleSupp = st.nextToken();
-                    supprimerVille(nomVilleSupp,departementVilleSupp);
-                    setGestionVille(request);
-                    setListeVilles(request);
-                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
+                    supprimerVille(request, response);
                     break;
                 case "statistiques":
                     voirStatistiques(request, response);
@@ -118,26 +98,57 @@ public class ControleurAdmin extends HttpServlet {
         request.setAttribute("listeGabarits", listeGabarits);
     }
 
-    private boolean ajouterVille(String nomVille,String departement){
-        return ejb.ajouterVille(nomVille,departement);
-    }
-
-    private boolean ajouterGabarit(String nomGabarit){
-        return ejb.ajouterGabarit(nomGabarit);
-    }
-
-    private boolean supprimerVille(String nomVille,String departement){
+    private void ajouterVille(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nomVille = request.getParameter("nomVilleAAjouter");
+        String departementVille = request.getParameter("departementVilleAAjouter");
         try {
-            ejb.supprimerVille(nomVille, departement);
-            return true;
-        } catch (VilleNonTrouvee villeNonTrouvee) {
-            villeNonTrouvee.printStackTrace();
-            return false;
+            ejb.ajouterVille(nomVille,departementVille);
+        } catch (VilleExistante villeExistante) {
+            request.setAttribute("messageErreur", villeExistante.getMessage());
         }
+        setGestionVille(request);
+        setListeVilles(request);
+        request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
     }
 
-    private boolean supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer){
-        return ejb.supprimerGabarit(gabaritASupprimer,gabaritARemplacer);
+    private void ajouterGabarit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nomGabarit = request.getParameter("nomGabaritAAjouter");
+        try {
+            ejb.ajouterGabarit(nomGabarit);
+        } catch (GabaritException e) {
+            request.setAttribute("messageErreur", e.getMessage());
+        }
+        setGestionGabarit(request);
+        setListeGabarits(request);
+        request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
+    }
+
+    private void supprimerVille(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String villeSupp = request.getParameter("nomVilleASupprimer");
+        StringTokenizer st = new StringTokenizer(villeSupp, "()");
+        String nomVilleSupp = st.nextToken();
+        String departementVilleSupp = st.nextToken();
+        try {
+            ejb.supprimerVille(nomVilleSupp, departementVilleSupp);
+        } catch (VilleNonTrouvee villeNonTrouvee) {
+            request.setAttribute("messageErreur", villeNonTrouvee.getMessage());
+        }
+        setGestionVille(request);
+        setListeVilles(request);
+        request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
+    }
+
+    private void supprimerGabarit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nomGabaritSupp = request.getParameter("nomGabaritASupprimer");
+        String nomGabaritRemp = request.getParameter("nomGabaritARemplacer");
+        try {
+            ejb.supprimerGabarit(nomGabaritSupp,nomGabaritRemp);
+        } catch (GabaritException e) {
+            request.setAttribute("messageErreur", e.getMessage());
+        }
+        setGestionGabarit(request);
+        setListeGabarits(request);
+        request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
     }
 
     private void voirStatistiques(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
