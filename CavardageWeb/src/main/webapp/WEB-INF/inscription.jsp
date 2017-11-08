@@ -1,3 +1,4 @@
+<%@ taglib prefix="b" uri="http://bootstrapjsp.org/" %>
 <%--
   Created by IntelliJ IDEA.
   User: rety
@@ -9,23 +10,53 @@
 <html>
 <head>
     <title>Cavardage ~ Inscription ~</title>
+    <link href="css/connexion.css" rel="stylesheet">
 </head>
 <body>
-<div>
-    <form action="ControleurAnonyme" method="post">
-        ${messageErreur}
-        <label>Login:</label>
-        <input type="text" name="login" autocomplete="off" required/>
-        <label>Nom:</label>
-        <input type="text" name="nom" autocomplete="off" required/>
-        <label>Mot de passe:</label>
-        <input type="password" name="mdp" required/>
-        <label>Confirmer le mot de passe:</label>
-        <input type="password" name="mdp_confirmer" required/>
-        <button type="submit" name="afaire" value="inscrire">Créer</button>
-    </form>
+
+
+<b:kickstart title="Cavardage">
+
+</b:kickstart>
+
+
+
+
+<div class="col-sm-3" >
+    <img src="img/logo_xs.png" id="logoHeader" height="100">
 </div>
 
+<div class="container col-sm-6">
+
+    ${messageErreur}
+    <form class="form-signin" method="post" action="ControleurAnonyme" >
+        <h3 class="form-signin-heading" align="middle">Rentrez vos identifiants</h3>
+        <label>Identifiant :</label>
+        <input class="form-control" type="text" name="login" size="25" autocomplete="off" placeholder="Login" required autofocus/>
+        <label>Nom :</label>
+        <input class="form-control" type="text" name="nom" size="25" autocomplete="off" placeholder="Nom" required autofocus/>
+        <label>Mot de passe :</label>
+        <input class="form-control" type="password" name="mdp" size="15" placeholder="Mot de passe" required />
+        <label>Répétez le mot de passe :</label>
+        <input class="form-control" type="password" name="mdp_confirmer" size="15" placeholder="Mot de passe" required />
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="afaire" value="inscrire">Inscription</button>
+    </form>
+
+    <div align="middle">
+        <form class= "form-signin" method="post" action="ControleurAnonyme">
+            <div class="form-group">
+                <button class="btn btn-lg btn-default btn-block" type="submit" style="margin-top: 10px">Accueil</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div class="col-sm-3"></div>
+<div class="col-lg-12" align="middle" style="margin-top: 10px">
+    <img src="img/caravage_accueil.png" id="imageAccueil" width="800">
+</div>
 
 </body>
 </html>

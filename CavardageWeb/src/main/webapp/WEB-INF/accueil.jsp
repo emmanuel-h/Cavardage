@@ -12,7 +12,7 @@
 <html>
 <head>
     <title>Cavardage ~ Accueil ~</title>
-    <link href="css/accueil.css" rel="stylesheet">
+    <link href="css/general.css" rel="stylesheet">
 </head>
 <body>
 
@@ -25,7 +25,7 @@
     <img src="img/logo_xs.png" id="logoHeader"  height="100" style="margin-bottom: 1px">
 </div>
 
-<span class="container col-lg-4 col-lg-offset-2" style="margin-bottom: 60px" id="connexionInscription">
+<div class="container col-lg-4 col-lg-offset-2" style="margin-bottom: 60px" id="connexionInscription">
 
     <form class="form-inline col-lg-2" method="post" action="ControleurGeneral" >
         <div class="form-group">
@@ -39,9 +39,17 @@
                 </div>
             </form>
 
-</span>
+</div>
 
-<div class="container">
+<div class="clearfix"></div>
+
+<div class="container divCenterText">
+
+    <c:if test="${not empty message}">
+        <div class="alert alert-warning" style="margin-top: 10px">
+            ${message}
+        </div>
+    </c:if>
 
     <form action="ControleurAnonyme" method="post">
         <jsp:include page="homePage/recherche/rechercheTrajet.jsp"></jsp:include>

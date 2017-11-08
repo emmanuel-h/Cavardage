@@ -11,6 +11,7 @@
 <html>
 <head>
     <title>HomePage</title>
+    <link href="css/general.css" rel="stylesheet">
 </head>
 <body>
     <b:kickstart title="Cavardage">
@@ -21,14 +22,11 @@
         <div class="col-lg-6">
             <img src="img/logo_xs.png" id="logoHeader"  height="100">
         </div>
-
-        <!-- mettre le bouton de deconnexion eventuellement -->
-
     </div>
 
     <div class="container">
 
-        <div class="col-lg-3" style="background-color: #66ccff">
+        <div class="col-lg-3 divSideText">
             <div style="margin-top: 15px">
                 <form action="ControleurUtilisateur" method="post">
                     <div class="form-group">
@@ -62,7 +60,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-lg-9" style="background: #99ddff !important">
+        <div class="col-lg-9 divCenterText">
             <div style="margin-top: 15px">
                 <c:if test="${aAfficher == 'accueil'}">
                     <div class="col-lg-12">

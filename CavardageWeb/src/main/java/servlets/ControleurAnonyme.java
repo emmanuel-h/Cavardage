@@ -124,9 +124,8 @@ public class ControleurAnonyme extends HttpServlet {
             try {
                 boolean succesInscription=ejb.inscription(login, nom, mdp);
                 if(succesInscription) {
-                    request.getSession().setAttribute("utilisateur", login);
-                    request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp")
-                            .forward(request, response);
+                    request.setAttribute("message", "Compte créé avec succès");
+                    retournerAccueil(request,response);
                 }else{
                     request.setAttribute("messageErreur","L'inscription n'a pas réussi");
                     request.getRequestDispatcher("/WEB-INF/inscription.jsp")

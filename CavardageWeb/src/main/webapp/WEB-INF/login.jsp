@@ -39,9 +39,13 @@
 </form>
 
     <div align="middle">
-        <form class="form-signin" method="post" action="ControleurAnonyme">
-            <button class="btn btn-lg btn-primary btn-block" type="submit" name="afaire" value="inscription">Inscription</button>
-            <button class="btn btn-lg btn-default btn-block" type="submit">Accueil</button>
+        <form class= "form-signin" method="post" action="ControleurAnonyme">
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="afaire" value="inscription" id="inscriptionBouton">Inscription</button>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-lg btn-default btn-block" type="submit" id="accueilBouton">Accueil</button>
+            </div>
         </form>
     </div>
 
@@ -49,7 +53,7 @@
 
 <div class="col-sm-3"></div>
 <div class="col-lg-12" align="middle" style="margin-top: 10px">
-    <img src="img/caravage_accueil.png" id="imageAccueil" width="800" height="500">
+    <img src="img/caravage_accueil.png" id="imageAccueil" width="800">
 </div>
 
 
