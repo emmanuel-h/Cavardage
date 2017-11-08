@@ -1,0 +1,15 @@
+
+                <security-domain name="dbsecurity" cache-type="default">
+                    <authentication>
+                        <login-module code="Database" flag="required">
+                            <module-option name="dsJndiName" value="java:jboss/datasources/ExampleDS"/>
+                            <module-option name="principalsQuery" value="SELECT motdepasse FROM utilisateur WHERE login=?"/>
+                            <module-option name="rolesQuery" value="SELECT Role.message, 'Roles' FROM Role INNER JOIN Utilisateur ON Role.idrole=Utilisateur.idrole WHERE Utilisateur.login=?"/>
+                            <module-option name="unauthenticatedIdentity" value="guest"/>
+                        </login-module>
+                        <login-module code="RoleMapping" flag="required">
+                            <module-option name="rolesProperties" value="file:${jboss.server.config.dir}/roles.properties"/>
+                            <module-option name="replaceRole" value="false"/>
+                        </login-module>
+                    </authentication>
+                </security-domain>
