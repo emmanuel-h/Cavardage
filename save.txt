@@ -1,0 +1,2 @@
+
+                            <module-option name="rolesQuery" value="SELECT Role.message FROM Role INNER JOIN Utilisateur ON Role.idrole=Utilisateur.idrole WHERE Utilisateur.login=?"/>

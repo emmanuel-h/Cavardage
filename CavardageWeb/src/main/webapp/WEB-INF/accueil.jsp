@@ -25,25 +25,20 @@
         <div class="col-lg-6">
             <img src="img/logo_xs.png" id="logoHeader"  height="100">
         </div>
+<hr>
+
+<div class="container">
+
+    <form class="form-inline" method="post" action="ControleurGeneral" >
+        <div class="form-group">
+            <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
+        </div>
+    </form>
 
         <div class="col-lg-5 col-lg-offset-1" style="margin-top: 15px">
             <form class="form-inline pull-right" method="post" action="ControleurAnonyme" >
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
-                </div>
-            </form>
-
-            <form class="form-inline pull-right" style="margin-right: 10px" method="post" action="ControleurAnonyme" >
-                <div class="form-group">
-                    <label for="login">Login:</label>
-                    <input class="form-control" type="text" id="login" name="login" autocomplete="off" required />
-                </div>
-                <div class="form-group">
-                    <label for="mdp">Mot de passe:</label>
-                    <input class="form-control" type="password" id="mdp" name="mdp" required />
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
                 </div>
             </form>
         </div>
@@ -91,7 +86,7 @@
 
 </div>
 
-
+    </div>
 
 
 </body>
