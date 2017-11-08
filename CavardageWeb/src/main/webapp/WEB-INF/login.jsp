@@ -1,4 +1,5 @@
 <%@ taglib prefix="b" uri="http://bootstrapjsp.org/" %>
+<%@ taglib prefix="background-color" uri="http://bootstrapjsp.org/" %>
 <%--
   Created by IntelliJ IDEA.
   User: emmanuelh
@@ -10,6 +11,8 @@
 <html>
 <head>
     <title>Connexion</title>
+
+    <link href="css/connexion.css" rel="stylesheet">
 </head>
 <body>
 
@@ -17,22 +20,38 @@
 
 </b:kickstart>
 
-<form class="form-inline" method="post" action="j_security_check" >
-    <div class="form-group">
-        <label>Login:</label>
-        <input class="form-control" type="text" name="j_username" size="25" autocomplete="off" required />
-    </div>
-    <div class="form-group">
-        <label>Mot de passe:</label>
-        <input class="form-control" type="password" name="j_password" size="15" required />
-    </div>
-    <div class="form-group">
-        <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
-    </div>
+
+<div class="col-sm-3" >
+        <img src="img/logo_xs.png" id="logoHeader" height="100">
+</div>
+
+<div class="container col-sm-6">
+
+<form class="form-signin" method="post" action="j_security_check" >
+        <h3 class="form-signin-heading" align="middle">Rentrez vos identifiants</h3>
+        <label class="sr-only">Login:</label>
+        <input class="form-control" type="text" name="j_username" size="25" autocomplete="off" placeholder="Nom d'utilisateur" required autofocus/>
+
+        <label class="sr-only">Mot de passe:</label>
+        <input class="form-control" type="password" name="j_password" size="15" placeholder="Mot de passe" required />
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="afaire" value="connexion">Connexion</button>
 </form>
 
-<form class="form-inline" method="post" action="ControleurAnonyme">
-    <button class="btn btn-default" type="submit">Accueil</button>
-</form>
+    <div align="middle">
+        <form class="form-signin" method="post" action="ControleurAnonyme">
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="afaire" value="inscription">Inscription</button>
+            <button class="btn btn-lg btn-default btn-block" type="submit">Accueil</button>
+        </form>
+    </div>
+
+</div>
+
+<div class="col-sm-3"></div>
+<div class="col-lg-12" align="middle" style="margin-top: 10px">
+    <img src="img/caravage_accueil.png" id="imageAccueil" width="800" height="500">
+</div>
+
+
 </body>
 </html>

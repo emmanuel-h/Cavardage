@@ -12,6 +12,7 @@
 <html>
 <head>
     <title>Cavardage ~ Accueil ~</title>
+    <link href="css/accueil.css" rel="stylesheet">
 </head>
 <body>
 
@@ -19,37 +20,28 @@
 
 </b:kickstart>
 
-<!-- <h1 style="text-align: center">Cavardage</h1> -->
 
-    <div class="col-lg-12" style="margin-bottom: 50px">
-        <div class="col-lg-6">
-            <img src="img/logo_xs.png" id="logoHeader"  height="100">
-        </div>
-<hr>
+<div class="container col-lg-6">
+    <img src="img/logo_xs.png" id="logoHeader"  height="100" style="margin-bottom: 1px">
+</div>
 
-<div class="container">
+<span class="container col-lg-4 col-lg-offset-2" style="margin-bottom: 60px" id="connexionInscription">
 
-    <form class="form-inline" method="post" action="ControleurGeneral" >
+    <form class="form-inline col-lg-2" method="post" action="ControleurGeneral" >
         <div class="form-group">
             <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
         </div>
     </form>
 
-        <div class="col-lg-5 col-lg-offset-1" style="margin-top: 15px">
-            <form class="form-inline pull-right" method="post" action="ControleurAnonyme" >
+            <form class="form-inline col-lg-2" method="post" action="ControleurAnonyme" >
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
                 </div>
             </form>
-        </div>
 
-    </div>
+</span>
 
 <div class="container">
-
-    <div class="col-lg-12" align="middle" style="margin-bottom: 15px">
-        <img src="img/caravage_accueil.png" id="imageAccueil" width="800" height="500">
-    </div>
 
     <form action="ControleurAnonyme" method="post">
         <jsp:include page="homePage/recherche/rechercheTrajet.jsp"></jsp:include>
@@ -89,9 +81,6 @@
     </div>
 
 </div>
-
-    </div>
-
 
 </body>
 </html>
