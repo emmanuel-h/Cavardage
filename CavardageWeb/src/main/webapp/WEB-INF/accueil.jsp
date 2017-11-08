@@ -19,31 +19,38 @@
 
 </b:kickstart>
 
-<h1 style="text-align: center">Cavardage</h1>
+<!-- <h1 style="text-align: center">Cavardage</h1> -->
 
-<hr>
+    <div class="col-lg-12" style="margin-bottom: 50px">
+        <div class="col-lg-6">
+            <img src="img/logo_xs.png" id="logoHeader"  height="100">
+        </div>
+
+        <div class="col-lg-5 col-lg-offset-1" style="margin-top: 15px">
+            <form class="form-inline pull-right" method="post" action="ControleurAnonyme" >
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
+                </div>
+            </form>
+
+            <form class="form-inline pull-right" style="margin-right: 10px" method="post" action="ControleurAnonyme" >
+                <div class="form-group">
+                    <label for="login">Login:</label>
+                    <input class="form-control" type="text" id="login" name="login" autocomplete="off" required />
+                </div>
+                <div class="form-group">
+                    <label for="mdp">Mot de passe:</label>
+                    <input class="form-control" type="password" id="mdp" name="mdp" required />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
 
 <div class="container">
-
-    <form class="form-inline" method="post" action="ControleurAnonyme" >
-        <div class="form-group">
-            <label>Login:</label>
-            <input class="form-control" type="text" name="login" autocomplete="off" required />
-        </div>
-        <div class="form-group">
-            <label>Mot de passe:</label>
-            <input class="form-control" type="password" name="mdp" required />
-        </div>
-        <div class="form-group">
-            <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
-        </div>
-    </form>
-
-    <form class="form-inline" method="post" action="ControleurAnonyme" >
-        <div class="form-group">
-        <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
-        </div>
-    </form>
 
     <form action="ControleurAnonyme" method="post">
         <jsp:include page="homePage/recherche/rechercheTrajet.jsp"></jsp:include>
