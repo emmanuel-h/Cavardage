@@ -37,8 +37,8 @@ public interface MaFacadeUtilisateur {
     List<VilleDTO> getListeVilleDTO();
     List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DatePosterieureException, ParseException;
     void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException, EtapeException, VehiculeException;
-    TrajetDTO avoirTrajet(int idTrajet);
-    Notification creerNotification(String login,String message);
+    TrajetDTO avoirTrajet(String login, int idTrajet) throws AccesInterditException;
+    Notification creerNotification(String login, String message);
     List<Notification> avoirListeNotification(String login);
     int avoirNbPlacesRestantes(int idTrajet);
     ReservationDTO avoirReservationDTO(int idReservation);

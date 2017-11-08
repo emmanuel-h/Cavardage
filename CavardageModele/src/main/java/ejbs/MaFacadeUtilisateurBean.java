@@ -479,9 +479,18 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public TrajetDTO avoirTrajet(int idTrajet) {
-        Trajet trajet = em.find(Trajet.class,idTrajet);
-        return new TrajetDTO(trajet);
+    public TrajetDTO avoirTrajet(String login, int idTrajet) throws AccesInterditException {
+        Query query = em.createQuery("SELECT t FROM Trajet t, Reservation r WHERE ((t.vehiculeTrajet.utilisateur.login=:login) or" +
+                "(r.trajetReservation=:t and r.utilisateurReservation.login=:login)) and " +
+                "t.idTrajet=:idTrajet");
+        query.setParameter("login",login);
+        query.setParameter("idTrajet",idTrajet);
+        try{
+            Trajet trajet = (Trajet) query.getSingleResult();
+            return new TrajetDTO(trajet);
+        }catch (Exception e){
+            throw new AccesInterditException("vous n'avez pas les droits");
+        }
     }
 
     @Override

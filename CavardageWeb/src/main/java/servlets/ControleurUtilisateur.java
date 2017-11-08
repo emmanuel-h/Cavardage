@@ -232,11 +232,16 @@ public class ControleurUtilisateur extends HttpServlet {
         String login = (String) request.getSession().getAttribute("utilisateur");
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         HistoriqueDTO historique = maFacade.uniqueHistoriqueUtilisateur(login, idTrajet);
-        TrajetDTO trajet = maFacade.avoirTrajet(idTrajet);
-        request.setAttribute("histo", historique);
-        request.setAttribute("trajet", trajet);
-        request.setAttribute("aAfficher", "detailsHistorique");
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        try{
+            TrajetDTO trajet = maFacade.avoirTrajet(login,idTrajet);
+            request.setAttribute("histo", historique);
+            request.setAttribute("trajet", trajet);
+            request.setAttribute("aAfficher", "detailsHistorique");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        }catch (AccesInterditException e){
+            maFacade.creerNotification(login,"Vous avez essayé de voir un trajet dont vous n'avez pas les droits");
+            voirHistorique(request,response);
+        }
     }
 
     private void voirAppreciations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -368,10 +373,16 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void detailsTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
-        TrajetDTO trajetDTO = maFacade.avoirTrajet(idTrajet);
-        request.setAttribute("trajet", trajetDTO);
-        request.setAttribute("aAfficher", "detailsTrajet");
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        try{
+            TrajetDTO trajetDTO = maFacade.avoirTrajet(login,idTrajet);
+            request.setAttribute("trajet", trajetDTO);
+            request.setAttribute("aAfficher", "detailsTrajet");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        }catch (AccesInterditException e){
+            maFacade.creerNotification(login,"Vous avez essayé de voir un trajet dont vous n'avez pas les droits");
+            voirTrajetsEnCours(request,response);
+        }
     }
 
     private void reserverTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -394,23 +405,28 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void gererTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
-        TrajetDTO trajetDTO = maFacade.avoirTrajet(idTrajet);
-        int nbPlacesRestantes = maFacade.avoirNbPlacesRestantes(idTrajet);
         String login = (String) request.getSession().getAttribute("utilisateur");
-        List<ReservationDTO> reservationsAttente = new ArrayList<>();
-        List<ReservationDTO> reservationsAcceptees = new ArrayList<>();
-        try {
-            reservationsAttente = maFacade.avoirReservationsEnAttente(login, idTrajet);
-            reservationsAcceptees = maFacade.avoirReservationsAcceptees(login, idTrajet);
-         }catch (PasConducteurException e){
-            maFacade.creerNotification(login,"Vous avez essayé de modifier un trajet dont vous n'êtes pas le conducteur.");
+        try{
+            TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet);
+            int nbPlacesRestantes = maFacade.avoirNbPlacesRestantes(idTrajet);
+            List<ReservationDTO> reservationsAttente = new ArrayList<>();
+            List<ReservationDTO> reservationsAcceptees = new ArrayList<>();
+            try {
+                reservationsAttente = maFacade.avoirReservationsEnAttente(login, idTrajet);
+                reservationsAcceptees = maFacade.avoirReservationsAcceptees(login, idTrajet);
+            } catch (PasConducteurException e) {
+                maFacade.creerNotification(login, "Vous avez essayé de modifier un trajet dont vous n'êtes pas le conducteur.");
+            }
+            request.setAttribute("reservationsAttente", reservationsAttente);
+            request.setAttribute("reservationsAcceptees", reservationsAcceptees);
+            request.setAttribute("trajet", trajetDTO);
+            request.setAttribute("nbPlacesRestantes", nbPlacesRestantes);
+            request.setAttribute("aAfficher", "gestionTrajet");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        }catch (AccesInterditException e){
+            maFacade.creerNotification(login,"Vous avez essayé de voir un trajet dont vous n'avez pas les droits");
+            voirTrajetsEnCours(request,response);
         }
-        request.setAttribute("reservationsAttente",reservationsAttente);
-        request.setAttribute("reservationsAcceptees",reservationsAcceptees);
-        request.setAttribute("trajet", trajetDTO);
-        request.setAttribute("nbPlacesRestantes", nbPlacesRestantes);
-        request.setAttribute("aAfficher", "gestionTrajet");
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
     private void supprimerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -466,12 +482,17 @@ public class ControleurUtilisateur extends HttpServlet {
     private void apprecierTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         String login = (String) request.getSession().getAttribute("utilisateur");
-        TrajetDTO trajet = maFacade.avoirTrajet(idTrajet);
-        List<UtilisateurDTO> listePersonnes = maFacade.avoirPersonnesTrajet(login,idTrajet);
-        request.setAttribute("listePersonnes",listePersonnes);
-        request.setAttribute("trajet",trajet);
-        request.setAttribute("aAfficher", "detailsAppreciation");
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        try {
+            TrajetDTO trajet = maFacade.avoirTrajet(login, idTrajet);
+            List<UtilisateurDTO> listePersonnes = maFacade.avoirPersonnesTrajet(login, idTrajet);
+            request.setAttribute("listePersonnes", listePersonnes);
+            request.setAttribute("trajet", trajet);
+            request.setAttribute("aAfficher", "detailsAppreciation");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        }catch (AccesInterditException e){
+            maFacade.creerNotification(login,"Vous avez essayé de voir un trajet dont vous n'avez pas les droits");
+            voirAppreciations(request,response);
+        }
     }
 
     private void noter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -501,11 +522,17 @@ public class ControleurUtilisateur extends HttpServlet {
     private void detailsReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         int idRes = Integer.parseInt(request.getParameter("idReservation"));
-        TrajetDTO trajetDTO = maFacade.avoirTrajet(idTrajet);
-        ReservationDTO reservationDTO = maFacade.avoirReservationDTO(idRes);
-        request.setAttribute("trajet", trajetDTO);
-        request.setAttribute("reservation", reservationDTO);
-        request.setAttribute("aAfficher", "detailsTrajet");
-        request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        String login = (String) request.getSession().getAttribute("utilisateur");
+        try {
+            TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet);
+            ReservationDTO reservationDTO = maFacade.avoirReservationDTO(idRes);
+            request.setAttribute("trajet", trajetDTO);
+            request.setAttribute("reservation", reservationDTO);
+            request.setAttribute("aAfficher", "detailsTrajet");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        }catch (AccesInterditException e){
+            maFacade.creerNotification(login,"Vous avez essayé de voir un trajet dont vous n'avez pas les droits");
+            voirTrajetsEnCours(request,response);
+        }
     }
 }
