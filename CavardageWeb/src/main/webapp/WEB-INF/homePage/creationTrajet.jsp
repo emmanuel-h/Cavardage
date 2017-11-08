@@ -20,7 +20,10 @@
     </datalist>
 
 <c:if test="${not empty message}">
-<div class="alert alert-warning">${message}</div>
+<div class="alert alert-info">${message}</div>
+</c:if>
+<c:if test="${not empty messageErreur}">
+    <div class="alert alert-danger">${messageErreur}</div>
 </c:if>
 
     <form action="ControleurUtilisateur" method="post" >
@@ -47,7 +50,6 @@
                 </c:choose>
             </div>
             <div class="form-group">
-                <label>${messageDate}</label>
                 <label for="date">Le : </label>
                 <input class="form-control" type="text" id="date" name="date" required placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off">
             </div>
@@ -62,7 +64,7 @@
             </div>
             <div class="form-group">
                 <label for="prixVoyage">Prix du voyage : </label>
-                <input class="form-control" placeholder="prix en €" type="text" id="prixVoyage" autocomplete="off" name="prixVoyage" required>
+                <input class="form-control" placeholder="prix en €" type="text" id="prixVoyage" autocomplete="off" pattern="[0-9]{1,3}" name="prixVoyage" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerTrajet">Créer</button>
@@ -75,7 +77,7 @@
             </div>
             <div class="form-group">
                 <label for="inputPrix">Prix : </label>
-                <input class="form-control" placeholder="prix en €" type="text" id="inputPrix" name="prix" autocomplete="off">
+                <input class="form-control" placeholder="prix en €" type="text" id="inputPrix" name="prix" pattern="[0-9]{1,3}" autocomplete="off">
             </div>
             <div class="form-group">
                 <input type="button" name="afaire" class="btn btn-primary" value="Ajouter étape" onclick="ajouterEtape()" />

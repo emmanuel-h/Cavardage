@@ -402,7 +402,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException{
+    public void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException, EtapeException, VehiculeException {
         Utilisateur user = em.find(Utilisateur.class, login);
         List<Vehicule> vListe = user.getListeVehicule();
 
@@ -414,23 +414,40 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 break;
             }
         }
+        Vehicule vehicule = em.find(Vehicule.class, idVehicule);
+        if(null == vehicule){
+            throw new VehiculeException("ville non existant");
+        }
 
         Trajet trajet = new Trajet(date, heure+":"+minute);
-
         // On crée une map associant les villes-étapes à leur prix.
         StringTokenizer st;
+        st = new StringTokenizer(villeDepart, "()");
+        String idVilleDepart = st.nextToken() + "_" + st.nextToken();
+        st = new StringTokenizer(villeArrivee, "()");
+        String idVilleArrivee = st.nextToken() + "_" + st.nextToken();
+        Ville ville1 = em.find(Ville.class, idVilleDepart);
+        Ville ville2 = em.find(Ville.class, idVilleArrivee);
+
         Map<String, Integer> mapPrix = new TreeMap<>();
         int prixTrajet = Integer.parseInt(prix);
-        if(null != etapes){
-            for(String etape : etapes){
-                st = new StringTokenizer(etape, "()/€");
-                String nomVille = st.nextToken() + "_" + st.nextToken();
-                int prixEtape = Integer.parseInt(st.nextToken());
-                if(prixEtape > prixTrajet){
-                    throw new PrixInferieurException("Une étape a un prix supérieur à celui du trajet");
+        try {
+            if (null != etapes) {
+                for (String etape : etapes) {
+                    st = new StringTokenizer(etape, "()/€");
+                    String nomVille = st.nextToken() + "_" + st.nextToken();
+                    int prixEtape = Integer.parseInt(st.nextToken());
+                    if (prixEtape > prixTrajet) {
+                        throw new PrixInferieurException("Une étape a un prix supérieur à celui du trajet");
+                    }
+                    if(idVilleDepart.equals(nomVille) || idVilleArrivee.equals(nomVille)){
+                        throw new EtapeException("etape egale la ville d'arrivée ou de départ");
+                    }
+                    mapPrix.put(nomVille, prixEtape);
                 }
-                mapPrix.put(nomVille, prixEtape);
             }
+        }catch (Exception e){
+            throw new EtapeException("erreur de saisie de la ville ou du prix");
         }
 
         // Si on a des étapes, on les persiste
@@ -449,14 +466,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
 
         // On crée le trajet à partir des données
-        st = new StringTokenizer(villeDepart, "()");
-        String idVilleDepart = st.nextToken() + "_" + st.nextToken();
-        st = new StringTokenizer(villeArrivee, "()");
-        String idVilleArrivee = st.nextToken() + "_" + st.nextToken();
-        Ville ville1 = em.find(Ville.class, idVilleDepart);
-        Ville ville2 = em.find(Ville.class, idVilleArrivee);
-
-        Vehicule vehicule = em.find(Vehicule.class, idVehicule);
 
         trajet.setVehiculeTrajet(vehicule);
         trajet.setVilleDepart(ville1);
