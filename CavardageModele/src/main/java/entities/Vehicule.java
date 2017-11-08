@@ -13,6 +13,7 @@ public class Vehicule {
     private String modele;
     private int nombrePlaces;
     private String nom;
+    private String statut;
 
     @ManyToOne
     private Gabarit gabarit;
@@ -85,6 +86,14 @@ public class Vehicule {
 
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
 
     @Override

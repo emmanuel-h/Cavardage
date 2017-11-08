@@ -63,6 +63,10 @@
                             <td class="col-lg-3">${vehicule.modele}</td>
                             <td class="col-lg-3">${vehicule.nomGabarit}</td>
                             <td class="col-lg-3">${vehicule.nbPlaces}</td>
+                            <td class="col-lg-3"><form method="post" action="ControleurUtilisateur">
+                                <input type="hidden" name="idVehicule" value="${vehicule.id}">
+                                <button class="btn btn-primary" style="width: 100%" type="submit" name="afaire" value="supprimerVehicule">Supprimer</button>
+                            </form></td>
                         </tr>
                     </c:forEach>
                     </tbody>

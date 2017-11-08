@@ -150,6 +150,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             vehicule.setNom(nomVehicule);
             vehicule.setNombrePlaces(nbPlaces);
             vehicule.setUtilisateur(utilisateur);
+            vehicule.setStatut("actif");
             boolean nomPris = utilisateur.ajouterVehicule(vehicule);
             if(!nomPris){
                 throw new VehiculeDejaExistantException("Vous avez déjà un véhicule portant ce nom");
@@ -166,19 +167,29 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public boolean supprimerVehicule(String login, int idVehicule){
-        Utilisateur utilisateur = em.find(Utilisateur.class, login);
-        Vehicule v = em.find(Vehicule.class, idVehicule);
-        String nomVehicule = v.getNom();
-        boolean vehiculeSupprime = utilisateur.supprimerVehicule(v);
-        if(vehiculeSupprime) {
-            em.remove(v);
-            em.persist(utilisateur);
-            creerNotification(login, "Le véhicule " + nomVehicule + " a bien été supprimé");
+    public boolean supprimerVehicule(String login, int idVehicule) throws PasVehiculeUtilisateur {
+        Query query = em.createQuery("SELECT v FROM Vehicule v WHERE v.idVehicule=:idVehicule and v.utilisateur.login=:login and v.statut='actif'");
+        query.setParameter("login",login);
+        query.setParameter("idVehicule",idVehicule);
+        try{
+            Vehicule v = (Vehicule) query.getSingleResult();
+            v.setStatut("supprime");
+            em.persist(v);
+            query = em.createQuery("SELECT t FROM Trajet t WHERE t.vehiculeTrajet=:vehicule and t.statut='aVenir'");
+            query.setParameter("vehicule",v);
+            List<Trajet> listTrajets = query.getResultList();
+            for (Trajet t : listTrajets){
+                t.setStatut("annule");
+                String login_conducteur = t.getVehiculeTrajet().getUtilisateur().getLogin();
+                creerNotification(login_conducteur,"Le trajet de "+ t.getVilleDepart().getNomVille() +" à "+t.getVilleArrivee().getNomVille() + " le "+t.getDate()+ " a été annulé");
+                for(Reservation r : t.getListeReservation()){
+                    String login_reserv = r.getUtilisateurReservation().getLogin();
+                    creerNotification(login_reserv,"Le trajet de "+ t.getVilleDepart().getNomVille() +" à "+t.getVilleArrivee().getNomVille() + " le "+t.getDate()+ " a été annulé");
+                }
+            }
             return true;
-        } else {
-            creerNotification(login, "Le vehicule "+nomVehicule + " n'a pas été trouvé et n'a pas pu être supprimé");
-            return false;
+        }catch (Exception e){
+            throw new PasVehiculeUtilisateur("pas votre vehicule");
         }
     }
 
@@ -187,10 +198,11 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         List<VehiculeDTO> listeVehicules = new ArrayList<>();
         for(Vehicule v : utilisateur.getListeVehicule()){
-            VehiculeDTO vDTO = new VehiculeDTO(v.getIdVehicule(), v.getModele(), v.getNom(), v.getGabarit().getType(), v.getNombrePlaces());
-            listeVehicules.add(vDTO);
+            if(v.getStatut().equals("actif")) {
+                VehiculeDTO vDTO = new VehiculeDTO(v.getIdVehicule(), v.getModele(), v.getNom(), v.getGabarit().getType(), v.getNombrePlaces());
+                listeVehicules.add(vDTO);
+            }
         }
-        System.out.println("size : " + listeVehicules.size());
         return listeVehicules;
     }
 
@@ -283,11 +295,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             res.setStatut("annule");
             em.persist(res);
         }catch(Exception e){
-            Utilisateur passager = em.find(Utilisateur.class,login);
-            Notification notification = new Notification();
-            notification.setMessage("Vous avez essayé de supprimer une réservation qui ne vous appartient pas");
-            passager.ajouterNotification(notification);
-            em.persist(notification);
+            creerNotification(login,"Vous avez essayé de supprimer une réservation qui ne vous appartient pas");
         }
         return true;
     }
@@ -409,14 +417,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         // On récupère l'id du véhicule utilisé pour le trajet
         int idVehicule = 0;
         for(Vehicule v : vListe){
-            if(v.getNom().equals(nomVehicule)){
+            if(v.getNom().equals(nomVehicule) && v.getStatut().equals("actif")){
                 idVehicule = v.getIdVehicule();
                 break;
             }
         }
         Vehicule vehicule = em.find(Vehicule.class, idVehicule);
         if(null == vehicule){
-            throw new VehiculeException("ville non existant");
+            throw new VehiculeException("vehicule non existant");
         }
 
         Trajet trajet = new Trajet(date, heure+":"+minute);
@@ -479,19 +487,36 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public TrajetDTO avoirTrajet(String login, int idTrajet) throws AccesInterditException {
-        Query query = em.createQuery("SELECT t FROM Trajet t, Reservation r WHERE ((t.vehiculeTrajet.utilisateur.login=:login) or" +
-                "(r.trajetReservation=:t and r.utilisateurReservation.login=:login)) and " +
-                "t.idTrajet=:idTrajet");
+    public TrajetDTO avoirTrajet(String login, int idTrajet, String type) throws AccesInterditException {
+        String string_query;
+        switch (type) {
+            case "conducteur":
+                string_query = "SELECT t FROM Trajet t, Reservation r WHERE t.vehiculeTrajet.utilisateur.login=:login and " +
+                        "t.idTrajet=:idTrajet";
+                break;
+            case "passager":
+                string_query = "SELECT t FROM Trajet t, Reservation r WHERE " +
+                        "r.trajetReservation=t and r.utilisateurReservation.login=:login and " +
+                        "t.idTrajet=:idTrajet";
+                break;
+            default:
+                string_query = "SELECT t FROM Trajet t, Reservation r WHERE ((t.vehiculeTrajet.utilisateur.login=:login) or" +
+                        "(r.trajetReservation=t and r.utilisateurReservation.login=:login)) and " +
+                        "t.idTrajet=:idTrajet";
+                break;
+        }
+        Query query = em.createQuery(string_query);
         query.setParameter("login",login);
         query.setParameter("idTrajet",idTrajet);
         try{
-            Trajet trajet = (Trajet) query.getSingleResult();
-            return new TrajetDTO(trajet);
+            List<Trajet> trajets =  query.getResultList();
+            return new TrajetDTO(trajets.get(0));
         }catch (Exception e){
+            e.printStackTrace();
             throw new AccesInterditException("vous n'avez pas les droits");
         }
     }
+
 
     @Override
     public Notification creerNotification(String login, String message) {
@@ -561,9 +586,17 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public ReservationDTO avoirReservationDTO(int idReservation){
-        Reservation res = em.find(Reservation.class, idReservation);
-        return new ReservationDTO(res);
+    public ReservationDTO avoirReservationDTO(String login,int idReservation) throws AccesInterditException {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.idReservation=:idReservation and " +
+                "r.utilisateurReservation.login=:login");
+        query.setParameter("login",login);
+        query.setParameter("idReservation",idReservation);
+        try {
+            Reservation res = (Reservation) query.getSingleResult();
+            return new ReservationDTO(res);
+        }catch (Exception e){
+            throw new AccesInterditException("pas les droits");
+        }
     }
 
     @Override

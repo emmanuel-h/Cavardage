@@ -40,16 +40,16 @@ INSERT INTO Ville (nomVille) VALUES ('Strasbourg_67');
 INSERT INTO Ville (nomVille) VALUES ('Perpignan_66');
 INSERT INTO Ville (nomVille) VALUES ('La Rochelle_17');
 
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (1,'Espace',6,'titine',7,'alice');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (2,'Punto',4,'poupu',4,'alice');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (3,'Megane',5,'la grande suzette',8,'alice');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (4,'Clio',5,'niveau d huile correcte',4,'bob');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (5,'Saxo',5,'la gaillarde',4,'bob');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (6,'Maserati',2,'bologno',9,'charlie');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (7,'Safrane',3,'une voiture quelle est bien pour la conduire',1,'diane');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (8,'Kit Kat',5,'asiat',2,'eric');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (9,'Renault Truck XGR2',60,'le passeur',6,'fiona');
-INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,nom,gabarit_idGabarit,utilisateur_login) VALUES (10,'Combi Volkswagen',12,'vamos a la playa',5,'gaston');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login,) VALUES (1,'Espace',6,'actif','titine',7,'alice');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (2,'Punto',4,'actif','poupu',4,'alice');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (3,'Megane',5,'actif','la grande suzette',8,'alice');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (4,'Clio',5,'actif','niveau d huile correcte',4,'bob');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (5,'Saxo',5,'actif','la gaillarde',4,'bob');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (6,'Maserati','actif',2,'bologno',9,'charlie');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (7,'Safrane',3,'actif','une voiture quelle est bien pour la conduire',1,'diane');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (8,'Kit Kat',5,'actif','asiat',2,'eric');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (9,'Renault Truck XGR2',60,'actif','le passeur',6,'fiona');
+INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (10,'Combi Volkswagen',12,'actif','vamos a la playa',5,'gaston');
 
 --INSERT INTO Utilisateur_vehicule(utilisateur_login,listevehicule_idvehicule) VALUES ('alice',1);
 --INSERT INTO Utilisateur_vehicule(utilisateur_login,listevehicule_idvehicule) VALUES ('alice',2);

@@ -126,12 +126,14 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "supprimerNotif":
                     supprimerNotification(request, response);
                     break;
+                case "supprimerVehicule":
+                    supprimerVehicule(request, response);
+                    break;
                 default:
                     //display homepage
             }
         }
     }
-
 
     private void voirAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         afficherNotification(request);
@@ -236,7 +238,7 @@ public class ControleurUtilisateur extends HttpServlet {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         HistoriqueDTO historique = maFacade.uniqueHistoriqueUtilisateur(login, idTrajet);
         try{
-            TrajetDTO trajet = maFacade.avoirTrajet(login,idTrajet);
+            TrajetDTO trajet = maFacade.avoirTrajet(login,idTrajet,"tous");
             request.setAttribute("histo", historique);
             request.setAttribute("trajet", trajet);
             request.setAttribute("aAfficher", "detailsHistorique");
@@ -377,7 +379,7 @@ public class ControleurUtilisateur extends HttpServlet {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         String login = (String) request.getUserPrincipal().getName();;
         try{
-            TrajetDTO trajetDTO = maFacade.avoirTrajet(login,idTrajet);
+            TrajetDTO trajetDTO = maFacade.avoirTrajet(login,idTrajet,"passager");
             request.setAttribute("trajet", trajetDTO);
             request.setAttribute("aAfficher", "detailsTrajet");
             request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
@@ -409,7 +411,7 @@ public class ControleurUtilisateur extends HttpServlet {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         String login = (String) request.getUserPrincipal().getName();;
         try{
-            TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet);
+            TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet,"conducteur");
             int nbPlacesRestantes = maFacade.avoirNbPlacesRestantes(idTrajet);
             List<ReservationDTO> reservationsAttente = new ArrayList<>();
             List<ReservationDTO> reservationsAcceptees = new ArrayList<>();
@@ -485,7 +487,7 @@ public class ControleurUtilisateur extends HttpServlet {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         String login = (String) request.getUserPrincipal().getName();;
         try {
-            TrajetDTO trajet = maFacade.avoirTrajet(login, idTrajet);
+            TrajetDTO trajet = maFacade.avoirTrajet(login, idTrajet,"tous");
             List<UtilisateurDTO> listePersonnes = maFacade.avoirPersonnesTrajet(login, idTrajet);
             request.setAttribute("listePersonnes", listePersonnes);
             request.setAttribute("trajet", trajet);
@@ -526,8 +528,8 @@ public class ControleurUtilisateur extends HttpServlet {
         int idRes = Integer.parseInt(request.getParameter("idReservation"));
         String login = (String) request.getUserPrincipal().getName();;
         try {
-            TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet);
-            ReservationDTO reservationDTO = maFacade.avoirReservationDTO(idRes);
+            TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet,"passager");
+            ReservationDTO reservationDTO = maFacade.avoirReservationDTO(login,idRes);
             request.setAttribute("trajet", trajetDTO);
             request.setAttribute("reservation", reservationDTO);
             request.setAttribute("aAfficher", "detailsTrajet");
@@ -537,4 +539,19 @@ public class ControleurUtilisateur extends HttpServlet {
             voirTrajetsEnCours(request,response);
         }
     }
+
+    private void supprimerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idVehicule = Integer.parseInt(request.getParameter("idVehicule"));
+        String login = request.getUserPrincipal().getName();
+        try{
+            maFacade.supprimerVehicule(login,idVehicule);
+            request.setAttribute("message","Vehicule supprimé");
+            voirVehicules(request,response);
+        }catch(PasVehiculeUtilisateur e){
+            maFacade.creerNotification(login,"Vous avez essayé de supprimer un vehicule qui ne vous appartient pas");
+            voirVehicules(request,response);
+        }
+    }
+
+
 }

@@ -18,7 +18,7 @@ public interface MaFacadeUtilisateur {
     List<AppreciationDTO> avoirToutesAppreciations(String login);
     float moyenneNotes(String login) throws DivisionParZeroException;
     Vehicule ajouterVehicule(String login, String nomVehicule, String modele, String gabarit, int nbPlaces) throws VehiculeDejaExistantException, GabaritException;
-    boolean supprimerVehicule(String login, int idVehicule);
+    boolean supprimerVehicule(String login, int idVehicule) throws PasVehiculeUtilisateur;
     List<VehiculeDTO> listeVehicules(String login);
     boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException;
     List<ReservationDTO> avoirReservationsAcceptees(String login, int idTrajet) throws PasConducteurException;
@@ -37,11 +37,11 @@ public interface MaFacadeUtilisateur {
     List<VilleDTO> getListeVilleDTO();
     List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DatePosterieureException, ParseException;
     void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException, EtapeException, VehiculeException;
-    TrajetDTO avoirTrajet(String login, int idTrajet) throws AccesInterditException;
+    TrajetDTO avoirTrajet(String login, int idTrajet, String type) throws AccesInterditException;
     Notification creerNotification(String login, String message);
     List<Notification> avoirListeNotification(String login);
     int avoirNbPlacesRestantes(int idTrajet);
-    ReservationDTO avoirReservationDTO(int idReservation);
+    ReservationDTO avoirReservationDTO(String login,int idReservation) throws AccesInterditException;
     List<TrajetDTO> avoirListeTrajet(String login);
     List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet);
     List<PrixMoyenDTO> avoirPrixMoyen();
