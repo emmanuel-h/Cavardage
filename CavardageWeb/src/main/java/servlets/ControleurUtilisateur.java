@@ -407,7 +407,7 @@ public class ControleurUtilisateur extends HttpServlet {
 
     private void gererTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
-        String login = (String) request.getUserPrincipal().getName();;
+        String login = (String) request.getUserPrincipal().getName();
         try{
             TrajetDTO trajetDTO = maFacade.avoirTrajet(login, idTrajet);
             int nbPlacesRestantes = maFacade.avoirNbPlacesRestantes(idTrajet);

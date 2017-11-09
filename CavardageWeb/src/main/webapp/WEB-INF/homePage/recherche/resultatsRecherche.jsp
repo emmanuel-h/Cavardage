@@ -28,22 +28,22 @@
                     <td>${trajet.date}</td>
                     <td>${trajet.heure}</td>
                     <td>${trajet.nbPlaces}</td>
-                    <c:if test="${!empty utilisateur}">
-                        <c:if test="${trajet.loginConducteur eq utilisateur}">
+                    <c:if test="${!empty pageContext.request.remoteUser}">
+                        <c:if test="${trajet.loginConducteur eq pageContext.request.remoteUser}">
                             <td class="col-lg-1">
                                 <form action="ControleurUtilisateur" method="post">
                                     <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
                                     <input type="hidden" name="idTrajet" value="${trajet.id}">
-                                    <button class="btn btn-primary" type="submit" name="afaire" value="gererTrajet">Gérer</button>
+                                    <button class="btn btn-primary" style="width: 100%" type="submit" name="afaire" value="gererTrajet">Gérer</button>
                                 </form>
                             </td>
                         </c:if>
-                        <c:if test="${trajet.loginConducteur ne utilisateur}">
+                        <c:if test="${trajet.loginConducteur ne pageContext.request.remoteUser}">
                             <td class="col-lg-1">
                                 <form action="ControleurUtilisateur" method="post">
                                     <input type="hidden" name="loginConducteur" value="${trajet.loginConducteur}">
                                     <input type="hidden" name="idTrajet" value="${trajet.id}">
-                                    <button class="btn btn-primary" type="submit" name="afaire" value="detailsTrajet">Détails</button>
+                                    <button class="btn btn-primary" style="width: 100%" type="submit" name="afaire" value="detailsTrajet">Détails</button>
                                 </form>
                             </td>
                         </c:if>
