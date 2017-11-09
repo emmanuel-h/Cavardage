@@ -31,9 +31,12 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     }
 
     @Override
-    public Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee {
+    public Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee, AccesInterditException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
+        if(!trajet.getStatut().equals("aVenir")){
+            throw new AccesInterditException("Le trajet que vous essayez de réserver est déjà fini");
+        }
         List<Etape> etapes = trajet.getListeEtape();
         Reservation reservation = new Reservation();
         reservation.setStatut("enAttente");
@@ -488,26 +491,35 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @Override
     public TrajetDTO avoirTrajet(String login, int idTrajet, String type) throws AccesInterditException {
-        String string_query;
+        Query query;
         switch (type) {
             case "conducteur":
-                string_query = "SELECT t FROM Trajet t, Reservation r WHERE t.vehiculeTrajet.utilisateur.login=:login and " +
-                        "t.idTrajet=:idTrajet";
+                query=em.createQuery("SELECT t FROM Trajet t, Reservation r WHERE t.vehiculeTrajet.utilisateur.login=:login and " +
+                        "t.idTrajet=:idTrajet");
+                query.setParameter("login",login);
+                query.setParameter("idTrajet",idTrajet);
                 break;
             case "passager":
-                string_query = "SELECT t FROM Trajet t, Reservation r WHERE " +
+                query = em.createQuery("SELECT t FROM Trajet t, Reservation r WHERE " +
                         "r.trajetReservation=t and r.utilisateurReservation.login=:login and " +
-                        "t.idTrajet=:idTrajet";
+                        "t.idTrajet=:idTrajet");
+                query.setParameter("login",login);
+                query.setParameter("idTrajet",idTrajet);
+                break;
+            case "tous":
+                query = em.createQuery("SELECT t FROM Trajet t, Reservation r WHERE ((t.vehiculeTrajet.utilisateur.login=:login) or" +
+                        "(r.trajetReservation=t and r.utilisateurReservation.login=:login)) and " +
+                        "t.idTrajet=:idTrajet");
+                query.setParameter("login",login);
+                query.setParameter("idTrajet",idTrajet);
+                break;
+            case "recherche":
+                query = em.createQuery("SELECT t from Trajet t WHERE t.idTrajet=:idTrajet");
+                query.setParameter("idTrajet",idTrajet);
                 break;
             default:
-                string_query = "SELECT t FROM Trajet t, Reservation r WHERE ((t.vehiculeTrajet.utilisateur.login=:login) or" +
-                        "(r.trajetReservation=t and r.utilisateurReservation.login=:login)) and " +
-                        "t.idTrajet=:idTrajet";
-                break;
+                throw new AccesInterditException("pas les droits");
         }
-        Query query = em.createQuery(string_query);
-        query.setParameter("login",login);
-        query.setParameter("idTrajet",idTrajet);
         try{
             List<Trajet> trajets =  query.getResultList();
             return new TrajetDTO(trajets.get(0));

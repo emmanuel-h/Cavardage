@@ -377,13 +377,13 @@ public class ControleurUtilisateur extends HttpServlet {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         String login = request.getUserPrincipal().getName();
         try{
-            TrajetDTO trajetDTO = maFacade.avoirTrajet(login,idTrajet,"passager");
+            TrajetDTO trajetDTO = maFacade.avoirTrajet(login,idTrajet,"recherche");
             request.setAttribute("trajet", trajetDTO);
             request.setAttribute("aAfficher", "detailsTrajet");
             request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
         }catch (AccesInterditException e){
             maFacade.creerNotification(login,"Vous avez essayé de voir un trajet dont vous n'avez pas les droits");
-            voirTrajetsEnCours(request,response);
+            rechercherTrajet(request,response);
         }
     }
 
@@ -401,6 +401,8 @@ public class ControleurUtilisateur extends HttpServlet {
             maFacade.reserverPlace(login, idTrajet, nbPlaces, idVilleArrivee);
         } catch (VilleNonTrouvee villeNonTrouvee) {
             maFacade.creerNotification(login, "La ville d'arrivée n'a pas été trouvée.");
+        } catch (AccesInterditException e) {
+            maFacade.creerNotification(login,e.getMessage());
         }
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }

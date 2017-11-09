@@ -12,7 +12,7 @@ import java.util.Map;
 @Local
 public interface MaFacadeUtilisateur {
 
-    Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee;
+    Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee, AccesInterditException;
     Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note, String loginDestinataire);
     List<Appreciation> avoirNotesTrajet(int idTrajet);
     List<AppreciationDTO> avoirToutesAppreciations(String login);
