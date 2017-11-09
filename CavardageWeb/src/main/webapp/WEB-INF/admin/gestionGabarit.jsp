@@ -12,6 +12,11 @@
         <strong>Erreur : </strong>${messageErreur}
     </div>
 </c:if>
+<c:if test="${!empty messageSucces}">
+    <div class="alert alert-success">
+        <strong>Succès : </strong>${messageSucces}
+    </div>
+</c:if>
 <form method="post" action="ControleurAdmin">
     <legend>Ajouter un gabarit</legend>
     <div class="form-group">

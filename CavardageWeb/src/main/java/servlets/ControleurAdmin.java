@@ -104,6 +104,7 @@ public class ControleurAdmin extends HttpServlet {
         String departementVille = request.getParameter("departementVilleAAjouter");
         try {
             ejb.ajouterVille(nomVille,departementVille);
+            request.setAttribute("messageSucces", "La ville " + nomVille + "(" + departementVille + ") a bien été ajoutée à la base de données");
         } catch (VilleExistante villeExistante) {
             request.setAttribute("messageErreur", villeExistante.getMessage());
         }
@@ -116,6 +117,7 @@ public class ControleurAdmin extends HttpServlet {
         String nomGabarit = request.getParameter("nomGabaritAAjouter");
         try {
             ejb.ajouterGabarit(nomGabarit);
+            request.setAttribute("messageSucces", "Le gabarit '" + nomGabarit + "' a bien été ajouté à la base de données");
         } catch (GabaritException e) {
             request.setAttribute("messageErreur", e.getMessage());
         }
@@ -131,6 +133,7 @@ public class ControleurAdmin extends HttpServlet {
         String departementVilleSupp = st.nextToken();
         try {
             ejb.supprimerVille(nomVilleSupp, departementVilleSupp);
+            request.setAttribute("messageSucces", "La ville " + villeSupp + " a bien été supprimée");
         } catch (VilleNonTrouvee villeNonTrouvee) {
             request.setAttribute("messageErreur", villeNonTrouvee.getMessage());
         }
@@ -143,7 +146,8 @@ public class ControleurAdmin extends HttpServlet {
         String nomGabaritSupp = request.getParameter("nomGabaritASupprimer");
         String nomGabaritRemp = request.getParameter("nomGabaritARemplacer");
         try {
-            ejb.supprimerGabarit(nomGabaritSupp,nomGabaritRemp);
+            ejb.supprimerGabarit(nomGabaritSupp, nomGabaritRemp);
+            request.setAttribute("messageSucces", "Le gabarit '" + nomGabaritSupp + "' a bien été remplacé par '" + nomGabaritRemp + "'");
         } catch (GabaritException e) {
             request.setAttribute("messageErreur", e.getMessage());
         }

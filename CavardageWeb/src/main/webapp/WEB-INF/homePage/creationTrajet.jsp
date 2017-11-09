@@ -8,16 +8,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-    <datalist id="listeVille">
-        <c:forEach items="${listeVilles}" var="ville">
-            <option value="${ville.nomVille}(${ville.departement})" />
-        </c:forEach>
-    </datalist>
-    <datalist id="listeVehicule">
-        <c:forEach items="${listeVehicules}" var="vehicule">
-            <option value="${vehicule.nomVehicule}" />
-        </c:forEach>
-    </datalist>
+<datalist id="listeVille">
+    <c:forEach items="${listeVilles}" var="ville">
+        <option value="${ville.nomVille}(${ville.departement})" ></option>
+    </c:forEach>
+</datalist>
+<datalist id="listeVehicule">
+    <c:forEach items="${listeVehicules}" var="vehicule">
+        <option value="${vehicule.nomVehicule}" ></option>
+    </c:forEach>
+</datalist>
 
 <c:if test="${not empty message}">
 <div class="alert alert-info">${message}</div>
@@ -28,7 +28,6 @@
 
     <form action="ControleurUtilisateur" method="post" >
         <legend>Proposer un trajet</legend>
-        <div>
         <div class="col-lg-6">
             <div class="form-group">
                 <label for="villeDepart">Ville de départ : </label>
@@ -87,7 +86,6 @@
 
                 </ul>
             </div>
-        </div>
         </div>
     </form>
 
