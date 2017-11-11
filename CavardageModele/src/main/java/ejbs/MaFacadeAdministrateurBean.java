@@ -24,9 +24,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     @EJB
     private Automate automate;
 
-    public MaFacadeAdministrateurBean(){
-    }
-
+    @Override
     public boolean ajouterVille(String nomVille,String departement) throws VilleExistante {
         Ville v = em.find(Ville.class,nomVille + "_" + departement);
         if(null == v){
@@ -38,14 +36,12 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }
     }
 
-    public List<Ville> getListeVilles(){
-        return recherche.getListeVilles();
-    }
-
+    @Override
     public List<VilleDTO> getListeVilleDTO(){
         return recherche.getListeVillesDTO();
     }
 
+    @Override
     public List<String> getListeGabarits(){
         Query q = em.createQuery("SELECT g FROM Gabarit g");
         List<Gabarit> listeTemp = q.getResultList();
@@ -59,6 +55,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         return new ArrayList<>();
     }
 
+    @Override
     public boolean supprimerVille(String nomVille, String departement) throws VilleNonTrouvee {
         String idVille = nomVille + "_" + departement;
         Ville ville = em.find(Ville.class, idVille);
@@ -111,6 +108,11 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }
     }
 
+    /**
+     * Supprime une réservation
+     * @param r     La réservation à supprimer
+     * @param t     Le trajet associé à la réservation
+     */
     private void supprimerReservation(Reservation r, Trajet t){
         Utilisateur u = r.getUtilisateurReservation();
         u.getListeReservation().remove(r);
@@ -137,27 +139,18 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         em.remove(r);
     }
 
+    @Override
     public boolean ajouterGabarit(String nomGabarit) throws GabaritException {
         Query q = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
         q.setParameter("gabarit", nomGabarit);
-        try {
-            Gabarit g = (Gabarit) q.getSingleResult();
-        }catch (NoResultException e){
-            Gabarit gabarit = new Gabarit(nomGabarit);
-            em.persist(gabarit);
-            return true;
-        }
-        throw new GabaritException("Ce gabarit existe déjà");
-
-        /*
         List<Gabarit> gabarits = q.getResultList();
-        if(gabarits.isEmpty()){
+        if(gabarits.size() == 0){
             Gabarit gabarit = new Gabarit(nomGabarit);
             em.persist(gabarit);
             return true;
+        } else {
+            throw new GabaritException("Ce gabarit existe déjà");
         }
-        return false;
-        */
     }
 
     @Override
@@ -185,6 +178,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }
     }
 
+    @Override
     public StatistiquesDTO recupererStatistiques(){
         Query q = em.createQuery("SELECT u FROM Utilisateur u WHERE u.roleUtilisateur.message = 'utilisateur'");
         List<Utilisateur> listeUtilisateur = q.getResultList();
@@ -222,12 +216,6 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
 
         q = em.createQuery("SELECT COUNT (t) FROM Trajet t WHERE t.statut = 'fini'");
         int nbTrajetsFinis = ((Long)q.getSingleResult()).intValue();
-        /*for(Trajet t : listeTrajets){
-            if(t.getStatut().equals("fini")) {
-                nbTrajetsFinis++;
-            }
-            //TODO trouver la ville avec le plus de départs et celle avec le plus d'arrivées
-        }*/
 
         return new StatistiquesDTO(nbUtilisateur, nbPassagers, nbConducteurs, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
     }

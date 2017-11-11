@@ -27,9 +27,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @EJB
     private Automate automate;
 
-    public MaFacadeUtilisateurBean() {
-    }
-
     @Override
     public Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee, AccesInterditException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
@@ -97,13 +94,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 +" le "+trajet.getDate()+" pour l'utilisateur " +destinataireNote.getNom()+ " a bien été envoyée");
 
         return appreciation;
-    }
-
-    @Override
-    public List<Appreciation> avoirNotesTrajet(int idTrajet) {
-        Query q = em.createQuery("SELECT a FROM Appreciation a WHERE a.noteTrajet=:trajet");
-        q.setParameter("trajet",idTrajet);
-        return q.getResultList();
     }
 
     @Override
@@ -246,6 +236,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return avoirReservation(login,idTrajet,"enAttente");
     }
 
+    /**
+     * Avoir la liste des réservations concernant un trajet
+     * @param login                     L'identifiant de l'utilisateur
+     * @param idTrajet                  L'identifiant du trajet
+     * @param message                   Le statut de la réservation
+     * @return                          La liste des réservations pour le trajet
+     * @throws PasConducteurException   Si l'utilisateur n'est pas le conducteur
+     */
     private List<ReservationDTO> avoirReservation(String login, int idTrajet, String message) throws PasConducteurException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
@@ -382,6 +380,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
+    /**
+     * Gère une réservation et envoie des notifications aux utilisateurs concernés
+     * @param login                     L'identifiant de l'utilisateur
+     * @param reservation               La réservation à gérer
+     * @param messageNotification       Le message à afficher dans la notification
+     * @param statut                    Le statut à mettre dans la réservation
+     * @throws PasConducteurException   Si l'utilisateur n'est pas le conducteur du trajet
+     */
     private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         verifierUtilisateurEstConducteur(utilisateur, reservation.getTrajetReservation());
@@ -394,22 +400,25 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         em.persist(passager);
     }
 
+    /**
+     * Vérifie si l'utilisateur est le conducteur du trajet
+     * @param utilisateur               L'utilisateur à tester
+     * @param trajet                    Le trajet à tester
+     * @throws PasConducteurException   Si l'utilisateur n'est pas le conducteur du trajet
+     */
     private void verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
         if(!trajet.getVehiculeTrajet().getUtilisateur().getLogin().equals(utilisateur.getLogin())) {
             throw new PasConducteurException("Vous n'êtes pas le conducteur de ce trajet");
         }
     }
 
-    public List<Ville> getListeVilles(){
-        return recherche.getListeVilles();
-    }
-
+    @Override
     public List<VilleDTO> getListeVilleDTO(){
         return recherche.getListeVillesDTO();
     }
 
     @Override
-    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DatePosterieureException, ParseException {
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException {
         return recherche.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
     }
 
@@ -525,7 +534,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             List<Trajet> trajets =  query.getResultList();
             return new TrajetDTO(trajets.get(0));
         }catch (Exception e){
-            e.printStackTrace();
             throw new AccesInterditException("vous n'avez pas les droits");
         }
     }
@@ -681,10 +689,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return utilisateurDTOS;
     }
 
-    /*
-    -1 date1 < date2
-    0 date1 = date2
-    1 date1 > date2
+    /**
+     * Compare une date avec aujourd'hui
+     * @param string_date   La date à tester
+     * @return              Le résultat de la comparaison des dates
      */
     private int compareDate(String string_date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -704,11 +712,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             Logger.getAnonymousLogger().log(Level.INFO,"La date n'a pas pu être parsée");
         }
         return result;
-    }
-
-    @Override
-    public List<PrixMoyenDTO> avoirPrixMoyen(){
-        return automate.prixMoyen();
     }
 
     @Override

@@ -1,8 +1,6 @@
 package ejbs;
 
-import dtos.PrixMoyenDTO;
 import entities.Notification;
-import entities.Trajet;
 import entities.Utilisateur;
 
 import javax.ejb.Stateless;
@@ -14,15 +12,26 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
 
 @Stateless(name = "Automate")
 public class Automate {
 
+    /**
+     * L'EntityManager
+     */
     @PersistenceContext(unitName="monUnite")
     private EntityManager em;
 
+    /**
+     * Permet de créer une notification pour un utilisateur
+     * @param login     Le login de l'utilisateur
+     * @param message   Le message de la notification
+     * @return          La notification créée
+     */
     public Notification creerNotification(String login, String message) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Notification notification = new Notification();
@@ -33,36 +42,12 @@ public class Automate {
         return notification;
     }
 
-    public List<PrixMoyenDTO> prixMoyen(){
-        Query q = em.createQuery("SELECT t FROM Trajet t WHERE t.statut=:statutFini OR t.statut=:statutAVenir");
-        q.setParameter("statutFini", "fini");
-        q.setParameter("statutAVenir", "aVenir");
-        List<Trajet> listeTrajets = q.getResultList();
-
-        List<PrixMoyenDTO> listePrixMoyen = new ArrayList<>();
-        boolean update = false;
-        int listePrixMoyenSize = 0;
-        for(Trajet t : listeTrajets){
-            for(int i = 0; i < listePrixMoyenSize; i++){
-                PrixMoyenDTO p = listePrixMoyen.get(i);
-                if(t.getVilleDepart().getNomVille().equals(p.getVille1()) && t.getVilleArrivee().getNomVille().equals(p.getVille2())){
-                    p.setPrix((p.getPrix() + t.getPrix()) / 2f);
-                    update = true;
-                    break;
-                }
-            }
-            if(!update){
-                PrixMoyenDTO p = new PrixMoyenDTO(t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille(), t.getPrix());
-                listePrixMoyen.add(p);
-                listePrixMoyenSize++;
-            }
-            update = false;
-        }
-
-        return listePrixMoyen;
-
-    }
-
+    /**
+     * Calcule le prix moyen des trajets correspondants à certaines villes
+     * @param villeDepart   La ville de départ du trajet
+     * @param villeArrivee  La vilel d'arrivée du trajet
+     * @return              Le prix moyen du trajet
+     */
     public float prixMoyen(String villeDepart, String villeArrivee){
         Query q = em.createQuery("SELECT t.prix FROM Trajet t where t.villeDepart.nomVille=:villeDepart AND t.villeArrivee.nomVille=:villeArrivee");
         q.setParameter("villeDepart", villeDepart);
@@ -81,30 +66,33 @@ public class Automate {
         }
     }
 
-    public float prixMoyen(Trajet t){
-        return prixMoyen(t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille());
-    }
-
+    /**
+     * Teste si une date est postérieure à aujourd'hui
+     * @param dateTest          La date à tester
+     * @return                  true si la date est postérieure, alse si elle est antérieure
+     * @throws ParseException   Si la date n'est pas dans un format valide
+     */
     public boolean datePosterieure(String dateTest) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         format.setLenient(false);
         boolean result = false;
         Date current_date = new Date();
-        String dateCourante = format.format(current_date);
         Date date = format.parse(dateTest);
         Date temp = new Date(3600 * 1000);
         Date dateFinale = new Date(current_date.getTime() + temp.getTime());
-        System.out.println("date 1 : " + dateTest);
-        System.out.println("date 2 : " + dateCourante);
-        System.out.println("date 3 : " + dateFinale);
         if (date.compareTo(dateFinale) >= 0) {
             result = true;
         }
         return result;
     }
 
+    /**
+     * Teste si une date est dans le bon format, et si elle est au moins une heure plus tard que la date actuelle
+     * @param dateString        La date à tester
+     * @return                  true si le test est passé, false sinon
+     * @throws ParseException   Si le format de la date n'est pas valide
+     */
     public boolean testDate(String dateString) throws ParseException {
-
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         formatDate.setLenient(false);
         Date dateCourante = new Date();
@@ -115,24 +103,29 @@ public class Automate {
         Date dateTest = formatDate.parse(dateString+" "+heure2);
         Date temp = new Date(3600 * 1000);
         Date dateFinale = new Date(dateTest.getTime() + temp.getTime());
-        System.out.println("date courante "+ dateCourante);
-        System.out.println("date test "+ dateTest);
         return dateFinale.compareTo(dateCourante)>=0;
     }
 
+    /**
+     * Permet de récupérer le hash SHA-512 en héxadécimal d'un mot de passe
+     * @param message   Le message a hasher
+     * @return          Le message hashé
+     */
     public String recupererHash(String message){
         MessageDigest messageDigest = null;
         try {
             messageDigest = MessageDigest.getInstance("SHA-512");
         } catch (NoSuchAlgorithmException e) {
+            Logger.getAnonymousLogger().log(Level.INFO,"L'algorithme de hashage n'a pas été trouvé");
+        }
+        if (null == messageDigest) {
+            return null;
         }
         messageDigest.update(message.getBytes());
         byte messageBytes[] = messageDigest.digest();
-
-        //convert the byte to hex format method 1
-        StringBuffer hashCodeBuffer = new StringBuffer();
-        for (int i = 0; i < messageBytes.length; i++) {
-            hashCodeBuffer.append(Integer.toString((messageBytes[i] & 0xff) + 0x100, 16).substring(1));
+        StringBuilder hashCodeBuffer = new StringBuilder();
+        for (byte messageByte : messageBytes) {
+            hashCodeBuffer.append(Integer.toString((messageByte & 0xff) + 0x100, 16).substring(1));
         }
         return hashCodeBuffer.toString();
     }

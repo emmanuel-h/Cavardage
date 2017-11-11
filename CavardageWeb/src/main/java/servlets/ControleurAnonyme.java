@@ -3,7 +3,7 @@ package servlets;
 import dtos.TrajetDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAnonyme;
-import exceptions.DatePosterieureException;
+import exceptions.DateAnterieureException;
 import exceptions.LoginExistantException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -112,7 +112,7 @@ public class ControleurAnonyme extends HttpServlet {
             }
             request.setAttribute("resultatsRecherche","afficher");
             request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
-        } catch (DatePosterieureException e) {
+        } catch (DateAnterieureException e) {
             request.setAttribute("messageErreur", e.getMessage());
             retournerAccueil(request, response);
         } catch (ParseException e) {

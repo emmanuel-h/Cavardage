@@ -35,7 +35,7 @@
 <form method="post" action="ControleurUtilisateur">
     <select name = "loginPersonneAppreciation">
         <c:forEach items="${listePersonnes}" var="personne">
-            <c:if test="${personne.login != utilisateur}">
+            <c:if test="${personne.login != pageContext.request.remoteUser}">
                 <option value="${personne.login}">${personne.nom}</option>
             </c:if>
         </c:forEach>

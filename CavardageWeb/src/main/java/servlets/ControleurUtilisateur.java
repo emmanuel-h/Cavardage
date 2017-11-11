@@ -431,8 +431,7 @@ public class ControleurUtilisateur extends HttpServlet {
                 String motDePasse = request.getParameter("motDePasse");
                 if (maFacade.verifierMotDePasse(login, motDePasse)) {
                     maFacade.supprimerUtilisateur(login);
-                    request.getSession().setAttribute("utilisateur", null);
-                    response.sendRedirect("ControleurAnonyme");
+                    deconnexion(request,response);
                 } else {
                     request.setAttribute("message", "Mot de passe incorrect");
                     request.setAttribute("aAfficher", "suppressionCompte");
@@ -488,7 +487,7 @@ public class ControleurUtilisateur extends HttpServlet {
             request.setAttribute("aAfficher", "rechercherTrajet");
             request.setAttribute("resultatsRecherche", "afficher");
             request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
-        } catch (DatePosterieureException e) {
+        } catch (DateAnterieureException e) {
             request.setAttribute("messageErreur", e.getMessage());
             rechercherTrajet(request, response);
         } catch (ParseException e) {

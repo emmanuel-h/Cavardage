@@ -1,12 +1,10 @@
 package ejbs;
 
 import dtos.TrajetDTO;
-import dtos.UtilisateurDTO;
 import dtos.VilleDTO;
 import entities.*;
-import exceptions.DatePosterieureException;
+import exceptions.DateAnterieureException;
 import exceptions.LoginExistantException;
-import exceptions.UtilisateurNonInscritException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -27,9 +25,6 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     private RechercheBean rechercheBean;
     @EJB
     private Automate automate;
-
-    public MaFacadeAnonymeBean() {
-    }
 
     @Override
     public boolean inscription(String login,String nom, String mdp) throws LoginExistantException {
@@ -53,7 +48,7 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DatePosterieureException, ParseException {
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException {
         return rechercheBean.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
     }
 
@@ -67,23 +62,10 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
         }
         Collections.sort(ltd);
         return ltd;
-
-    }
-
-    @Override
-    public List<Ville> getListeVille() {
-        return rechercheBean.getListeVilles();
     }
 
     @Override
     public List<VilleDTO> getListeVilleDTO() {
         return rechercheBean.getListeVillesDTO();
-    }
-
-    @Override
-    public List<Notification> avoirListeNotification(String login){
-        Query q = em.createQuery("SELECT u.notifications FROM Utilisateur u WHERE u.login=:login");
-        q.setParameter("login", login);
-        return q.getResultList();
     }
 }
