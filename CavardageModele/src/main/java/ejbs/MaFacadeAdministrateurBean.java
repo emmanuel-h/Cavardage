@@ -4,6 +4,7 @@ import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import entities.*;
 import exceptions.GabaritException;
+import exceptions.ModificationRoleException;
 import exceptions.VilleExistante;
 import exceptions.VilleNonTrouvee;
 
@@ -218,5 +219,39 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         int nbTrajetsFinis = ((Long)q.getSingleResult()).intValue();
 
         return new StatistiquesDTO(nbUtilisateur, nbPassagers, nbConducteurs, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
+    }
+
+    @Override
+    public List<String> getListeLogins(){
+        Query q = em.createQuery("SELECT u.login FROM Utilisateur u");
+        return q.getResultList();
+    }
+
+    @Override
+    public List<String> getListeRoles(){
+        Query q = em.createQuery("SELECT r.message FROM Role r");
+        return q.getResultList();
+    }
+
+    @Override
+    public void changerRole(String login, String loginAModif, String role) throws ModificationRoleException {
+        if(login.equals(loginAModif)){
+            throw new ModificationRoleException("Vous ne pouvez pas modifier votre rôle");
+        }else{
+            Utilisateur u = em.find(Utilisateur.class, loginAModif);
+            if(null == u){
+                throw new ModificationRoleException("Utilisateur inconnu");
+            }else{
+                if(u.getRoleUtilisateur().getMessage().equals(role)){
+                    throw new ModificationRoleException("Vous ne pouvez pas affecter le même rôle à l'utilisateur");
+                }else{
+                    Query q = em.createQuery("SELECT r FROM Role r where r.message=:role");
+                    q.setParameter("role", role);
+                    Role r = (Role) q.getSingleResult();
+                    u.setRoleUtilisateur(r);
+                    em.persist(r);
+                }
+            }
+        }
     }
 }

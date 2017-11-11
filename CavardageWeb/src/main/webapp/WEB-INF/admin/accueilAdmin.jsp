@@ -39,6 +39,9 @@
                         <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
                     </div>
                     <div class="form-group">
+                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="gererRole">Gérer les rôles</button>
+                    </div>
+                    <div class="form-group">
                         <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="statistiques">Statistiques</button>
                     </div>
                     <hr>
@@ -56,6 +59,9 @@
                 </c:if>
                 <c:if test="${aAfficher == 'gestionGabarit'}">
                     <jsp:include page="gestionGabarit.jsp"></jsp:include>
+                </c:if>
+                <c:if test="${aAfficher == 'gestionRole'}">
+                    <jsp:include page="gestionRole.jsp"></jsp:include>
                 </c:if>
                 <c:if test="${aAfficher == 'statistiques'}">
                     <jsp:include page="statistiques.jsp"></jsp:include>
