@@ -25,21 +25,10 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     private EntityManager em;
     @EJB
     private RechercheBean rechercheBean;
+    @EJB
+    private Automate automate;
 
     public MaFacadeAnonymeBean() {
-    }
-
-    @Override
-    public UtilisateurDTO connexion(String login, String mdp) throws UtilisateurNonInscritException {
-        Query query = em.createQuery("SELECT u FROM Utilisateur u WHERE u.login=:login AND u.motDePasse=:mdp");
-        query.setParameter("login",login);
-        query.setParameter("mdp",mdp);
-        List<Utilisateur> p = query.getResultList();
-        if(!p.isEmpty()) {
-            return new UtilisateurDTO(p.get(0));
-        }else{
-            throw new UtilisateurNonInscritException("Echec à la connexion");
-        }
     }
 
     @Override
@@ -52,7 +41,8 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
             query.setParameter("message", "utilisateur");
             List<Role> r = query.getResultList();
             if(!r.isEmpty()) {
-                Utilisateur new_u = new Utilisateur(login, nom, mdp,r.get(0));
+                String mdpHash = automate.recupererHash(mdp);
+                Utilisateur new_u = new Utilisateur(login, nom, mdpHash,r.get(0));
                 em.persist(new_u);
                 return true;
             }

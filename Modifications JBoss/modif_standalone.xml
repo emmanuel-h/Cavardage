@@ -5,6 +5,8 @@
                             <module-option name="dsJndiName" value="java:jboss/datasources/ExampleDS"/>
                             <module-option name="principalsQuery" value="SELECT motdepasse FROM utilisateur WHERE login=?"/>
                             <module-option name="rolesQuery" value="SELECT Role.message, 'Roles' FROM Role INNER JOIN Utilisateur ON Role.idrole=Utilisateur.idrole WHERE Utilisateur.login=?"/>
+                            <module-option name="hashAlgorithm" value="SHA-512"/>
+                            <module-option name="hashEncoding" value="hex"/>
                             <module-option name="unauthenticatedIdentity" value="guest"/>
                         </login-module>
                         <login-module code="RoleMapping" flag="required">

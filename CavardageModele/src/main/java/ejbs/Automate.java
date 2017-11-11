@@ -9,6 +9,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -116,6 +118,22 @@ public class Automate {
         System.out.println("date courante "+ dateCourante);
         System.out.println("date test "+ dateTest);
         return dateFinale.compareTo(dateCourante)>=0;
+    }
 
+    public String recupererHash(String message){
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+        }
+        messageDigest.update(message.getBytes());
+        byte messageBytes[] = messageDigest.digest();
+
+        //convert the byte to hex format method 1
+        StringBuffer hashCodeBuffer = new StringBuffer();
+        for (int i = 0; i < messageBytes.length; i++) {
+            hashCodeBuffer.append(Integer.toString((messageBytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return hashCodeBuffer.toString();
     }
 }

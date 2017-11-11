@@ -356,10 +356,11 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @Override
     public boolean changerMotDePasse(String login, String motDePasse) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
-        if(utilisateur.getMotDePasse().equals(motDePasse)){
+        String motDePasseHash = automate.recupererHash(motDePasse);
+        if(utilisateur.getMotDePasse().equals(motDePasseHash)){
             return false;
         } else {
-            utilisateur.setMotDePasse(motDePasse);
+            utilisateur.setMotDePasse(motDePasseHash);
             return true;
         }
     }
@@ -367,7 +368,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @Override
     public boolean verifierMotDePasse(String login, String motDePasse) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
-        return utilisateur.getMotDePasse().equals(motDePasse);
+        return utilisateur.getMotDePasse().equals(automate.recupererHash(motDePasse));
     }
 
     @Override
