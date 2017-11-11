@@ -4,6 +4,7 @@ import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import entities.Ville;
 import exceptions.GabaritException;
+import exceptions.ModificationRoleException;
 import exceptions.VilleExistante;
 import exceptions.VilleNonTrouvee;
 
@@ -28,4 +29,10 @@ public interface MaFacadeAdministrateur {
     List<VilleDTO> getListeVilleDTO();
 
     StatistiquesDTO recupererStatistiques();
+
+    List<String> getListeLogins();
+
+    List<String> getListeRoles();
+
+    void changerRole(String login, String loginAModif, String role) throws ModificationRoleException;
 }

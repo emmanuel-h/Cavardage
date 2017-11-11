@@ -4,6 +4,7 @@ import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAdministrateur;
 import exceptions.GabaritException;
+import exceptions.ModificationRoleException;
 import exceptions.VilleExistante;
 import exceptions.VilleNonTrouvee;
 
@@ -72,6 +73,12 @@ public class ControleurAdmin extends HttpServlet {
                     setGestionGabarit(request);
                     request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
+                case "gererRole":
+                    setListeLogin(request);
+                    setListeRoles(request);
+                    setGestionRole(request);
+                    request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
+                    break;
                 case "ajouterVille":
                     ajouterVille(request, response);
                     break;
@@ -83,6 +90,9 @@ public class ControleurAdmin extends HttpServlet {
                     break;
                 case "supprimerVille":
                     supprimerVille(request, response);
+                    break;
+                case "changerRole":
+                    changerRole(request, response);
                     break;
                 case "statistiques":
                     voirStatistiques(request, response);
@@ -122,6 +132,15 @@ public class ControleurAdmin extends HttpServlet {
     }
 
     /**
+     * Pour afficher l'onglet de la gestion du role
+     * @param request la requête
+     */
+    @RolesAllowed("admin")
+    private void setGestionRole(HttpServletRequest request){
+        request.setAttribute("aAfficher", "gestionRole");
+    }
+
+    /**
      * Pour afficher l'onglet d'affichage des statistiques
      * @param request la requête
      */
@@ -148,6 +167,26 @@ public class ControleurAdmin extends HttpServlet {
     private void setListeGabarits(HttpServletRequest request){
         List<String> listeGabarits = ejb.getListeGabarits();
         request.setAttribute("listeGabarits", listeGabarits);
+    }
+
+    /**
+     * Met la liste des logins dans la requête
+     * @param request la requête
+     */
+    @RolesAllowed("admin")
+    private void setListeLogin(HttpServletRequest request){
+        List<String> listeLogin = ejb.getListeLogins();
+        request.setAttribute("listeLogin", listeLogin);
+    }
+
+    /**
+     * Met la liste des rôles dans la requête
+     * @param request la requête
+     */
+    @RolesAllowed("admin")
+    private void setListeRoles(HttpServletRequest request){
+        List<String> listeRoles = ejb.getListeRoles();
+        request.setAttribute("listeRoles", listeRoles);
     }
 
     /**
@@ -236,6 +275,21 @@ public class ControleurAdmin extends HttpServlet {
         }
         setGestionGabarit(request);
         setListeGabarits(request);
+        request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
+    }
+
+    private void changerRole(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String loginAChanger = request.getParameter("login");
+        String role = request.getParameter("role");
+        try{
+            ejb.changerRole(request.getRemoteUser(), loginAChanger, role);
+            request.setAttribute("messageSucces", "L'utilisateur " + loginAChanger + " a pour nouveau rôle : " + role);
+        }catch(ModificationRoleException e){
+            request.setAttribute("messageErreur", e.getMessage());
+        }
+        setListeLogin(request);
+        setListeRoles(request);
+        setGestionRole(request);
         request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
     }
 
