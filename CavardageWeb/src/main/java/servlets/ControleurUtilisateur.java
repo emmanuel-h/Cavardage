@@ -17,17 +17,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * La servlet qui gère toutes les actions d'un utilisateur authentifié
+ */
 @WebServlet("ControleurUtilisateur")
 public class ControleurUtilisateur extends HttpServlet {
 
+    /**
+     * L'ejb pour parler avec le métier
+     */
     @EJB
     private MaFacadeUtilisateur maFacade;
 
+    /**
+     * Si on reçoit quelque chose e nget, on le traite de la même façon que le post
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
+    /**
+     * Redirige vers la méthode correspondant à l'action de l'utilisateur
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String aFaire = request.getParameter("afaire");
@@ -134,12 +154,26 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Retourne sur la page d'accueil
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void voirAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         afficherNotification(request);
         request.setAttribute("aAfficher", "accueil");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Valide la création d'un trajet
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void enregistrerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         String villeDepart = request.getParameter("villeDepart");
@@ -175,6 +209,13 @@ public class ControleurUtilisateur extends HttpServlet {
         voirCreerTrajet(request, response);
     }
 
+    /**
+     * Affiche tous les trajets auxquels on va participer
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void voirTrajetsEnCours(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         Map<String,Object> listeTrajet = maFacade.avoirListeTrajetAVenir(login);
@@ -185,6 +226,13 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Demande à l'utilisateur sa ville de départ et d'arrivée pour pouvoir lui calculer le prix moyen de ce trajet
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void voirCreerTrajetTemp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
         request.setAttribute("listeVilles", listeVilles);
@@ -192,6 +240,13 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Affiche la page de création d'un trajet
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void voirCreerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         String villeDepart = request.getParameter("villeDepart");
@@ -213,6 +268,13 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Affiche la page de gestion des véhicules
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void voirVehicules(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         List<VehiculeDTO> vehiculesDTO = maFacade.listeVehicules(login);
@@ -223,6 +285,13 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Affiche la page affichant l'historique des trajets effectués sur le site pour l'utilisateur actuel
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void voirHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         List<HistoriqueDTO> listeHistorique = maFacade.historiqueUtilisateur(login);
@@ -231,6 +300,13 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Affiche les détails d'un trajet effectué
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void detailsHistorique(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
@@ -247,6 +323,13 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Affiche la page permettant de faire ou de voir ses appréciations
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void voirAppreciations(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         String noteMoyenne;
@@ -265,11 +348,25 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Affiche la page de gestion des paramètres utilisateurs
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void parametres(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("aAfficher", "parametres");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Enregistre un nouveau véhicule pour l'utilisateur courant
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void enregistrerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         String nomVehicule = request.getParameter("nomVehicule");
@@ -287,6 +384,13 @@ public class ControleurUtilisateur extends HttpServlet {
         voirVehicules(request, response);
     }
 
+    /**
+     * Valide le changement de mot de passe de l'utilisateur courant
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void changerMotDepasse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         String motDePasse1 = request.getParameter("nouveauMdP1");
@@ -309,6 +413,13 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Supprime le compte de l'utilisateur courant
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void supprimerCompte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String confirmation = request.getParameter("confirmation");
         if (null == confirmation) {
@@ -331,6 +442,13 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Affiche la page de recherche d'un trajet
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void rechercherTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
         request.setAttribute("listeVilles", listeVilles);
@@ -338,6 +456,13 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Affiche les résultats de recherche d'un trajet
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void afficherRechercheTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String villeDepart = request.getParameter("nomVilleDepart");
@@ -370,9 +495,15 @@ public class ControleurUtilisateur extends HttpServlet {
             request.setAttribute("messageErreur", "Merci de rentrer une date valide (jj/mm/aaaa)");
             rechercherTrajet(request, response);
         }
-
     }
 
+    /**
+     * Affiche les détails d'un trajet consulté
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void detailsTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         String login = request.getUserPrincipal().getName();
@@ -387,6 +518,13 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Lance une demande de réservation pour un trajet
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void reserverTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idVilleArrivee;
         if(request.getParameter("etapeArrivee").equals("")){
@@ -407,6 +545,13 @@ public class ControleurUtilisateur extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 
+    /**
+     * Permet de gérer un trajet dont on est le conducteur
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void gererTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         String login = request.getUserPrincipal().getName();
@@ -433,6 +578,13 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Permet de supprimer un trajet dont on est le conducteur
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void supprimerTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
@@ -444,6 +596,13 @@ public class ControleurUtilisateur extends HttpServlet {
         voirTrajetsEnCours(request, response);
     }
 
+    /**
+     * Permet d'accepter une réservation sur un trajet
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void accepterReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
@@ -457,6 +616,13 @@ public class ControleurUtilisateur extends HttpServlet {
         gererTrajet(request, response);
     }
 
+    /**
+     * Permet de refuser une réservation sur un trajet
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void refuserReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
@@ -470,6 +636,13 @@ public class ControleurUtilisateur extends HttpServlet {
         gererTrajet(request, response);
     }
 
+    /**
+     * Permet de supprimer une réservation
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void supprimerReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idReservation = Integer.parseInt(request.getParameter("idReservation"));
         String login = request.getUserPrincipal().getName();
@@ -477,12 +650,26 @@ public class ControleurUtilisateur extends HttpServlet {
         voirTrajetsEnCours(request, response);
     }
 
+    /**
+     * Déconnecte l'utilisateur courant
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void deconnexion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().removeAttribute("utilisateur");
         request.getSession().invalidate();
         response.sendRedirect(request.getContextPath());
     }
 
+    /**
+     * Ouvre un écran permettant de faire une appréciation sur un tajet et un utilisateur donné
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void apprecierTrajet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         String login = request.getUserPrincipal().getName();
@@ -499,6 +686,13 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Valide une appréciation sur un trajet et une personne donnés
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void noter(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         String loginDestinataire = request.getParameter("loginPersonneAppreciation");
@@ -509,13 +703,23 @@ public class ControleurUtilisateur extends HttpServlet {
         apprecierTrajet(request,response);
     }
 
+    /**
+     * Charge dans la requête la liste des notification s de l'utilisateur courant
+     * @param request la requête
+     */
     private void afficherNotification(HttpServletRequest request){
         String login = request.getUserPrincipal().getName();
         List<Notification> listeNotif = maFacade.avoirListeNotification(login);
         request.setAttribute("listeNotif", listeNotif);
     }
 
-
+    /**
+     * Supprime la notification que l'utilisateur ne veut plus voir affichée
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void supprimerNotification(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         int idNotif = Integer.parseInt(request.getParameter("idNotif"));
@@ -523,6 +727,13 @@ public class ControleurUtilisateur extends HttpServlet {
         voirAccueil(request, response);
     }
 
+    /**
+     * Affiche les détails d'une réservation
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void detailsReservation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
         int idRes = Integer.parseInt(request.getParameter("idReservation"));
@@ -540,6 +751,13 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Valide la suppression d'un véhicule
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void supprimerVehicule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idVehicule = Integer.parseInt(request.getParameter("idVehicule"));
         String login = request.getUserPrincipal().getName();

@@ -15,17 +15,37 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
+/**
+ * Cette classe permet de gérer tous les comportements qu'un utilisateur peut avoir sans être authentifié
+ */
 @WebServlet("ControleurAnonyme")
 public class ControleurAnonyme extends HttpServlet {
 
+    /**
+     * L'ejb métier correspondant
+     */
     @EJB
     private MaFacadeAnonyme ejb;
 
+    /**
+     * Si on a une méthode en get, on la traite de la même manière qu'en post
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
+    /**
+     * Cette méthode va nous permettre de rediriger l'utilisateur vers la bonne page, ou d'exécuter la bonne action
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String test = request.getParameter("afaire");
@@ -62,6 +82,13 @@ public class ControleurAnonyme extends HttpServlet {
         }
     }
 
+    /**
+     * Permet de lister tous les résultats de la recherche faite par l'utilisateur
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void getResultatRecherche(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         String villeDepart = request.getParameter("nomVilleDepart");
         String nomVilleDepart = villeDepart.substring(0,villeDepart.length()-4);
@@ -94,26 +121,55 @@ public class ControleurAnonyme extends HttpServlet {
         }
     }
 
+    /**
+     * Permet de retourner à l'accueil
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void retournerAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getListeVilles(request);
         getListeDernierTrajet(request);
         request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
     }
 
+    /**
+     * Retourne la liste des dix derniers trajets enregsitrés sur le site
+     * @param request la requête
+     */
     private void getListeDernierTrajet(HttpServletRequest request) {
         List<TrajetDTO> listeDernierTrajet = ejb.dernierAjout();
         request.setAttribute("listeDernierTrajet",listeDernierTrajet);
     }
 
+    /**
+     * Retourne la liste des villes admises sur le site
+     * @param request la requête
+     */
     private void getListeVilles(HttpServletRequest request){
         List<VilleDTO> listeVilles = ejb.getListeVilleDTO();
         request.setAttribute("listeVilles",listeVilles);
     }
 
+    /**
+     * Lance la connexion puis la redirection vers la page correspondant au rôle de l'utilisateur
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void connexion(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         request.getRequestDispatcher("ControleurGeneral").forward(request,response);
     }
 
+    /**
+     * Permet d'inscrire un nouvel utilisateur
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
     private void inscription(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         String login,mdp,nom,mdp_confirmer;
         login = request.getParameter("login");
