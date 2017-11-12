@@ -18,26 +18,24 @@
     </div>
 </c:if>
 
-<datalist id="loginList">
-    <c:forEach items="${listeLogin}" var="login">
-        <option value="${login}" />
-    </c:forEach>
-</datalist>
-
 <form method="post" action="ControleurAdmin">
     <div class="form-group">
-        <label for="login">Login : </label>
-        <input type="text" class="form-control" list="loginList" id="login" name="login" autocomplete="off" required>
+        <label for="login">Identifiant : </label>
+        <input type="text" class="form-control" id="login" size="25" name="login" autocomplete="off" required>
     </div>
     <div class="form-group">
-        <label for="role">Nouveau rôle : </label>
-        <select name="role" id="role" required>
-            <c:forEach items="${listeRoles}" var="role">
-                <option value="${role}">${role}</option>
-            </c:forEach>
-        </select>
+        <label for="nom">Nom : </label>
+        <input type="text" class="form-control" id="nom" size="25" name="nom" autocomplete="off" required>
     </div>
     <div class="form-group">
-        <button class="btn btn-primary" type="submit" name="boutonAdmin" value="changerRole">Changer le rôle</button>
+        <label for="mdp">Mot de passe : </label>
+        <input type="password" class="form-control" id="mdp" size="15" name="mdp" autocomplete="off" required>
+    </div>
+    <div class="form-group">
+        <label for="mdpConf">Confirmation : </label>
+        <input type="password" class="form-control" id="mdpConf" size="15" name="mdpConf" autocomplete="off" required>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit" name="boutonAdmin" value="creerCompteAdmin">Créer un compte administrateur</button>
     </div>
 </form>

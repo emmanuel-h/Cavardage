@@ -4,7 +4,7 @@ import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
 import ejbs.MaFacadeAdministrateur;
 import exceptions.GabaritException;
-import exceptions.ModificationRoleException;
+import exceptions.LoginExistantException;
 import exceptions.VilleExistante;
 import exceptions.VilleNonTrouvee;
 
@@ -74,8 +74,6 @@ public class ControleurAdmin extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
                 case "gererRole":
-                    setListeLogin(request);
-                    setListeRoles(request);
                     setGestionRole(request);
                     request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
                     break;
@@ -91,8 +89,8 @@ public class ControleurAdmin extends HttpServlet {
                 case "supprimerVille":
                     supprimerVille(request, response);
                     break;
-                case "changerRole":
-                    changerRole(request, response);
+                case "creerCompteAdmin":
+                    creerCompteAdmin(request, response);
                     break;
                 case "statistiques":
                     voirStatistiques(request, response);
@@ -167,26 +165,6 @@ public class ControleurAdmin extends HttpServlet {
     private void setListeGabarits(HttpServletRequest request){
         List<String> listeGabarits = ejb.getListeGabarits();
         request.setAttribute("listeGabarits", listeGabarits);
-    }
-
-    /**
-     * Met la liste des logins dans la requête
-     * @param request la requête
-     */
-    @RolesAllowed("admin")
-    private void setListeLogin(HttpServletRequest request){
-        List<String> listeLogin = ejb.getListeLogins();
-        request.setAttribute("listeLogin", listeLogin);
-    }
-
-    /**
-     * Met la liste des rôles dans la requête
-     * @param request la requête
-     */
-    @RolesAllowed("admin")
-    private void setListeRoles(HttpServletRequest request){
-        List<String> listeRoles = ejb.getListeRoles();
-        request.setAttribute("listeRoles", listeRoles);
     }
 
     /**
@@ -278,17 +256,27 @@ public class ControleurAdmin extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
     }
 
-    private void changerRole(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String loginAChanger = request.getParameter("login");
-        String role = request.getParameter("role");
-        try{
-            ejb.changerRole(request.getRemoteUser(), loginAChanger, role);
-            request.setAttribute("messageSucces", "L'utilisateur " + loginAChanger + " a pour nouveau rôle : " + role);
-        }catch(ModificationRoleException e){
-            request.setAttribute("messageErreur", e.getMessage());
+    /**
+     * Créé un nouveau compte administrateur
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
+    @RolesAllowed("admin")
+    private void creerCompteAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = request.getParameter("login");
+        String nom = request.getParameter("nom");
+        String mdp = request.getParameter("mdp");
+        String mdpConf = request.getParameter("mdpConf");
+        if(mdp.equals(mdpConf)) {
+            try {
+                ejb.creerCompteAdmin(login, nom, mdp);
+                request.setAttribute("messageSucces", "Le compte administrateur " + login + " a bien été créé");
+            } catch (LoginExistantException e) {
+                request.setAttribute("messageErreur", e.getMessage());
+            }
         }
-        setListeLogin(request);
-        setListeRoles(request);
         setGestionRole(request);
         request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
     }

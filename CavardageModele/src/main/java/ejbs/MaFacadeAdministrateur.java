@@ -2,11 +2,7 @@ package ejbs;
 
 import dtos.StatistiquesDTO;
 import dtos.VilleDTO;
-import entities.Ville;
-import exceptions.GabaritException;
-import exceptions.ModificationRoleException;
-import exceptions.VilleExistante;
-import exceptions.VilleNonTrouvee;
+import exceptions.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -69,9 +65,12 @@ public interface MaFacadeAdministrateur {
      */
     StatistiquesDTO recupererStatistiques();
 
-    List<String> getListeLogins();
-
-    List<String> getListeRoles();
-
-    void changerRole(String login, String loginAModif, String role) throws ModificationRoleException;
+    /**
+     * Créé un compte administrateur
+     * @param login Le login du nouvel administrateur
+     * @param nom Le nom de l'administrateur
+     * @param mdp Le mot de passe de l'administrateur
+     * @throws LoginExistantException Si le login est déjà pris par un utilisateur
+     */
+    void creerCompteAdmin(String login, String nom, String mdp) throws LoginExistantException;
 }
