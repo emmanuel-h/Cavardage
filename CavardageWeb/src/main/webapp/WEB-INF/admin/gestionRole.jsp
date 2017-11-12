@@ -19,6 +19,7 @@
 </c:if>
 
 <form method="post" action="ControleurAdmin">
+    <legend>Créer un compte administrateur</legend>
     <div class="form-group">
         <label for="login">Identifiant : </label>
         <input type="text" class="form-control" id="login" size="25" name="login" autocomplete="off" required>

@@ -8,17 +8,27 @@ public class StatistiquesDTO {
     private int nbTrajetsReserves;
     private int totalPrixTrajets;
     private int nbTrajetsFinis;
+    private int nbVilles;
+    private String topVilleDepart;
+    private String topVilleArrivee;
+    private long duration;
 
     public StatistiquesDTO() {
     }
 
-    public StatistiquesDTO(int nbUtilisateur, int nbPassagers, int nbConducteurs, int nbTrajetsReserves, int totalPrixTrajets, int nbTrajetsFinis) {
+    public StatistiquesDTO(int nbUtilisateur, int nbPassagers, int nbConducteurs, int nbTrajetsReserves,
+                           int totalPrixTrajets, int nbTrajetsFinis, int nbVilles, String topVilleDepart,
+                           String topVilleArrivee, long duration) {
         this.nbUtilisateur = nbUtilisateur;
         this.nbPassagers = nbPassagers;
         this.nbConducteurs = nbConducteurs;
         this.nbTrajetsReserves = nbTrajetsReserves;
         this.totalPrixTrajets = totalPrixTrajets;
         this.nbTrajetsFinis = nbTrajetsFinis;
+        this.nbVilles = nbVilles;
+        this.topVilleDepart = topVilleDepart;
+        this.topVilleArrivee = topVilleArrivee;
+        this.duration = duration;
     }
 
     public int getNbUtilisateur() {
@@ -67,5 +77,37 @@ public class StatistiquesDTO {
 
     public void setNbTrajetsFinis(int nbTrajetsFinis) {
         this.nbTrajetsFinis = nbTrajetsFinis;
+    }
+
+    public int getNbVilles() {
+        return nbVilles;
+    }
+
+    public void setNbVilles(int nbVilles) {
+        this.nbVilles = nbVilles;
+    }
+
+    public String getTopVilleDepart() {
+        return topVilleDepart;
+    }
+
+    public void setTopVilleDepart(String topVilleDepart) {
+        this.topVilleDepart = topVilleDepart;
+    }
+
+    public String getTopVilleArrivee() {
+        return topVilleArrivee;
+    }
+
+    public void setTopVilleArrivee(String topVilleArrivee) {
+        this.topVilleArrivee = topVilleArrivee;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 }

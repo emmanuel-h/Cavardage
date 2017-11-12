@@ -178,6 +178,9 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
 
     @Override
     public StatistiquesDTO recupererStatistiques(){
+
+        long startTime = System.nanoTime();
+
         Query q = em.createQuery("SELECT u FROM Utilisateur u WHERE u.roleUtilisateur.message = 'utilisateur'");
         List<Utilisateur> listeUtilisateur = q.getResultList();
         int nbUtilisateur = listeUtilisateur.size();
@@ -215,7 +218,32 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         q = em.createQuery("SELECT COUNT (t) FROM Trajet t WHERE t.statut = 'fini'");
         int nbTrajetsFinis = ((Long)q.getSingleResult()).intValue();
 
-        return new StatistiquesDTO(nbUtilisateur, nbPassagers, nbConducteurs, nbTrajetsAcceptes, prixTotal, nbTrajetsFinis);
+        q = em.createQuery("SELECT COUNT (v) FROM Ville v");
+        int nbVilles = ((Long) q.getSingleResult()).intValue();
+
+        q = em.createQuery("SELECT t.villeDepart.nomVille FROM Trajet t GROUP BY t.villeDepart ORDER BY COUNT (t.villeDepart) DESC");
+        List<String> listeVilles = q.getResultList();
+        String topVilleDepart;
+        if(!listeVilles.isEmpty()) {
+            topVilleDepart = listeVilles.get(0);
+        }else{
+            topVilleDepart = "/";
+        }
+
+        q = em.createQuery("SELECT t.villeArrivee.nomVille FROM Trajet t GROUP BY t.villeArrivee ORDER BY COUNT (t.villeArrivee) DESC");
+        listeVilles = q.getResultList();
+        String topVilleArrivee;
+        if(!listeVilles.isEmpty()) {
+            topVilleArrivee = listeVilles.get(0);
+        }else{
+            topVilleArrivee = "/";
+        }
+
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime) / 1000000;
+
+        return new StatistiquesDTO(nbUtilisateur, nbPassagers, nbConducteurs, nbTrajetsAcceptes,
+                prixTotal, nbTrajetsFinis, nbVilles, topVilleDepart, topVilleArrivee, duration);
     }
 
     @Override
