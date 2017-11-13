@@ -33,20 +33,44 @@
             <div style="margin-top: 15px">
                 <form method="post" action="ControleurAdmin">
                     <div class="form-group">
-                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="gererVille">Gérer les villes</button>
+                        <c:if test="${aAfficher == 'gestionVille'}">
+                            <button class="btn btn-default" style="width: 100%;background-color: #d9d9d9;" type="submit" name="boutonAdmin" value="gererVille">Gérer les villes</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'gestionVille'}">
+                            <button class="btn btn-default" style="width: 100%;" type="submit" name="boutonAdmin" value="gererVille">Gérer les villes</button>
+                        </c:if>
                     </div>
+
                     <div class="form-group">
-                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
+                        <c:if test="${aAfficher == 'gestionGabarit'}">
+                            <button class="btn btn-default" style="width: 100%;background-color: #d9d9d9;" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'gestionGabarit'}">
+                            <button class="btn btn-default" style="width: 100%;" type="submit" name="boutonAdmin" value="gererGabarit">Gérer les gabarits</button>
+                        </c:if>
                     </div>
+
                     <div class="form-group">
-                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="gererRole">Gérer les rôles</button>
+                        <c:if test="${aAfficher == 'gestionRole'}">
+                            <button class="btn btn-default" style="width: 100%;background-color: #d9d9d9;" type="submit" name="boutonAdmin" value="gererRole">Gérer les rôles</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'gestionRole'}">
+                            <button class="btn btn-default" style="width: 100%;" type="submit" name="boutonAdmin" value="gererRole">Gérer les rôles</button>
+                        </c:if>
                     </div>
+
                     <div class="form-group">
-                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="statistiques">Statistiques</button>
+                        <c:if test="${aAfficher == 'statistiques'}">
+                            <button class="btn btn-default" style="width: 100%;background-color: #d9d9d9;" type="submit" name="boutonAdmin" value="statistiques">Statistiques</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'statistiques'}">
+                            <button class="btn btn-default" style="width: 100%;" type="submit" name="boutonAdmin" value="statistiques">Statistiques</button>
+                        </c:if>
                     </div>
+
                     <hr>
                     <div class="form-group">
-                        <button class="btn btn-default" style="width: 100%" type="submit" name="boutonAdmin" value="deconnexion">Déconnexion</button>
+                        <button class="btn btn-default" style="width: 100%;" type="submit" name="boutonAdmin" value="deconnexion">Déconnexion</button>
                     </div>
                 </form>
             </div>

@@ -60,6 +60,8 @@ public class ControleurAdmin extends HttpServlet {
         String test = request.getParameter("boutonAdmin");
 
         if(null == test){
+            setListeVilles(request);
+            setGestionVille(request);
             request.getRequestDispatcher("/WEB-INF/admin/accueilAdmin.jsp").forward(request, response);
         }else{
             switch (test){
