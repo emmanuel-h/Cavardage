@@ -6,6 +6,8 @@ import entities.Trajet;
 import entities.Ville;
 import exceptions.DateAnterieureException;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,7 +17,7 @@ import java.text.ParseException;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
-
+@DeclareRoles({"admin","utilisateur"})
 @Stateless(name = "RechercheBean")
 public class RechercheBean {
 
@@ -43,6 +45,7 @@ public class RechercheBean {
      * @throws ParseException           Si la date du trajet n'est pas dans un format acceptable
      * @throws DateAnterieureException  Si la date est antérieure à aujourd'hui
      */
+    @PermitAll
     public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrivee,
                                            String departementArrivee, String date, String prix) throws ParseException, DateAnterieureException {
 
@@ -86,6 +89,7 @@ public class RechercheBean {
      * Renvoie la liste des villes existantes dans la base de données
      * @return  La liste des villes
      */
+    @PermitAll
     public List<VilleDTO> getListeVillesDTO(){
         Query q = em.createQuery("SELECT v FROM Ville v");
         List<Ville> listeVille = q.getResultList();

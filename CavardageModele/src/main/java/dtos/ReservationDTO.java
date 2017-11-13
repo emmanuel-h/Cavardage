@@ -21,7 +21,6 @@ public class ReservationDTO {
 
     public ReservationDTO(Reservation reservation){
         this.idReservation = reservation.getIdReservation();
-        System.out.println("idRes : " + this.idReservation);
         this.statut = reservation.getStatut();
         this.nbPlaces = reservation.getNbPlace();
         String[] tab = reservation.getTrajetReservation().getVilleDepart().getNomVille().split("_");

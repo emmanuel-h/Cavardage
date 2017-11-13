@@ -5,6 +5,9 @@ import dtos.VilleDTO;
 import ejbs.MaFacadeAnonyme;
 import exceptions.DateAnterieureException;
 import exceptions.LoginExistantException;
+
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +21,7 @@ import java.util.List;
 /**
  * Cette classe permet de gérer tous les comportements qu'un utilisateur peut avoir sans être authentifié
  */
+@DeclareRoles({"admin","utilisateur"})
 @WebServlet("ControleurAnonyme")
 public class ControleurAnonyme extends HttpServlet {
 
@@ -34,6 +38,7 @@ public class ControleurAnonyme extends HttpServlet {
      * @throws ServletException servlet exception
      * @throws IOException entrée/sortie exception
      */
+    @PermitAll
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -46,9 +51,13 @@ public class ControleurAnonyme extends HttpServlet {
      * @throws ServletException servlet exception
      * @throws IOException entrée/sortie exception
      */
+    @PermitAll
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String test = request.getParameter("afaire");
+        if(request.isUserInRole("utilisateur") || request.isUserInRole("admin")){
+            request.getRequestDispatcher("ControleurGeneral").forward(request,response);
+        }
         if(null == test){
             getListeVilles(request);
             getListeDernierTrajet(request);
@@ -68,11 +77,6 @@ public class ControleurAnonyme extends HttpServlet {
                     getResultatRecherche(request,response);
                     getListeDernierTrajet(request);
                     break;
-                case "deconnexion":
-                    request.getSession().removeAttribute("utilisateur");
-                    request.getSession().invalidate();
-                    response.sendRedirect(request.getContextPath());
-                    break;
                 default:
                     getListeVilles(request);
                     getListeDernierTrajet(request);
@@ -89,6 +93,7 @@ public class ControleurAnonyme extends HttpServlet {
      * @throws ServletException servlet exception
      * @throws IOException entrée/sortie exception
      */
+    @PermitAll
     private void getResultatRecherche(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         String villeDepart = request.getParameter("nomVilleDepart");
         String nomVilleDepart = villeDepart.substring(0,villeDepart.length()-4);
@@ -128,6 +133,7 @@ public class ControleurAnonyme extends HttpServlet {
      * @throws ServletException servlet exception
      * @throws IOException entrée/sortie exception
      */
+    @PermitAll
     private void retournerAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getListeVilles(request);
         getListeDernierTrajet(request);
@@ -138,6 +144,7 @@ public class ControleurAnonyme extends HttpServlet {
      * Retourne la liste des dix derniers trajets enregsitrés sur le site
      * @param request la requête
      */
+    @PermitAll
     private void getListeDernierTrajet(HttpServletRequest request) {
         List<TrajetDTO> listeDernierTrajet = ejb.dernierAjout();
         request.setAttribute("listeDernierTrajet",listeDernierTrajet);
@@ -147,6 +154,7 @@ public class ControleurAnonyme extends HttpServlet {
      * Retourne la liste des villes admises sur le site
      * @param request la requête
      */
+    @PermitAll
     private void getListeVilles(HttpServletRequest request){
         List<VilleDTO> listeVilles = ejb.getListeVilleDTO();
         request.setAttribute("listeVilles",listeVilles);
@@ -159,6 +167,7 @@ public class ControleurAnonyme extends HttpServlet {
      * @throws ServletException servlet exception
      * @throws IOException entrée/sortie exception
      */
+    @PermitAll
     private void connexion(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         request.getRequestDispatcher("ControleurGeneral").forward(request,response);
     }
@@ -170,6 +179,7 @@ public class ControleurAnonyme extends HttpServlet {
      * @throws ServletException servlet exception
      * @throws IOException entrée/sortie exception
      */
+    @PermitAll
     private void inscription(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
         String login,mdp,nom,mdp_confirmer;
         login = request.getParameter("login");

@@ -3,6 +3,9 @@ package ejbs;
 import entities.Notification;
 import entities.Utilisateur;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
-
+@DeclareRoles({"admin","utilisateur"})
 @Stateless(name = "Automate")
 public class Automate {
 
@@ -32,6 +35,7 @@ public class Automate {
      * @param message   Le message de la notification
      * @return          La notification créée
      */
+    @RolesAllowed({"utilisateur","admin"})
     public Notification creerNotification(String login, String message) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Notification notification = new Notification();
@@ -48,6 +52,7 @@ public class Automate {
      * @param villeArrivee  La vilel d'arrivée du trajet
      * @return              Le prix moyen du trajet
      */
+    @RolesAllowed("utilisateur")
     public float prixMoyen(String villeDepart, String villeArrivee){
         Query q = em.createQuery("SELECT t.prix FROM Trajet t where t.villeDepart.nomVille=:villeDepart AND t.villeArrivee.nomVille=:villeArrivee");
         q.setParameter("villeDepart", villeDepart);
@@ -72,6 +77,7 @@ public class Automate {
      * @return                  true si la date est postérieure, alse si elle est antérieure
      * @throws ParseException   Si la date n'est pas dans un format valide
      */
+    @PermitAll
     public boolean datePosterieure(String dateTest) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         format.setLenient(false);
@@ -92,6 +98,7 @@ public class Automate {
      * @return                  true si le test est passé, false sinon
      * @throws ParseException   Si le format de la date n'est pas valide
      */
+    @PermitAll
     public boolean testDate(String dateString) throws ParseException {
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         formatDate.setLenient(false);
@@ -111,6 +118,7 @@ public class Automate {
      * @param message   Le message a hasher
      * @return          Le message hashé
      */
+    @PermitAll
     public String recupererHash(String message){
         MessageDigest messageDigest = null;
         try {

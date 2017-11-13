@@ -5,13 +5,15 @@ import dtos.VilleDTO;
 import entities.*;
 import exceptions.*;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
-
+@DeclareRoles({"admin","utilisateur"})
 @Stateless(name = "AdministrateurBean")
 public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
 
@@ -22,6 +24,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     @EJB
     private Automate automate;
 
+    @RolesAllowed("admin")
     @Override
     public boolean ajouterVille(String nomVille,String departement) throws VilleExistante {
         Ville v = em.find(Ville.class,nomVille + "_" + departement);
@@ -34,11 +37,13 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }
     }
 
+    @RolesAllowed("admin")
     @Override
     public List<VilleDTO> getListeVilleDTO(){
         return recherche.getListeVillesDTO();
     }
 
+    @RolesAllowed("admin")
     @Override
     public List<String> getListeGabarits(){
         Query q = em.createQuery("SELECT g FROM Gabarit g");
@@ -53,6 +58,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         return new ArrayList<>();
     }
 
+    @RolesAllowed("admin")
     @Override
     public boolean supprimerVille(String nomVille, String departement) throws VilleNonTrouvee {
         String idVille = nomVille + "_" + departement;
@@ -111,6 +117,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
      * @param r     La réservation à supprimer
      * @param t     Le trajet associé à la réservation
      */
+    @RolesAllowed("admin")
     private void supprimerReservation(Reservation r, Trajet t){
         Utilisateur u = r.getUtilisateurReservation();
         u.getListeReservation().remove(r);
@@ -137,6 +144,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         em.remove(r);
     }
 
+    @RolesAllowed("admin")
     @Override
     public boolean ajouterGabarit(String nomGabarit) throws GabaritException {
         Query q = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
@@ -151,9 +159,9 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }
     }
 
+    @RolesAllowed("admin")
     @Override
     public void supprimerGabarit(String gabaritASupprimer, String gabaritARemplacer) throws GabaritException {
-        System.out.println(gabaritASupprimer+"-"+gabaritARemplacer);
         Query qSupp = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
         qSupp.setParameter("gabarit", gabaritASupprimer);
         Query qRemp = em.createQuery("SELECT g FROM Gabarit g WHERE g.type=:gabarit");
@@ -176,6 +184,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
         }
     }
 
+    @RolesAllowed("admin")
     @Override
     public StatistiquesDTO recupererStatistiques(){
 
@@ -246,6 +255,7 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
                 prixTotal, nbTrajetsFinis, nbVilles, topVilleDepart, topVilleArrivee, duration);
     }
 
+    @RolesAllowed("admin")
     @Override
     public void creerCompteAdmin(String login, String nom, String mdp) throws LoginExistantException {
         Utilisateur temp = em.find(Utilisateur.class, login);

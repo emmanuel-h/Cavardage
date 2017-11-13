@@ -101,8 +101,6 @@ public class ControleurAdmin extends HttpServlet {
                 case "deconnexion":
                     request.logout();
                     request.getSession().invalidate();
-                    request.getSession().removeAttribute("utilisateur");
-                    request.getSession().invalidate();
                     response.sendRedirect(request.getContextPath());
                     break;
                 default:

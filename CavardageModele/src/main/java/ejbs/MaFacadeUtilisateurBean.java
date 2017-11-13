@@ -4,6 +4,8 @@ import dtos.*;
 import entities.*;
 import exceptions.*;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
-
+@DeclareRoles({"admin","utilisateur"})
 @Stateless(name = "UtilisateurBean")
 public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
@@ -27,6 +29,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @EJB
     private Automate automate;
 
+    @RolesAllowed("utilisateur")
     @Override
     public Reservation reserverPlace(String login, int idTrajet, int nbPlaces, String idVilleArrivee) throws VilleNonTrouvee, AccesInterditException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
@@ -69,6 +72,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return reservation;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public Appreciation donnerAppreciation(String login, int idTrajet, String commentaire, int note, String loginDestinataire) {
         Utilisateur donneNote = em.find(Utilisateur.class,login);
@@ -96,6 +100,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return appreciation;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<AppreciationDTO> avoirToutesAppreciations(String login) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
@@ -107,6 +112,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return appreciationDTOList;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public float moyenneNotes(String login) throws DivisionParZeroException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
@@ -125,6 +131,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public Vehicule ajouterVehicule(String login, String nomVehicule, String modele, String gabarit, int nbPlaces) throws VehiculeDejaExistantException, GabaritException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
@@ -159,6 +166,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean supprimerVehicule(String login, int idVehicule) throws PasVehiculeUtilisateur {
         Query query = em.createQuery("SELECT v FROM Vehicule v WHERE v.idVehicule=:idVehicule and v.utilisateur.login=:login and v.statut='actif'");
@@ -186,6 +194,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<VehiculeDTO> listeVehicules(String login){
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
@@ -199,6 +208,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return listeVehicules;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean annulerTrajet(String login, int idTrajet) throws PasConducteurException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
@@ -226,11 +236,13 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return true;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<ReservationDTO> avoirReservationsAcceptees(String login, int idTrajet) throws PasConducteurException {
         return avoirReservation(login,idTrajet,"accepte");
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<ReservationDTO> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException {
         return avoirReservation(login,idTrajet,"enAttente");
@@ -244,6 +256,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
      * @return                          La liste des réservations pour le trajet
      * @throws PasConducteurException   Si l'utilisateur n'est pas le conducteur
      */
+    @RolesAllowed("utilisateur")
     private List<ReservationDTO> avoirReservation(String login, int idTrajet, String message) throws PasConducteurException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
@@ -258,6 +271,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return reservationListe;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean refuserReservation(String login, int idReservation) throws PasConducteurException {
         Reservation reservation = em.find(Reservation.class,idReservation);
@@ -272,6 +286,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return true;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean accepterReservation(String login, int idReservation) throws PasConducteurException{
         Reservation reservation = em.find(Reservation.class,idReservation);
@@ -286,6 +301,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return true;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean annulerReservation(String login, int idReservation) {
         Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.idReservation =:idReservation and r.utilisateurReservation.login =:login");
@@ -301,6 +317,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return true;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean supprimerNotification(String login, int idNotification) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
@@ -309,6 +326,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return utilisateur.supprimerNotification(notification);
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<HistoriqueDTO> historiqueUtilisateur(String login){
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
@@ -334,6 +352,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return listeHisto;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public HistoriqueDTO uniqueHistoriqueUtilisateur(String login, int id){
         List<HistoriqueDTO> liste = historiqueUtilisateur(login);
@@ -345,12 +364,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return null;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<Gabarit> listeGabarits(){
         Query q = em.createQuery("SELECT g FROM Gabarit g");
         return q.getResultList();
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean changerMotDePasse(String login, String motDePasse) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
@@ -363,12 +384,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean verifierMotDePasse(String login, String motDePasse) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         return utilisateur.getMotDePasse().equals(automate.recupererHash(motDePasse));
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean supprimerUtilisateur(String login) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
@@ -388,6 +411,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
      * @param statut                    Le statut à mettre dans la réservation
      * @throws PasConducteurException   Si l'utilisateur n'est pas le conducteur du trajet
      */
+    @RolesAllowed("utilisateur")
     private void gererReservation(String login, Reservation reservation, String messageNotification, String statut) throws PasConducteurException {
         Utilisateur utilisateur = em.find(Utilisateur.class, login);
         verifierUtilisateurEstConducteur(utilisateur, reservation.getTrajetReservation());
@@ -406,22 +430,26 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
      * @param trajet                    Le trajet à tester
      * @throws PasConducteurException   Si l'utilisateur n'est pas le conducteur du trajet
      */
+    @RolesAllowed("utilisateur")
     private void verifierUtilisateurEstConducteur(Utilisateur utilisateur, Trajet trajet) throws PasConducteurException{
         if(!trajet.getVehiculeTrajet().getUtilisateur().getLogin().equals(utilisateur.getLogin())) {
             throw new PasConducteurException("Vous n'êtes pas le conducteur de ce trajet");
         }
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<VilleDTO> getListeVilleDTO(){
         return recherche.getListeVillesDTO();
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException {
         return recherche.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException, EtapeException, VehiculeException {
         Utilisateur user = em.find(Utilisateur.class, login);
@@ -499,6 +527,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         creerNotification(login,"Le trajet "+villeDepart+" - "+villeArrivee+" a été créé");
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public TrajetDTO avoirTrajet(String login, int idTrajet, String type) throws AccesInterditException {
         Query query;
@@ -538,12 +567,13 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
-
+    @RolesAllowed("utilisateur")
     @Override
     public Notification creerNotification(String login, String message) {
         return automate.creerNotification(login,message);
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<Notification> avoirListeNotification(String login){
         Query q = em.createQuery("SELECT u.notifications FROM Utilisateur u WHERE u.login=:login");
@@ -551,6 +581,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return q.getResultList();
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public int avoirNbPlacesRestantes(int idTrajet) {
         Trajet trajet = em.find(Trajet.class,idTrajet);
@@ -563,6 +594,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return  nbPlacesRestantes;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public Map<String, Object> avoirListeTrajetAVenir(String login){
         // On recherche tous les trajets faits en tant que conducteur
@@ -606,6 +638,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return  map;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public ReservationDTO avoirReservationDTO(String login,int idReservation) throws AccesInterditException {
         Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.idReservation=:idReservation and " +
@@ -620,6 +653,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<TrajetDTO> avoirListeTrajet(String login) {
         // On récupère tous les trajets finis ou à venir, où l'on était passager ou conducteur
@@ -656,6 +690,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return trajetDTOList;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet) {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
@@ -694,6 +729,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
      * @param string_date   La date à tester
      * @return              Le résultat de la comparaison des dates
      */
+    @RolesAllowed("utilisateur")
     private int compareDate(String string_date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         int result=0;
@@ -714,6 +750,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return result;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public float avoirPrixMoyen(String villeDepart, String villeArrivee) throws VilleNonTrouvee{
         try {
@@ -727,6 +764,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public boolean datePosterieure(String dateTest)  throws ParseException {
         return automate.datePosterieure(dateTest);
