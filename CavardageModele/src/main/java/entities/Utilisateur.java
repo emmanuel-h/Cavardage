@@ -142,10 +142,12 @@ public class Utilisateur {
         return false;
     }
 
-    public void ajouterNotification(Notification notification){
+    public boolean ajouterNotification(Notification notification){
         if(!this.notifications.contains(notification)){
             this.notifications.add(notification);
+            return true;
         }
+        return false;
     }
 
     public boolean supprimerNotification(Notification notification){

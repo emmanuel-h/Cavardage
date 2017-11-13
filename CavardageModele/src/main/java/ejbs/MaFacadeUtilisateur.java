@@ -282,6 +282,13 @@ public interface MaFacadeUtilisateur {
     List<UtilisateurDTO> avoirPersonnesTrajet(String login, int idTrajet);
 
     /**
+     * Supprimer toutes les reservations d'un trajet
+     * @param login     L'identifiant de l'utilisateur
+     * @param idTrajet  L'identifiant du trajet
+     */
+    void supprimerToutesReservationsTrajet(String login, int idTrajet) throws PasConducteurException;
+
+    /**
      * Avoir le prix moyen des trajets ayant la même ville de départ et d'arrivée
      * @param villeDepart       La ville de départ du trajet
      * @param villeArrivee      la ville d'arrivée du trajet

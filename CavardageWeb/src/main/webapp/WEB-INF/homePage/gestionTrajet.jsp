@@ -61,11 +61,17 @@
     <label>Liste des réservations en attente:</label>
     <li class="list-group-item">
         <table class="table table-bordered">
+            <form action="ControleurUtilisateur" method="post">
             <tr>
                 <th>Nom</th>
                 <th>Nombre de places</th>
                 <th>Ville d'arrivée</th>
+                <th>
+                    <input type="hidden" name="idTrajet" value="${trajet.id}"/>
+                    <button type="submit" class="btn btn-default" value="toutSupprimer" name="afaire">Tout supprimer</button>
+                </th>
             </tr>
+            </form>
             <c:forEach items="${reservationsAttente}" var="reservation">
                 <form method="post" action="ControleurUtilisateur" onsubmit="return testReservation(this)">
                     <tr>
