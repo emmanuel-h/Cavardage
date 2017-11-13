@@ -664,12 +664,14 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @RolesAllowed("utilisateur")
     @Override
     public List<TrajetDTO> avoirListeTrajet(String login) {
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+
         // On récupère tous les trajets finis ou à venir, où l'on était passager ou conducteur
         Query q = em.createQuery("SELECT DISTINCT t FROM Trajet t, Reservation r, Appreciation a WHERE" +
-                "((t.statut='fini' or t.statut='aVenir') and ((t.vehiculeTrajet.utilisateur.login=:login)" +
+                "((t.statut='fini' or t.statut='aVenir') and ((t.vehiculeTrajet.utilisateur=:utilisateur)" +
                 " or (r.trajetReservation=t and r.statut='accepte' and " +
-                "r.utilisateurReservation.login=:login)))");
-        q.setParameter("login",login);
+                "r.utilisateurReservation=:utilisateur)))");
+        q.setParameter("utilisateur",utilisateur);
         List<TrajetDTO> trajetDTOList = new ArrayList<>();
         List<Trajet> trajets =  q.getResultList();
 
@@ -683,8 +685,9 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             // Si le trajet est fini et qu'il y a moins d'appreciations que de réservations, on l'ajouter à la liste car
             // il reste des appreciations à faire dessus
             if(t.getStatut().equals("fini") ){
-                q = em.createQuery("SELECT count(a) FROM Appreciation a WHERE a.noteTrajet=:trajet");
+                q = em.createQuery("SELECT count(a) FROM Appreciation a WHERE a.noteTrajet=:trajet AND a.donneNote=:utilisateur");
                 q.setParameter("trajet", t);
+                q.setParameter("utilisateur", utilisateur);
                 long nbApp = (long) q.getResultList().get(0);
                 q = em.createQuery("SELECT count(r.idReservation) FROM Reservation r WHERE r.trajetReservation=:trajet");
                 q.setParameter("trajet", t);
@@ -716,10 +719,13 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 "a.noteTrajet.idTrajet= :idTrajet");
         queryAppreciations.setParameter("idTrajet",idTrajet);
         List<Appreciation> appreciations = queryAppreciations.getResultList();
-
         // Si on a déjà donné une appreciation à un utilisateur pour ce trajet,
         // on enlève cet utilisateur de la liste des utilisateurs à noter
+        for(Utilisateur utilisateur1 : utilisateurs){
+            System.out.println(utilisateur1.toString());
+        }
         for (Appreciation appreciation : appreciations){
+            System.out.println(appreciation.toString());
             if(appreciation.getDonneNote().equals(utilisateur)){
                 utilisateurs.remove(appreciation.getEstNote());
             }

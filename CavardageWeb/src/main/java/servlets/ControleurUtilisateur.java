@@ -567,6 +567,8 @@ public class ControleurUtilisateur extends HttpServlet {
         } catch (AccesInterditException e) {
             maFacade.creerNotification(login,e.getMessage());
         }
+        afficherNotification(request);
+        request.setAttribute("aAfficher", "accueil");
         request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
     }
 

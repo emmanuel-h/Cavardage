@@ -30,28 +30,68 @@
             <div style="margin-top: 15px">
                 <form action="ControleurUtilisateur" method="post">
                     <div class="form-group">
-                        <button class="btn btn-default" type="submit" name="afaire" value="accueil" style="width: 100%">Accueil</button>
+                        <c:if test="${aAfficher == 'accueil'}">
+                        <button class="btn btn-default" type="submit" name="afaire" value="accueil" style="width: 100%;background-color: #d9d9d9;">Accueil</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'accueil'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="accueil" style="width: 100%">Accueil</button>
+                        </c:if>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default" type="submit" name="afaire" value="trajetsEnCours" style="width: 100%">Trajets en cours</button>
+                        <c:if test="${aAfficher == 'trajetsEnCours' or (aAfficher == 'detailsTrajet' and not empty reservation)}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="trajetsEnCours" style="width: 100%;background-color: #d9d9d9;">Trajets en cours</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'trajetsEnCours' and aAfficher != 'detailsTrajet' and not empty reservation}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="trajetsEnCours" style="width: 100%">Trajets en cours</button>
+                        </c:if>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default" type="submit" name="afaire" value="creerTrajet" style="width: 100%">Création d'un trajet</button>
+                        <c:if test="${aAfficher == 'creerTrajetTemp' or aAfficher == 'creerTrajet'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="creerTrajet" style="width: 100%;background-color: #d9d9d9;">Création d'un trajet</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'creerTrajetTemp' and aAfficher != 'creerTrajet'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="creerTrajet" style="width: 100%">Création d'un trajet</button>
+                        </c:if>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default" type="submit" name="afaire" value="voirVehicules" style="width: 100%">Véhicules</button>
+                        <c:if test="${aAfficher == 'vehicules'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="voirVehicules" style="width: 100%;background-color: #d9d9d9;">Véhicules</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'vehicules'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="voirVehicules" style="width: 100%">Véhicules</button>
+                        </c:if>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default" type="submit" name="afaire" value="voirHistorique" style="width: 100%">Historique</button>
+                        <c:if test="${aAfficher == 'historique' or aAfficher == 'detailsHistorique'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="voirHistorique" style="width: 100%;background-color: #d9d9d9;">Historique</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'historique' and aAfficher != 'detailsHistorique'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="voirHistorique" style="width: 100%">Historique</button>
+                        </c:if>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default" type="submit" name="afaire" value="voirAppreciations" style="width: 100%">Appréciations</button>
+                        <c:if test="${aAfficher == 'appreciations' or aAfficher == 'detailsAppreciation'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="voirAppreciations" style="width: 100%;background-color: #d9d9d9;">Appreciations</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'appreciations' and aAfficher != 'detailsAppreciation'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="voirAppreciations" style="width: 100%">Appreciations</button>
+                        </c:if>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default" type="submit" name="afaire" value="parametres" style="width: 100%">Paramètres</button>
+                        <c:if test="${aAfficher == 'parametres' or aAfficher == 'suppressionCompte'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="parametres" style="width: 100%;background-color: #d9d9d9;">Paramètres</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'parametres' and aAfficher != 'suppressionCompte'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="parametres" style="width: 100%">Paramètres</button>
+                        </c:if>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default" type="submit" name="afaire" value="rechercherTrajet" style="width: 100%">Rechercher un trajet</button>
+                        <c:if test="${aAfficher == 'rechercherTrajet' or (aAfficher == 'detailsTrajet' and empty reservation) or aAfficher == 'gestionTrajet'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="rechercherTrajet" style="width: 100%;background-color: #d9d9d9;">Rechercher un trajet</button>
+                        </c:if>
+                        <c:if test="${aAfficher != 'rechercherTrajet' and aAfficher != 'detailsTrajet' and empty reservation and aAfficher != 'gestionTrajet'}">
+                            <button class="btn btn-default" type="submit" name="afaire" value="rechercherTrajet" style="width: 100%">Rechercher un trajet</button>
+                        </c:if>
                     </div>
                     <hr>
                     <div class="form-group">
