@@ -146,6 +146,9 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "supprimerVehicule":
                     supprimerVehicule(request, response);
                     break;
+                case "toutSupprimer":
+                    toutSupprimer(request, response);
+                    break;
                 default:
                     afficherNotification(request);
                     request.setAttribute("aAfficher", "accueil");
@@ -770,5 +773,22 @@ public class ControleurUtilisateur extends HttpServlet {
         }
     }
 
+    /**
+     * Supprime toutes les reservations en attente
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
+    private void toutSupprimer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = request.getUserPrincipal().getName();
+        int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
+        try{
+            maFacade.supprimerToutesReservationsTrajet(login, idTrajet);
+        }catch(PasConducteurException e){
+            maFacade.creerNotification(login, "Vous avez essayé de supprimer des réservations d'un trajet dont vous n'êtes pas le conducteur");
+        }
+        voirTrajetsEnCours(request,response);
+    }
 
 }

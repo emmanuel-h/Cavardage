@@ -2,7 +2,10 @@ package dtos;
 
 import entities.Reservation;
 
-public class ReservationDTO {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class ReservationDTO implements Comparable{
 
     private int idReservation;
     private String statut;
@@ -40,6 +43,21 @@ public class ReservationDTO {
         this.loginUtilisateur = reservation.getUtilisateurReservation().getLogin();
         this.nomUtilisateur =reservation.getUtilisateurReservation().getNom();
         this.date = reservation.getTrajetReservation().getDate()+ " "+reservation.getTrajetReservation().getHeure();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        int result=0;
+        try {
+            Date dateThis = format.parse(this.getDate());
+            Date dateObject = format.parse(((ReservationDTO)o).getDate());
+            result = dateThis.compareTo(dateObject);
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println(e.toString());
+        }
+        return result;
     }
 
     public int getIdReservation() {

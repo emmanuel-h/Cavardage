@@ -38,6 +38,13 @@ public class Ville {
         return nomVille;
     }
 
+    public String getNomPropre(){
+        StringTokenizer st;
+        st = new StringTokenizer(nomVille, "_");
+        String nomVille = st.nextToken() + "(" + st.nextToken()+")";
+        return nomVille;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

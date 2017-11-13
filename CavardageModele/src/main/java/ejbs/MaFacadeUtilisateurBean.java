@@ -61,7 +61,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Vehicule vehicule = trajet.getVehiculeTrajet();
         Utilisateur conducteur = vehicule.getUtilisateur();
         Notification notification = new Notification();
-        String messageNotification = "Une nouvelle réservation est arrivée pour le trajet "+trajet.getVilleDepart().getNomVille()+" - "+trajet.getVilleArrivee().getNomVille();
+        String messageNotification = "Une nouvelle réservation est arrivée pour le trajet "+trajet.getVilleDepart().getNomPropre()+" - "+trajet.getVilleArrivee().getNomPropre();
         notification.setMessage(messageNotification);
         conducteur.ajouterNotification(notification);
         em.persist(notification);
@@ -87,10 +87,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         destinataireNote.ajouterNoteRecue(appreciation);
         em.persist(destinataireNote);
 
-        creerNotification(loginDestinataire,"Vous avez reçu une appréciation concernant le trajet partant de "+trajet.getVilleDepart().getNomVille()
+        creerNotification(loginDestinataire,"Vous avez reçu une appréciation concernant le trajet partant de "+trajet.getVilleDepart().getNomPropre()
                 +" le "+trajet.getDate()+" de l'utilisateur " +donneNote.getNom());
 
-        creerNotification(login,"Votre appréciation concernant le trajet partant de "+trajet.getVilleDepart().getNomVille()
+        creerNotification(login,"Votre appréciation concernant le trajet partant de "+trajet.getVilleDepart().getNomPropre()
                 +" le "+trajet.getDate()+" pour l'utilisateur " +destinataireNote.getNom()+ " a bien été envoyée");
 
         return appreciation;
@@ -174,10 +174,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             for (Trajet t : listTrajets){
                 t.setStatut("annule");
                 String login_conducteur = t.getVehiculeTrajet().getUtilisateur().getLogin();
-                creerNotification(login_conducteur,"Le trajet de "+ t.getVilleDepart().getNomVille() +" à "+t.getVilleArrivee().getNomVille() + " le "+t.getDate()+ " a été annulé");
+                creerNotification(login_conducteur,"Le trajet de "+ t.getVilleDepart().getNomPropre() +" à "+t.getVilleArrivee().getNomPropre() + " le "+t.getDate()+ " a été annulé");
                 for(Reservation r : t.getListeReservation()){
                     String login_reserv = r.getUtilisateurReservation().getLogin();
-                    creerNotification(login_reserv,"Le trajet de "+ t.getVilleDepart().getNomVille() +" à "+t.getVilleArrivee().getNomVille() + " le "+t.getDate()+ " a été annulé");
+                    creerNotification(login_reserv,"Le trajet de "+ t.getVilleDepart().getNomPropre() +" à "+t.getVilleArrivee().getNomPropre() + " le "+t.getDate()+ " a été annulé");
                 }
             }
             return true;
@@ -209,7 +209,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
         trajet.setStatut("annule");
         Notification notification;
-        String messageNotification = ("Le trajet "+trajet.getVilleDepart()+" - "+trajet.getVilleArrivee() + " du "+trajet.getDate()+" a été annulé");
+        String messageNotification = ("Le trajet "+trajet.getVilleDepart().getNomPropre()+" - "+trajet.getVilleArrivee().getNomPropre() + " du "+trajet.getDate()+" a été annulé");
 
         //Trouver tous les passagers et leur envoyer la notification
         Utilisateur passager;
@@ -218,9 +218,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 passager = reservation.getUtilisateurReservation();
                 notification = new Notification();
                 notification.setMessage(messageNotification);
-                passager.ajouterNotification(notification);
-                em.persist(notification);
-                em.persist(passager);
+                if(passager.ajouterNotification(notification)) {
+                    em.persist(notification);
+                    em.persist(passager);
+                }
             }
         }
         return true;
@@ -263,9 +264,11 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Reservation reservation = em.find(Reservation.class,idReservation);
         String messageNotification;
         if(null == reservation.getDescendA()){
-            messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getTrajetReservation().getVilleArrivee().getNomVille()+" a été refusée";
+            messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomPropre()+" - "
+                    +reservation.getTrajetReservation().getVilleArrivee().getNomPropre()+" du "+reservation.getTrajetReservation().getDate()+" a été refusée";
         }else{
-            messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getDescendA().getVilleEtape().getNomVille()+" a été refusée";
+            messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomPropre()+" - "
+                    +reservation.getDescendA().getVilleEtape().getNomPropre()+" du "+reservation.getTrajetReservation().getDate()+" a été refusée";
         }
         String statut="refuse";
         gererReservation(login,reservation,messageNotification,statut);
@@ -277,9 +280,11 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Reservation reservation = em.find(Reservation.class,idReservation);
         String messageNotification;
         if(null == reservation.getDescendA()){
-            messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getTrajetReservation().getVilleArrivee().getNomVille()+" a été acceptée";
+            messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomPropre()+" - "
+                    +reservation.getTrajetReservation().getVilleArrivee().getNomPropre()+" du "+reservation.getTrajetReservation().getDate()+" a été acceptée";
         }else{
-            messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomVille()+" - "+reservation.getDescendA().getVilleEtape().getNomVille()+" a été acceptée";
+            messageNotification = "Votre réservation pour le trajet "+reservation.getTrajetReservation().getVilleDepart().getNomPropre()+" - "
+                    +reservation.getDescendA().getVilleEtape().getNomPropre()+" du "+reservation.getTrajetReservation().getDate()+" a été acceptée";
         }
         String statut="accepte";
         gererReservation(login,reservation,messageNotification,statut);
@@ -395,9 +400,10 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Utilisateur passager = reservation.getUtilisateurReservation();
         Notification notification = new Notification();
         notification.setMessage(messageNotification);
-        passager.ajouterNotification(notification);
-        em.persist(notification);
-        em.persist(passager);
+        if(passager.ajouterNotification(notification)) {
+            em.persist(notification);
+            em.persist(passager);
+        }
     }
 
     /**
@@ -496,7 +502,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
         em.persist(trajet);
 
-        creerNotification(login,"Le trajet "+villeDepart+" - "+villeArrivee+" a été créé");
+        creerNotification(login,"Le trajet "+villeDepart+" - "+villeArrivee + " pour le "+ trajet.getDate() +" a été créé");
     }
 
     @Override
@@ -587,6 +593,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             reservationEnAttente.put(t.getIdTrajet(),enAttente);
             enAttente = 0;
         }
+        Collections.sort(listeTrajetsDTO);
         map.put("conducteur",listeTrajetsDTO);
         map.put("reservationEnAttente",reservationEnAttente);
 
@@ -601,6 +608,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         for(Reservation reservation : reservations){
             listeReservationDTO.add(new ReservationDTO(reservation));
         }
+        Collections.sort(listeReservationDTO);
         map.put("passager",listeReservationDTO);
 
         return  map;
@@ -653,6 +661,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             }
 
         }
+        Collections.sort(trajetDTOList);
         return trajetDTOList;
     }
 
@@ -688,6 +697,17 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
         return utilisateurDTOS;
     }
+
+    @Override
+    public void supprimerToutesReservationsTrajet(String login, int idTrajet) throws PasConducteurException{
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        Trajet trajet = em.find(Trajet.class,idTrajet);
+        verifierUtilisateurEstConducteur(utilisateur,trajet);
+        for(Reservation reservation : trajet.getListeReservation()){
+            refuserReservation(login,reservation.getIdReservation());
+        }
+    }
+
 
     /**
      * Compare une date avec aujourd'hui
