@@ -38,10 +38,10 @@
                         </c:if>
                     </div>
                     <div class="form-group">
-                        <c:if test="${aAfficher == 'trajetsEnCours' or (aAfficher == 'detailsTrajet' and not empty reservation)}">
+                        <c:if test="${aAfficher == 'trajetsEnCours' or (aAfficher == 'detailsTrajet' and empty reservation)}">
                             <button class="btn btn-default" type="submit" name="afaire" value="trajetsEnCours" style="width: 100%;background-color: #d9d9d9;">Trajets en cours</button>
                         </c:if>
-                        <c:if test="${aAfficher != 'trajetsEnCours' and aAfficher != 'detailsTrajet' and not empty reservation}">
+                        <c:if test="${aAfficher != 'trajetsEnCours' and (aAfficher != 'detailsTrajet' or not empty reservation)}">
                             <button class="btn btn-default" type="submit" name="afaire" value="trajetsEnCours" style="width: 100%">Trajets en cours</button>
                         </c:if>
                     </div>

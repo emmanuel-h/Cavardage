@@ -14,6 +14,31 @@
             ${message}
     </div>
 </c:if>
+<form method="post" action="ControleurUtilisateur">
+    <legend>Changer le mot de passe</legend>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <label for="mdp1">Nouveau mot de passe : </label>
+            <input type="password" id="mdp1" class="form-control" name="nouveauMdP1" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <label for="mdp2">Confirmation : </label>
+            <input type="password" id="mdp2" class="form-control" name="nouveauMdP2" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit" style="width: 20%;" name="afaire" value="changerMotDePasse">Changer mot de passe</button>
+    </div>
+</form>
+
+<form method="post" action="ControleurUtilisateur">
+    <div class="form-group">
+        <button class="btn btn-danger" type="submit" style="width: 20%; margin-top: 25px" name="afaire" value="supprimerCompte">Supprimer compte</button>
+    </div>
+</form>
+<!--
 <div class="container col-sm-6 col-sm-offset-2">
     <form action="ControleurUtilisateur" method="post">
         <label class="col-sm-">Nouveau mot de passe</label>
@@ -31,3 +56,4 @@
 
 <div class="clearfix"></div>
 <div class="help-block"></div>
+-->

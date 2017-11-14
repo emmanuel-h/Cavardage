@@ -50,7 +50,7 @@
                         <td>${trajet.date}</td>
                         <td>${trajet.heure}</td>
                         <input type="hidden" name="idTrajet" value="${trajet.id}"/>
-                        <td><button type="submit" name="afaire" value="apprecierTrajet">Noter</button> </td>
+                        <td><button class="btn btn-primary" type="submit" name="afaire" value="apprecierTrajet">Noter</button> </td>
                     </tr>
                 </c:forEach>
             </table>

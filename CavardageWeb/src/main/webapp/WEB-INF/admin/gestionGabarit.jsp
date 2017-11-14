@@ -19,9 +19,11 @@
 </c:if>
 <form method="post" action="ControleurAdmin">
     <legend>Ajouter un gabarit</legend>
-    <div class="form-group">
-        <label for="nomGabarit1">Nom du gabarit : </label>
-        <input type="text" id="nomGabarit1" name="nomGabaritAAjouter" class="form-control" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-8">
+            <label for="nomGabarit1">Nom du gabarit : </label>
+            <input type="text" id="nomGabarit1" name="nomGabaritAAjouter" class="form-control" autocomplete="off" required>
+        </div>
     </div>
     <div class="form-group">
         <button class="btn btn-primary" type="submit" name="boutonAdmin" value="ajouterGabarit">Ajouter un gabarit</button>
@@ -30,18 +32,22 @@
 
 <form method="post" action="ControleurAdmin">
     <legend>Supprimer un gabarit</legend>
-    <div class="form-group">
-        <datalist id="nomGabaritList">
-            <c:forEach items="${listeGabarits}" var="gabarit">
-                <option value="${gabarit}"/>
-            </c:forEach>
-        </datalist>
-        <label>Nom du gabarit à supprimer : </label>
-        <input type="text" list="nomGabaritList" class="form-control" name="nomGabaritASupprimer" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-8">
+            <datalist id="nomGabaritList">
+                <c:forEach items="${listeGabarits}" var="gabarit">
+                    <option value="${gabarit}"/>
+                </c:forEach>
+            </datalist>
+            <label>Nom du gabarit à supprimer : </label>
+            <input type="text" list="nomGabaritList" class="form-control" name="nomGabaritASupprimer" autocomplete="off" required>
+        </div>
     </div>
-    <div class="form-group">
-        <label>Nom du gabarit remplaçant : </label>
-        <input type="text" list="nomGabaritList" class="form-control" name="nomGabaritARemplacer" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-8">
+            <label>Nom du gabarit remplaçant : </label>
+            <input type="text" list="nomGabaritList" class="form-control" name="nomGabaritARemplacer" autocomplete="off" required>
+        </div>
     </div>
     <div class="form-group">
         <button class="btn btn-primary" type="submit" name="boutonAdmin" value="supprimerGabarit">Supprimer un gabarit</button>

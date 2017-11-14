@@ -20,21 +20,29 @@
 
 <form method="post" action="ControleurAdmin">
     <legend>Créer un compte administrateur</legend>
-    <div class="form-group">
-        <label for="login">Identifiant : </label>
-        <input type="text" class="form-control" id="login" size="25" name="login" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-8">
+            <label for="login">Identifiant : </label>
+            <input type="text" class="form-control" id="login" size="25" name="login" autocomplete="off" required>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="nom">Nom : </label>
-        <input type="text" class="form-control" id="nom" size="25" name="nom" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-8">
+            <label for="nom">Nom : </label>
+            <input type="text" class="form-control" id="nom" size="25" name="nom" autocomplete="off" required>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="mdp">Mot de passe : </label>
-        <input type="password" class="form-control" id="mdp" size="15" name="mdp" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-8">
+            <label for="mdp">Mot de passe : </label>
+            <input type="password" class="form-control" id="mdp" size="15" name="mdp" autocomplete="off" required>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="mdpConf">Confirmation : </label>
-        <input type="password" class="form-control" id="mdpConf" size="15" name="mdpConf" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-8">
+            <label for="mdpConf">Confirmation : </label>
+            <input type="password" class="form-control" id="mdpConf" size="15" name="mdpConf" autocomplete="off" required>
+        </div>
     </div>
     <div class="form-group">
         <button class="btn btn-primary" type="submit" name="boutonAdmin" value="creerCompteAdmin">Créer un compte administrateur</button>

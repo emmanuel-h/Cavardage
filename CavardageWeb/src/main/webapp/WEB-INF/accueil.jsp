@@ -20,7 +20,27 @@
 
 </b:kickstart>
 
+<div class="row">
 
+    <div class="col-lg-6">
+        <img src="img/logo_xs.png" id="logoHeader"  height="100" style="margin-bottom: 1px">
+    </div>
+
+    <form class="col-lg-offset-2 col-lg-1" method="post" action="ControleurGeneral">
+        <div class="form-group">
+            <button class="btn btn-default pull-right" type="submit" name="afaire" value="connexion">Connexion</button>
+        </div>
+    </form>
+
+    <form class="col-lg-1" method="post" action="ControleurAnonyme">
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
+        </div>
+    </form>
+
+</div>
+
+<!--
 <div class="container col-lg-6">
     <img src="img/logo_xs.png" id="logoHeader"  height="100" style="margin-bottom: 1px">
 </div>
@@ -40,6 +60,8 @@
             </form>
 
 </div>
+
+-->
 
 <div class="clearfix"></div>
 

@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <h3>Statistiques du site au ${date}</h3>
+<ul class="list-group">
+    <li class="list-group-item">
 <table class="table table-bordered table-hover">
     <tbody>
         <tr>
@@ -47,6 +49,8 @@
         </tr>
     </tbody>
 </table>
+    </li>
+</ul>
 <h5>Résultat obtenu en ${stat.duration} ms</h5>
 <br>
 <form method="post" action="ControleurAdmin">
