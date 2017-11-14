@@ -398,13 +398,94 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @RolesAllowed("utilisateur")
     @Override
-    public boolean supprimerUtilisateur(String login) {
+    public boolean supprimerUtilisateur(String login) throws PasConducteurException,PasVehiculeUtilisateur {
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         if(null != utilisateur) {
+
+            //Pour passer tous les véhicules en inactifs
+            for(Vehicule vehicule : utilisateur.getListeVehicule()){
+                supprimerVehicule(login,vehicule.getIdVehicule());
+            }
+            System.out.println("liste vehicule");
+            //Pour supprimer les vehicules inactifs
+            Query query = em.createQuery("SELECT v FROM Vehicule v WHERE v.utilisateur=:utilisateur");
+            query.setParameter("utilisateur",utilisateur);
+            List<Vehicule> vehicules = query.getResultList();
+            for(Vehicule vehicule : vehicules) {
+                for(Trajet t : vehicule.getListeTrajet()){
+                    System.out.println(t);
+                    supprimerTrajet(t);
+                    System.out.println("4");
+                    vehicule.supprimerTrajet(t);
+                    em.persist(vehicule);
+                    System.out.println("7");
+                    em.remove(t);
+                    System.out.println("8");
+                }
+                em.remove(vehicule);
+                System.out.println("9");
+            }
+            System.out.println("supprimer vehicule");
+
+            for(Appreciation appreciation : utilisateur.getNote()){
+                em.remove(appreciation);
+            }
+            System.out.println("supprimer appreciation envoyée");
+            for(Appreciation appreciation : utilisateur.getEstNote()){
+                em.remove(appreciation);
+            }
+            System.out.println("supprimer appreciation reçue");
+            for(Reservation reservation : utilisateur.getListeReservation()){
+                System.out.println("reservation "+ reservation) ;
+                Trajet t = reservation.getTrajetReservation();
+                System.out.println("trajet "+ t);
+                annulerReservation(login,reservation.getIdReservation());
+                System.out.println("annuler Reservation");
+                if(t.supprimerReservation(reservation)) {
+                    System.out.println("pre");
+                    em.remove(reservation);
+                    System.out.println("post");
+                }
+            }
+            System.out.println("supprimer reservation");
+            for(Notification notification : utilisateur.getNotifications()){
+                em.remove(notification);
+            }
+            System.out.println("supprimer notif");
             em.remove(utilisateur);
+            System.out.println("supprimer utilisateur");
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Supprime de la base un trajet
+     * @param t Le trajet
+     */
+    private void supprimerTrajet(Trajet t) {
+        System.out.println("1");
+        for(Reservation reservation : t.getListeReservation()){
+            creerNotification(reservation.getUtilisateurReservation().getLogin()," Le trajet "+t.getVilleDepart().getNomPropre()+"-"+
+            t.getVilleArrivee().getNomPropre()+" le "+t.getDate()+":"+t.getHeure()+" a été supprimé par son conducteur");
+            t.supprimerReservation(reservation);
+            em.remove(reservation);
+        }
+        System.out.println("2");
+        Query q = em.createQuery("SELECT a FROM Appreciation a WHERE a.noteTrajet=:t");
+        q.setParameter("t",t);
+        List<Appreciation>appreciations = q.getResultList();
+        for(Appreciation appreciation : appreciations){
+            appreciation.getEstNote().supprimerAppreciationRecue(appreciation);
+            appreciation.getDonneNote().supprimerAppreciationEnvoyee(appreciation);
+            em.remove(appreciation);
+        }
+        System.out.println("3");
+        for(Etape etape: t.getListeEtape()){
+            if(t.supprimerEtape(etape)){
+                em.remove(etape);
+            }
         }
     }
 

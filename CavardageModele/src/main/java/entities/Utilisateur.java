@@ -171,6 +171,22 @@ public class Utilisateur {
         }
     }
 
+    public boolean supprimerAppreciationRecue(Appreciation appreciation){
+        if(estNote.contains(appreciation)){
+            estNote.remove(appreciation);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean supprimerAppreciationEnvoyee(Appreciation appreciation){
+        if(note.contains(appreciation)){
+            note.remove(appreciation);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

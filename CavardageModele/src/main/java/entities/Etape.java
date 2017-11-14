@@ -51,4 +51,19 @@ public class Etape {
     public void setPrix(int prix) {
         this.prix = prix;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        if(((Etape)obj).getIdEtape() == (this.idEtape)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

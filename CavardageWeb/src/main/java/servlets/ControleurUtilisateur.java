@@ -452,7 +452,13 @@ public class ControleurUtilisateur extends HttpServlet {
                 String login = request.getUserPrincipal().getName();
                 String motDePasse = request.getParameter("motDePasse");
                 if (maFacade.verifierMotDePasse(login, motDePasse)) {
-                    maFacade.supprimerUtilisateur(login);
+                    try {
+                        maFacade.supprimerUtilisateur(login);
+                    } catch (PasConducteurException e) {
+                //        maFacade.creerNotification(login,"Vous avez essayé de supprimer un compte qui ne vous appartient pas");
+                    } catch (PasVehiculeUtilisateur pasVehiculeUtilisateur) {
+                  //      maFacade.creerNotification(login,"Vous avez essayé de supprimer un compte qui ne vous appartient pas");
+                    }
                     deconnexion(request,response);
                 } else {
                     request.setAttribute("message", "Mot de passe incorrect");

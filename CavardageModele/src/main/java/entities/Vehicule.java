@@ -96,6 +96,14 @@ public class Vehicule {
         this.statut = statut;
     }
 
+    public boolean supprimerTrajet(Trajet t) {
+        if(listeTrajet.contains(t)){
+            listeTrajet.remove(t);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object o){
         if (this == o)
@@ -110,4 +118,5 @@ public class Vehicule {
             return false;
         }
     }
+
 }

@@ -76,4 +76,25 @@ public class Reservation {
     public void setNbPlace(int nbPlace) {
         this.nbPlace = nbPlace;
     }
+
+    @Override
+    public String toString() {
+        return Integer.toString(idReservation);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        if(((Reservation)obj).getIdReservation() == (this.idReservation)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -186,7 +186,7 @@ public interface MaFacadeUtilisateur {
      * @param login L'identifiant de l'utilisateur
      * @return      true si l'utilisateur a bien été supprimé, false sinon
      */
-    boolean supprimerUtilisateur(String login);
+    boolean supprimerUtilisateur(String login) throws PasConducteurException, PasVehiculeUtilisateur;
 
     /**
      * Renvoie la liste des villes existantes dans la base de données

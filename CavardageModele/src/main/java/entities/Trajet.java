@@ -118,6 +118,22 @@ public class Trajet {
         this.prix = prix;
     }
 
+    public boolean supprimerReservation(Reservation reservation){
+        if(listeReservation.contains(reservation)){
+           listeReservation.remove(reservation);
+           return true;
+        }
+        return  false;
+    }
+
+    public boolean supprimerEtape(Etape etape) {
+        if(listeEtape.contains(etape)){
+            listeEtape.remove(etape);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -148,4 +164,5 @@ public class Trajet {
                 ", listeEtape=" + listeEtape +
                 '}';
     }
+
 }

@@ -39,6 +39,10 @@
 </div>
 <div>
     <label>Liste des réservations acceptées:</label>
+    <c:if test="${empty reservationsAcceptees}">
+        <div class="alert alert-warning">Vous n'avez pas encore de passagers pour ce trajet</div>
+    </c:if>
+    <c:if test="${!empty reservationsAcceptees}">
     <li class="list-group-item">
         <table class="table table-bordered">
             <tr>
@@ -55,10 +59,15 @@
             </c:forEach>
         </table>
     </li>
+    </c:if>
 </div>
 <div>
 
     <label>Liste des réservations en attente:</label>
+    <c:if test="${empty reservationsAttente}">
+    <div class="alert alert-warning">Vous n'avez pas de réservation en attente</div>
+    </c:if>
+    <c:if test="${!empty reservationsAttente}">
     <li class="list-group-item">
         <table class="table table-bordered">
             <form action="ControleurUtilisateur" method="post">
@@ -93,6 +102,7 @@
             </form>
         </table>
     </li>
+    </c:if>
 </div>
 
 <script>
