@@ -37,31 +37,7 @@
             <button class="btn btn-primary pull-left" type="submit" name="afaire" value="inscription">Inscription</button>
         </div>
     </form>
-
 </div>
-
-<!--
-<div class="container col-lg-6">
-    <img src="img/logo_xs.png" id="logoHeader"  height="100" style="margin-bottom: 1px">
-</div>
-
-<div class="container col-lg-4 col-lg-offset-2" style="margin-bottom: 60px" id="connexionInscription">
-
-    <form class="form-inline col-lg-2" method="post" action="ControleurGeneral" >
-        <div class="form-group">
-            <button class="btn btn-default" type="submit" name="afaire" value="connexion">Connexion</button>
-        </div>
-    </form>
-
-            <form class="form-inline col-lg-2" method="post" action="ControleurAnonyme" >
-                <div class="form-group">
-                    <button class="btn btn-primary" type="submit" name="afaire" value="inscription">Inscription</button>
-                </div>
-            </form>
-
-</div>
-
--->
 
 <div class="clearfix"></div>
 
