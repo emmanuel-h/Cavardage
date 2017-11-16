@@ -5,6 +5,7 @@ import dtos.VilleDTO;
 import ejbs.MaFacadeAnonyme;
 import exceptions.DateAnterieureException;
 import exceptions.LoginExistantException;
+import exceptions.VilleNonTrouvee;
 
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
@@ -117,7 +118,7 @@ public class ControleurAnonyme extends HttpServlet {
             }
             request.setAttribute("resultatsRecherche","afficher");
             request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
-        } catch (DateAnterieureException e) {
+        } catch (DateAnterieureException | VilleNonTrouvee e) {
             request.setAttribute("messageErreur", e.getMessage());
             retournerAccueil(request, response);
         } catch (ParseException e) {

@@ -17,11 +17,13 @@
     <div class="row">
         <div class="form-group col-lg-4">
             <label for="villeD">Ville de départ : </label>
-            <input type="text" list="listeVille" id="villeD" class="form-control" name="nomVilleDepart" autocomplete="off" required>
+            <input type="text" list="listeVille" id="villeD" class="form-control" name="nomVilleDepart"
+                   autocomplete="off" pattern="[A-Z]{1}.{0,}[\(][0-9]{2}[\)]" onblur="villesDifferentes()" required>
         </div>
         <div class="form-group col-lg-4">
             <label for="villeA">Ville d'arrivée : </label>
-            <input type="text" list="listeVille" id="villeA" class="form-control" name="nomVilleArrivee" autocomplete="off" required>
+            <input type="text" list="listeVille" id="villeA" class="form-control" name="nomVilleArrivee"
+                   autocomplete="off" pattern="[A-Z]{1}.{0,}[\(][0-9]{2}[\)]" onblur="villesDifferentes()" required>
         </div>
     </div>
     <div class="row">
@@ -49,3 +51,9 @@
         </div>
     </c:if>
 </div>
+
+<script type="text/javascript">
+    function villesDifferentes() {
+
+    }
+</script>

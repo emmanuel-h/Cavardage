@@ -5,6 +5,7 @@ import dtos.VilleDTO;
 import entities.*;
 import exceptions.DateAnterieureException;
 import exceptions.LoginExistantException;
+import exceptions.VilleNonTrouvee;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -48,7 +49,7 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
-    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException {
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException, VilleNonTrouvee {
         return rechercheBean.rechercheTrajet(villeDepart,departementDepart,villeArrive,departementArrive,date,prix);
     }
 

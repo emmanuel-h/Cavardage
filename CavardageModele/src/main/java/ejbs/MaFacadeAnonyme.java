@@ -5,6 +5,7 @@ import dtos.VilleDTO;
 import entities.Notification;
 import exceptions.DateAnterieureException;
 import exceptions.LoginExistantException;
+import exceptions.VilleNonTrouvee;
 
 import javax.ejb.Local;
 import java.text.ParseException;
@@ -44,7 +45,7 @@ public interface MaFacadeAnonyme {
      * @throws DateAnterieureException  Si la date rentrée est antérieure à aujourd'hui
      * @throws ParseException           Si le format de la date n'était pas valide
      */
-    List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException;
+    List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException, VilleNonTrouvee;
 
     /**
      * Renvoie la liste des villes existantes dans la base de données
