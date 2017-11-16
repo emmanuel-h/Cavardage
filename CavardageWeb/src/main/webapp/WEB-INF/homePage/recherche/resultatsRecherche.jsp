@@ -10,6 +10,12 @@
 <c:if test="${!empty villeDepart && !empty villeArrivee && !empty date}">
     <label>Résultat de la recherche: ${villeDepart} à destination de ${villeArrivee}, le ${date} <c:if test="${!empty prix}">pour un prix inférieur à ${prix}€</c:if>  </label>
 </c:if>
+<c:if test="${empty listeTrajetRecherche}">
+    <div class="alert alert-warning" style="margin-top: 10px">
+        Il n'y pas de trajet correspondant à votre recherche
+    </div>
+</c:if>
+<c:if test="${not empty listeTrajetRecherche}">
 <ul class="list-group">
 
         <li class="list-group-item">
@@ -52,4 +58,5 @@
                 </c:forEach>
             </table>
         </li>
+</c:if>
 </ul>

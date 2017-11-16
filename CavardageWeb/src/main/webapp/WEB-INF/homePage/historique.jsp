@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <h3>Historique de vos trajets : </h3>
