@@ -29,7 +29,7 @@ public class Utilisateur {
     @OneToMany(mappedBy = "estNote")
     private List<Appreciation> estNote;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany
     private List<Notification> notifications;
 
     public Utilisateur() {
