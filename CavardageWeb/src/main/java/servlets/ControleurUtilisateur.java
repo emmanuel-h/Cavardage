@@ -532,7 +532,7 @@ public class ControleurUtilisateur extends HttpServlet {
             request.setAttribute("aAfficher", "rechercherTrajet");
             request.setAttribute("resultatsRecherche", "afficher");
             request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
-        } catch (DateAnterieureException e) {
+        } catch (DateAnterieureException | VilleNonTrouvee e) {
             request.setAttribute("messageErreur", e.getMessage());
             rechercherTrajet(request, response);
         } catch (ParseException e) {

@@ -206,7 +206,7 @@ public interface MaFacadeUtilisateur {
      * @throws DateAnterieureException  Si la date est antérieure à aujourd'hui
      * @throws ParseException           Si la date n'est pas dans un format valide
      */
-    List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException;
+    List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException, VilleNonTrouvee;
 
     /**
      * Ajoute un trajet dans la base de données

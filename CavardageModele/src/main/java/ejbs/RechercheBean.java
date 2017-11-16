@@ -5,6 +5,7 @@ import dtos.VilleDTO;
 import entities.Trajet;
 import entities.Ville;
 import exceptions.DateAnterieureException;
+import exceptions.VilleNonTrouvee;
 
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.PermitAll;
@@ -47,11 +48,24 @@ public class RechercheBean {
      */
     @PermitAll
     public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrivee,
-                                           String departementArrivee, String date, String prix) throws ParseException, DateAnterieureException {
+                                           String departementArrivee, String date, String prix) throws ParseException, DateAnterieureException, VilleNonTrouvee {
 
             if(!automate.testDate(date)){
                 throw new DateAnterieureException("Vous ne pouvez pas rechercher un trajet à une date antérieure");
             }
+            Query q = em.createQuery("SELECT v FROM Ville v where v.nomVille=:villeDepart or v.nomVille=:villeArrivee");
+            q.setParameter("villeDepart", villeDepart + "_" + departementDepart);
+            q.setParameter("villeArrivee", villeArrivee + "_" + departementArrivee);
+            List<Ville> listVilles = q.getResultList();
+            int size = listVilles.size();
+            if(2 != size){
+                throw new VilleNonTrouvee("Une des villes recherchée n'existe pas");
+            }else{
+                if(villeDepart.equals(villeArrivee) && departementDepart.equals(departementArrivee)){
+                    throw new VilleNonTrouvee("Les deux villes sont identiques");
+                }
+            }
+
             String mq="SELECT DISTINCT t From Trajet t, Etape e WHERE " +
                     "t.villeDepart.nomVille=:villeDepart" +
                     " and ((t.villeArrivee.nomVille=:villeArrivee) or" +
