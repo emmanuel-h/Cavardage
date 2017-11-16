@@ -32,13 +32,13 @@
     <form class="form-signin" method="post" action="ControleurAnonyme" >
         <h3 class="form-signin-heading" align="middle">Rentrez vos identifiants</h3>
         <label>Identifiant :</label>
-        <input class="form-control" type="text" name="login" size="25" autocomplete="off" placeholder="Login" required autofocus/>
+        <input class="form-control" type="text" name="login" size="25" autocomplete="off" placeholder="Login" autocomplete="off" required autofocus/>
         <label>Nom :</label>
-        <input class="form-control" type="text" name="nom" size="25" autocomplete="off" placeholder="Nom" required autofocus/>
+        <input class="form-control" type="text" name="nom" size="25" autocomplete="off" placeholder="Nom" autocomplete="off" required autofocus/>
         <label>Mot de passe :</label>
-        <input class="form-control" type="password" name="mdp" size="15" placeholder="Mot de passe" required />
+        <input class="form-control" type="password" name="mdp" size="15" placeholder="Mot de passe" autocomplete="off" required />
         <label>Répétez le mot de passe :</label>
-        <input class="form-control" type="password" name="mdp_confirmer" size="15" placeholder="Mot de passe" required />
+        <input class="form-control" type="password" name="mdp_confirmer" size="15" placeholder="Mot de passe" autocomplete="off" required />
 
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="afaire" value="inscrire">Inscription</button>
     </form>

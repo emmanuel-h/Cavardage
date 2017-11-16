@@ -29,7 +29,7 @@ public class Utilisateur {
     @OneToMany(mappedBy = "estNote")
     private List<Appreciation> estNote;
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     private List<Notification> notifications;
 
     public Utilisateur() {
@@ -174,6 +174,14 @@ public class Utilisateur {
     public boolean supprimerAppreciationRecue(Appreciation appreciation){
         if(estNote.contains(appreciation)){
             estNote.remove(appreciation);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean supprimerReservation(Reservation reservation){
+        if(listeReservation.contains(reservation)){
+            listeReservation.remove(reservation);
             return true;
         }
         return false;

@@ -119,7 +119,7 @@ public class Trajet {
     }
 
     public boolean supprimerReservation(Reservation reservation){
-        if(listeReservation.contains(reservation)){
+        if(getListeReservation().contains(reservation)){
            listeReservation.remove(reservation);
            return true;
         }

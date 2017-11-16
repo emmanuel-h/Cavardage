@@ -38,10 +38,10 @@
                         </c:if>
                     </div>
                     <div class="form-group">
-                        <c:if test="${aAfficher == 'trajetsEnCours' or (aAfficher == 'detailsTrajet' and empty reservation)}">
+                        <c:if test="${aAfficher == 'trajetsEnCours' or (aAfficher == 'detailsTrajet' and not empty reservation) or aAfficher == 'gestionTrajet'}">
                             <button class="btn btn-default" type="submit" name="afaire" value="trajetsEnCours" style="width: 100%;background-color: #d9d9d9;">Trajets en cours</button>
                         </c:if>
-                        <c:if test="${aAfficher != 'trajetsEnCours' and (aAfficher != 'detailsTrajet' or not empty reservation)}">
+                        <c:if test="${aAfficher != 'trajetsEnCours' and (aAfficher != 'detailsTrajet' or empty reservation) and aAfficher != 'gestionTrajet'}">
                             <button class="btn btn-default" type="submit" name="afaire" value="trajetsEnCours" style="width: 100%">Trajets en cours</button>
                         </c:if>
                     </div>
@@ -86,10 +86,10 @@
                         </c:if>
                     </div>
                     <div class="form-group">
-                        <c:if test="${aAfficher == 'rechercherTrajet' or (aAfficher == 'detailsTrajet' and empty reservation) or aAfficher == 'gestionTrajet'}">
+                        <c:if test="${aAfficher == 'rechercherTrajet' or (aAfficher == 'detailsTrajet' and empty reservation) }">
                             <button class="btn btn-default" type="submit" name="afaire" value="rechercherTrajet" style="width: 100%;background-color: #d9d9d9;">Rechercher un trajet</button>
                         </c:if>
-                        <c:if test="${aAfficher != 'rechercherTrajet' and aAfficher != 'detailsTrajet' and empty reservation and aAfficher != 'gestionTrajet'}">
+                        <c:if test="${aAfficher != 'rechercherTrajet' and (aAfficher != 'detailsTrajet' or not empty reservation)}">
                             <button class="btn btn-default" type="submit" name="afaire" value="rechercherTrajet" style="width: 100%">Rechercher un trajet</button>
                         </c:if>
                     </div>
@@ -103,6 +103,9 @@
         <div class="col-lg-9 divCenterText">
             <div style="margin-top: 15px">
                 <c:if test="${aAfficher == 'accueil'}">
+                    <form action="ControleurUtilisateur" method="post">
+                        <button type="submit" class="btn btn-default col-lg-3 col-lg-offset-8" style="margin-bottom: 5px" value="supprimerNotifs" name="afaire">Supprimer les notifications</button>
+                    </form>
                     <div class="col-lg-12">
                         <c:forEach items="${listeNotif}" var="notif">
                             <div class="alert alert-warning">

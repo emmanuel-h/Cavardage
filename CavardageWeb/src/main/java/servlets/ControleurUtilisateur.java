@@ -71,6 +71,9 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "accueil":
                     voirAccueil(request, response);
                     break;
+                case "supprimerNotifs":
+                    supprimerToutesLesNotifications(request,response);
+                    break;
                 case "trajetsEnCours":
                     voirTrajetsEnCours(request, response);
                     break;
@@ -164,6 +167,22 @@ public class ControleurUtilisateur extends HttpServlet {
     }
 
     /**
+     * Supprime toutes les notifications de l'utilisateur
+     * @param request la requête
+     * @param response la réponse
+     */
+    @RolesAllowed("utilisateur")
+    private void supprimerToutesLesNotifications(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = request.getUserPrincipal().getName();
+        try{
+            maFacade.supprimerToutesLesNotifications(login);
+            voirAccueil(request,response);
+        }catch (AccesInterditException e){
+            deconnexion(request,response);
+        }
+    }
+
+    /**
      * Retourne sur la page d'accueil
      * @param request la requête
      * @param response la réponse
@@ -202,12 +221,8 @@ public class ControleurUtilisateur extends HttpServlet {
                 try {
                     maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
                     message = "Trajet créé";
-                } catch (PrixInferieurException e) {
+                } catch (PrixInferieurException | VehiculeException | EtapeException e) {
                     messageErreur = e.getMessage();
-                } catch (EtapeException e) {
-                    messageErreur = "Erreur dans la liste des étapes";
-                } catch (VehiculeException e){
-                    messageErreur = "Vous n'avez pas choisi un bon vehicule";
                 }
                 request.setAttribute("message", message);
             } else {
@@ -455,9 +470,9 @@ public class ControleurUtilisateur extends HttpServlet {
                     try {
                         maFacade.supprimerUtilisateur(login);
                     } catch (PasConducteurException e) {
-                //        maFacade.creerNotification(login,"Vous avez essayé de supprimer un compte qui ne vous appartient pas");
+                        maFacade.creerNotification(login,"Vous avez essayé de supprimer un compte qui ne vous appartient pas");
                     } catch (PasVehiculeUtilisateur pasVehiculeUtilisateur) {
-                  //      maFacade.creerNotification(login,"Vous avez essayé de supprimer un compte qui ne vous appartient pas");
+                        maFacade.creerNotification(login,"Vous avez essayé de supprimer un compte qui ne vous appartient pas");
                     }
                     deconnexion(request,response);
                 } else {
@@ -824,6 +839,7 @@ public class ControleurUtilisateur extends HttpServlet {
      * @throws ServletException servlet exception
      * @throws IOException entrée/sortie exception
      */
+    @RolesAllowed("utilisateur")
     private void toutSupprimer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getUserPrincipal().getName();
         int idTrajet = Integer.parseInt(request.getParameter("idTrajet"));
@@ -832,7 +848,7 @@ public class ControleurUtilisateur extends HttpServlet {
         }catch(PasConducteurException e){
             maFacade.creerNotification(login, "Vous avez essayé de supprimer des réservations d'un trajet dont vous n'êtes pas le conducteur");
         }
-        voirTrajetsEnCours(request,response);
+        gererTrajet(request,response);
     }
 
 }

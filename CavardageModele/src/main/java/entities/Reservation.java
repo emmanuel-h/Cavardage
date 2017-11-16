@@ -9,7 +9,7 @@ public class Reservation {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idReservation;
-    // accepte, refuse, enAttente
+    // accepte, refuse, en attente
     private String statut;
     private int nbPlace;
 
@@ -78,11 +78,6 @@ public class Reservation {
     }
 
     @Override
-    public String toString() {
-        return Integer.toString(idReservation);
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -97,4 +92,13 @@ public class Reservation {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "idReservation=" + idReservation +
+                ", statut='" + statut + '\'' +
+                ", nbPlace=" + nbPlace +
+                ", utilisateurReservation=" + utilisateurReservation +
+                '}';
+    }
 }

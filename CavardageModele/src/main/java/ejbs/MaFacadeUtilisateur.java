@@ -288,6 +288,14 @@ public interface MaFacadeUtilisateur {
      */
     void supprimerToutesReservationsTrajet(String login, int idTrajet) throws PasConducteurException;
 
+
+    /**
+     * Supprime toutes les notifications d'un utilisateur
+     * @param login l'utilisateur
+     * @throws AccesInterditException Si l'utilisateur actuel n'est pas celui connecté
+     */
+    void supprimerToutesLesNotifications(String login) throws AccesInterditException;
+
     /**
      * Avoir le prix moyen des trajets ayant la même ville de départ et d'arrivée
      * @param villeDepart       La ville de départ du trajet

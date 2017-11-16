@@ -39,7 +39,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         }
         List<Etape> etapes = trajet.getListeEtape();
         Reservation reservation = new Reservation();
-        reservation.setStatut("enAttente");
+        reservation.setStatut("en attente");
         reservation.setNbPlace(nbPlaces);
         reservation.setTrajetReservation(trajet);
         reservation.setUtilisateurReservation(utilisateur);
@@ -224,7 +224,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         //Trouver tous les passagers et leur envoyer la notification
         Utilisateur passager;
         for(Reservation reservation : trajet.getListeReservation()){
-            if(reservation.getStatut().equals("enAttente") || reservation.getStatut().equals("accepte")){
+            if(reservation.getStatut().equals("en attente") || reservation.getStatut().equals("accepte")){
                 passager = reservation.getUtilisateurReservation();
                 notification = new Notification();
                 notification.setMessage(messageNotification);
@@ -246,7 +246,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     @RolesAllowed("utilisateur")
     @Override
     public List<ReservationDTO> avoirReservationsEnAttente(String login, int idTrajet) throws PasConducteurException {
-        return avoirReservation(login,idTrajet,"enAttente");
+        return avoirReservation(login,idTrajet,"en attente");
     }
 
     /**
@@ -403,89 +403,72 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         if(null != utilisateur) {
 
             //Pour passer tous les véhicules en inactifs
-            for(Vehicule vehicule : utilisateur.getListeVehicule()){
-                supprimerVehicule(login,vehicule.getIdVehicule());
+            for(Vehicule vehiculeUtilisateur : utilisateur.getListeVehicule()){
+                supprimerVehicule(login,vehiculeUtilisateur.getIdVehicule());
+                em.persist(vehiculeUtilisateur);
             }
-            System.out.println("liste vehicule");
             //Pour supprimer les vehicules inactifs
             Query query = em.createQuery("SELECT v FROM Vehicule v WHERE v.utilisateur=:utilisateur");
             query.setParameter("utilisateur",utilisateur);
             List<Vehicule> vehicules = query.getResultList();
             for(Vehicule vehicule : vehicules) {
                 for(Trajet t : vehicule.getListeTrajet()){
-                    System.out.println(t);
-                    supprimerTrajet(t);
-                    System.out.println("4");
+                    // Début suppression trajet
+                    Reservation reservation;
+                    Utilisateur utilisateurReservation;
+                    Iterator<Reservation> iterator = t.getListeReservation().iterator();
+                    while (iterator.hasNext()){
+                        reservation = iterator.next();
+                        creerNotification(reservation.getUtilisateurReservation().getLogin()," Le trajet "+t.getVilleDepart().getNomPropre()+"-"+
+                                t.getVilleArrivee().getNomPropre()+" le "+t.getDate()+":"+t.getHeure()+" a été supprimé par son conducteur");
+                        t.supprimerReservation(reservation);
+                        utilisateurReservation = reservation.getUtilisateurReservation();
+                        em.persist(t);
+                        em.persist(utilisateurReservation);
+                        iterator.remove();
+                        //em.remove(reservation);
+                    }
+                    Query q = em.createQuery("SELECT a FROM Appreciation a WHERE a.noteTrajet=:t");
+                    q.setParameter("t",t);
+                    List<Appreciation>appreciations = q.getResultList();
+                    for(Appreciation appreciation : appreciations){
+                        appreciation.getEstNote().supprimerAppreciationRecue(appreciation);
+                        appreciation.getDonneNote().supprimerAppreciationEnvoyee(appreciation);
+                        em.remove(appreciation);
+                    }
+                    for(Etape etape: t.getListeEtape()){
+                        if(t.supprimerEtape(etape)){
+                            em.remove(etape);
+                        }
+                    }
+                    // Fin suppression trajet
                     vehicule.supprimerTrajet(t);
                     em.persist(vehicule);
-                    System.out.println("7");
                     em.remove(t);
-                    System.out.println("8");
                 }
                 em.remove(vehicule);
-                System.out.println("9");
             }
-            System.out.println("supprimer vehicule");
 
             for(Appreciation appreciation : utilisateur.getNote()){
                 em.remove(appreciation);
             }
-            System.out.println("supprimer appreciation envoyée");
             for(Appreciation appreciation : utilisateur.getEstNote()){
                 em.remove(appreciation);
             }
-            System.out.println("supprimer appreciation reçue");
             for(Reservation reservation : utilisateur.getListeReservation()){
-                System.out.println("reservation "+ reservation) ;
                 Trajet t = reservation.getTrajetReservation();
-                System.out.println("trajet "+ t);
                 annulerReservation(login,reservation.getIdReservation());
-                System.out.println("annuler Reservation");
                 if(t.supprimerReservation(reservation)) {
-                    System.out.println("pre");
                     em.remove(reservation);
-                    System.out.println("post");
                 }
             }
-            System.out.println("supprimer reservation");
             for(Notification notification : utilisateur.getNotifications()){
                 em.remove(notification);
             }
-            System.out.println("supprimer notif");
             em.remove(utilisateur);
-            System.out.println("supprimer utilisateur");
             return true;
         } else {
             return false;
-        }
-    }
-
-    /**
-     * Supprime de la base un trajet
-     * @param t Le trajet
-     */
-    private void supprimerTrajet(Trajet t) {
-        System.out.println("1");
-        for(Reservation reservation : t.getListeReservation()){
-            creerNotification(reservation.getUtilisateurReservation().getLogin()," Le trajet "+t.getVilleDepart().getNomPropre()+"-"+
-            t.getVilleArrivee().getNomPropre()+" le "+t.getDate()+":"+t.getHeure()+" a été supprimé par son conducteur");
-            t.supprimerReservation(reservation);
-            em.remove(reservation);
-        }
-        System.out.println("2");
-        Query q = em.createQuery("SELECT a FROM Appreciation a WHERE a.noteTrajet=:t");
-        q.setParameter("t",t);
-        List<Appreciation>appreciations = q.getResultList();
-        for(Appreciation appreciation : appreciations){
-            appreciation.getEstNote().supprimerAppreciationRecue(appreciation);
-            appreciation.getDonneNote().supprimerAppreciationEnvoyee(appreciation);
-            em.remove(appreciation);
-        }
-        System.out.println("3");
-        for(Etape etape: t.getListeEtape()){
-            if(t.supprimerEtape(etape)){
-                em.remove(etape);
-            }
         }
     }
 
@@ -567,25 +550,29 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
         Map<String, Integer> mapPrix = new TreeMap<>();
         int prixTrajet = Integer.parseInt(prix);
-        try {
-            if (null != etapes) {
-                for (String etape : etapes) {
+        if (null != etapes) {
+            for (String etape : etapes) {
+                String nomVille;
+                int prixEtape;
+                try{
                     st = new StringTokenizer(etape, "()/€");
-                    String nomVille = st.nextToken() + "_" + st.nextToken();
-                    int prixEtape = Integer.parseInt(st.nextToken());
-                    if (prixEtape > prixTrajet) {
-                        throw new PrixInferieurException("Une étape a un prix supérieur à celui du trajet");
-                    }
-                    if(idVilleDepart.equals(nomVille) || idVilleArrivee.equals(nomVille)){
-                        throw new EtapeException("etape egale la ville d'arrivée ou de départ");
-                    }
-                    mapPrix.put(nomVille, prixEtape);
+                    nomVille = st.nextToken() + "_" + st.nextToken();
+                    prixEtape = Integer.parseInt(st.nextToken());
+                }catch (Exception e){
+                    throw new EtapeException("erreur de saisie de la ville ou du prix");
                 }
+                if (prixEtape > prixTrajet) {
+                    throw new PrixInferieurException("Une étape a un prix supérieur à celui du trajet");
+                }
+                if(idVilleDepart.equals(nomVille) || idVilleArrivee.equals(nomVille)){
+                    throw new EtapeException("etape egale la ville d'arrivée ou de départ");
+                }
+                if(mapPrix.containsKey(nomVille)){
+                    throw new EtapeException("etape déjà choisie");
+                }
+                mapPrix.put(nomVille, prixEtape);
             }
-        }catch (Exception e){
-            throw new EtapeException("erreur de saisie de la ville ou du prix");
         }
-
         // Si on a des étapes, on les persiste
         if(!mapPrix.isEmpty()){
             List<Etape> listeEtapes = new ArrayList<>();
@@ -699,7 +686,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         for(Trajet t : listeTrajets){
             listeTrajetsDTO.add(new TrajetDTO(t));
             for(Reservation reservation : t.getListeReservation()){
-                if(reservation.getStatut().equals("enAttente")){
+                if(reservation.getStatut().equals("en attente")){
                     enAttente++;
                 }
             }
@@ -712,7 +699,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
 
         // On recherche tous les trajets faits en tant que passager
-        q = em.createQuery("SELECT DISTINCT r FROM Reservation r WHERE (r.statut='accepte' or r.statut='enAttente')" +
+        q = em.createQuery("SELECT DISTINCT r FROM Reservation r WHERE (r.statut='accepte' or r.statut='en attente')" +
                 "AND r.trajetReservation.statut=:statutTrajet and r.utilisateurReservation.login=:login");
         q.setParameter("statutTrajet", "aVenir");
         q.setParameter("login", login);
@@ -803,10 +790,8 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         // Si on a déjà donné une appreciation à un utilisateur pour ce trajet,
         // on enlève cet utilisateur de la liste des utilisateurs à noter
         for(Utilisateur utilisateur1 : utilisateurs){
-            System.out.println(utilisateur1.toString());
         }
         for (Appreciation appreciation : appreciations){
-            System.out.println(appreciation.toString());
             if(appreciation.getDonneNote().equals(utilisateur)){
                 utilisateurs.remove(appreciation.getEstNote());
             }
@@ -820,14 +805,34 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         return utilisateurDTOS;
     }
 
+    @RolesAllowed("utilisateur")
     @Override
     public void supprimerToutesReservationsTrajet(String login, int idTrajet) throws PasConducteurException{
         Utilisateur utilisateur = em.find(Utilisateur.class,login);
         Trajet trajet = em.find(Trajet.class,idTrajet);
         verifierUtilisateurEstConducteur(utilisateur,trajet);
         for(Reservation reservation : trajet.getListeReservation()){
-            refuserReservation(login,reservation.getIdReservation());
+            if(reservation.getStatut().equals("en attente")) {
+                refuserReservation(login, reservation.getIdReservation());
+            }
         }
+    }
+
+    @RolesAllowed("utilisateur")
+    @Override
+    public void supprimerToutesLesNotifications(String login) throws AccesInterditException{
+        Utilisateur utilisateur = em.find(Utilisateur.class,login);
+        if(null == utilisateur){
+            throw new AccesInterditException("vous avez essayé de supprimer les notifications d'un autre utilisateur");
+        }
+        Notification notification;
+        Iterator<Notification> iterator = utilisateur.getNotifications().iterator();
+        while(iterator.hasNext()){
+            notification = iterator.next();
+            em.remove(notification);
+            iterator.remove();
+        }
+        em.persist(utilisateur);
     }
 
 

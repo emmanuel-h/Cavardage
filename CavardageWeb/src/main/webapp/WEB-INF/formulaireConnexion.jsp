@@ -9,10 +9,10 @@
 <form class="form-signin" method="post" action="j_security_check" >
     <h3 class="form-signin-heading" align="middle">Rentrez vos identifiants</h3>
     <label class="sr-only">Login:</label>
-    <input class="form-control" type="text" name="j_username" size="25" autocomplete="off" placeholder="Nom d'utilisateur" required autofocus/>
+    <input class="form-control" type="text" name="j_username" size="25" autocomplete="off" placeholder="Nom d'utilisateur" autocomplete="off" required autofocus/>
 
     <label class="sr-only">Mot de passe:</label>
-    <input class="form-control" type="password" name="j_password" size="15" placeholder="Mot de passe" required />
+    <input class="form-control" type="password" name="j_password" size="15" placeholder="Mot de passe" autocomplete="off" required />
 
     <button class="btn btn-lg btn-primary btn-block" type="submit" name="afaire" value="connexion">Connexion</button>
 </form>
