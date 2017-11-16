@@ -13,13 +13,32 @@
 <div>
     <form action="ControleurUtilisateur" method="post" name="myForm">
         <input type="hidden" name="idTrajet" value="${trajet.id}" />
-        <label>Ville de départ:</label> <label>${trajet.villeDepart}(${trajet.departementDepart})</label><br>
-        <label>Ville d'arrivée:</label> <label>${trajet.villeArrivee}(${trajet.departementArrivee})</label><br>
-        <label>Date:</label> <label>${trajet.date} ${trajet.heure}</label><br>
-        <label>Prix:</label> <label>${trajet.prix}€</label><br>
-        <label>Véhicule:</label> <label>${trajet.nomVehicule}</label><br>
-        <label>Nombre de places restantes:</label> <input type="text" name="nbPlacesRestantes" readonly value="${nbPlacesRestantes}"/>
-        <button type="submit" value="supprimerTrajet" name="afaire">Supprimer le trajet</button>
+        <div class="panel panel-default">
+            <div class="panel-body" style="background-color: #e6f7ff">
+                <div class="form-group col-lg-4">
+                    <label>Ville de départ:</label> <label>${trajet.villeDepart}(${trajet.departementDepart})</label>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label>Ville d'arrivée:</label> <label>${trajet.villeArrivee}(${trajet.departementArrivee})</label>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label>Date:</label> <label>${trajet.date} ${trajet.heure}</label>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label>Prix:</label> <label>${trajet.prix}€</label>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label>Véhicule:</label> <label>${trajet.nomVehicule}</label>
+                </div>
+                <div class="form-group col-lg-3">
+                    <label>Nombre de places restantes:</label>
+                </div>
+                <input class="disabled col-lg-1" type="text" name="nbPlacesRestantes" readonly value="${nbPlacesRestantes}"/>
+                <div class="form-group col-lg-3">
+                    <button class="btn btn-danger" type="submit" value="supprimerTrajet" name="afaire">Supprimer le trajet</button>
+                </div>
+            </div>
+        </div>
     </form>
     <label>Etapes:</label>
     <li class="list-group-item">
@@ -77,7 +96,7 @@
                 <th>Ville d'arrivée</th>
                 <th>
                     <input type="hidden" name="idTrajet" value="${trajet.id}"/>
-                    <button type="submit" class="btn btn-default" value="toutSupprimer" name="afaire">Tout supprimer</button>
+                    <button type="submit" class="btn btn-danger" value="toutSupprimer" name="afaire">Tout supprimer</button>
                 </th>
             </tr>
             </form>
@@ -91,8 +110,8 @@
                             <input type="hidden" name="nbPlacesReservation" value="${reservation.nbPlaces}">
                             <input type="hidden" name="idReservation" value="${reservation.idReservation}" />
                             <input type="hidden" name="idTrajet" value="${trajet.id}" />
-                            <button type="submit" name="afaire" value="accepterReservation" onclick="modifQuelBouton()">V</button>
-                            <button type="submit" name="afaire" value="refuserReservation">X</button>
+                            <button type="submit" class="btn btn-info" name="afaire" value="accepterReservation" onclick="modifQuelBouton()">V</button>
+                            <button type="submit" class="btn btn-danger" name="afaire" value="refuserReservation">X</button>
                         </td>
                     </tr>
                 </form>
