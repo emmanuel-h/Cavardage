@@ -1,4 +1,4 @@
-<script>
+<script type=text/javascript>
 function saveAttribute(idEtape,nomEtape){
     document.myForm.afficherEtape.value = nomEtape;
     document.myForm.etapeArrivee.value = idEtape;

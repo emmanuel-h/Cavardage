@@ -15,30 +15,30 @@
         <div class="panel panel-default">
             <div class="panel-body" style="background-color: #e6f7ff">
                <div class="form-group col-lg-4">
-                <label>Ville de départ:</label> <label>${trajet.villeDepart}(${trajet.departementDepart})</label>
+                   <label>Ville de départ : </label> <label>${trajet.villeDepart}(${trajet.departementDepart})</label>
                </div>
                 <div class="form-group col-lg-4">
-                   <label>Ville d'arrivée:</label> <label>${trajet.villeArrivee}(${trajet.departementArrivee})</label>
+                    <label>Ville d'arrivée : </label> <label>${trajet.villeArrivee}(${trajet.departementArrivee})</label>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label>Date:</label> <label>${trajet.date} ${trajet.heure}</label>
+                    <label>Date : </label> <label>${trajet.date} à ${trajet.heure}</label>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label>Prix:</label> <label>${trajet.prix}€</label>
+                    <label>Prix : </label> <label>${trajet.prix}€</label>
                 </div >
                 <div class="form-group col-lg-4">
-                    <label>Véhicule:</label> <label>${trajet.vehicule}</label>
+                    <label>Véhicule : </label> <label>${trajet.vehicule}</label>
                 </div>
                 <div class="form-group col-lg-3">
-                    <label>Nombre de places disponibles:</label>
+                    <label>Nombre de places disponibles : </label>
                 </div>
                 <input class="form-group col-lg-1" name="placesRestantes" value="${trajet.nbPlaces}" readonly/>
                 <div class="form-group col-lg-4">
-                    <label id="label_etape" hidden>Etape choisie:</label>
+                    <label id="label_etape" hidden>Etape choisie : </label>
                     <input type="hidden" name="afficherEtape" readonly  />
                 </div>
                 <div class="form-group col-lg-4">
-                    <input type="hidden" class="btn btn-danger" value="Supprimer" name="supprimerEtape" onclick="supprimerChampsEtape()"/>
+                    <input type="hidden" class="btn btn-danger" style="margin-top: 20px" value="Supprimer" name="supprimerEtape" onclick="supprimerChampsEtape()"/>
                 </div>
                 <c:if test="${empty reservation}">
                     <div class="form-group col-lg-3">
@@ -49,8 +49,8 @@
                     <input class="form-group col-lg-3" type="hidden" name="villeArrivee" value="${trajet.villeArrivee}_${trajet.departementArrivee}"/>
                     <input class="form-group col-lg-3" type="hidden" name="idTrajet" value="${trajet.id}" />
                     <div class="clearfix"/>
-                    <div class="form-group col-lg-3">
-                        <button type="submit" class="btn btn-default" value="reserverTrajet" name="afaire">Réserver le trajet</button>
+                    <div class="form-group col-lg-3" style="margin-top: 50px">
+                        <button type="submit" class="btn btn-primary" value="reserverTrajet" name="afaire">Réserver le trajet</button>
                     </div>
                 </c:if>
             </div>
