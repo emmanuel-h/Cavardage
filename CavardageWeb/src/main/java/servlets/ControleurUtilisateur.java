@@ -108,7 +108,7 @@ public class ControleurUtilisateur extends HttpServlet {
                     changerMotDepasse(request, response);
                     break;
                 case "supprimerCompte":
-                    supprimerCompte(request, response);
+                    //supprimerCompte(request, response);
                     break;
                 case "rechercherTrajet":
                     rechercherTrajet(request, response);
@@ -469,10 +469,8 @@ public class ControleurUtilisateur extends HttpServlet {
                 if (maFacade.verifierMotDePasse(login, motDePasse)) {
                     try {
                         maFacade.supprimerUtilisateur(login);
-                    } catch (PasConducteurException e) {
-                        maFacade.creerNotification(login,"Vous avez essayé de supprimer un compte qui ne vous appartient pas");
-                    } catch (PasVehiculeUtilisateur pasVehiculeUtilisateur) {
-                        maFacade.creerNotification(login,"Vous avez essayé de supprimer un compte qui ne vous appartient pas");
+                    } catch (PasConducteurException | PasVehiculeUtilisateur e) {
+                        maFacade.creerNotification(login,e.getMessage());
                     }
                     deconnexion(request,response);
                 } else {
