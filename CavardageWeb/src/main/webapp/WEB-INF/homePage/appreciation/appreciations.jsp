@@ -35,7 +35,6 @@
 <label>Derniers trajets effectués :</label>
 <ul class="list-group">
     <li class="list-group-item">
-        <form action="ControleurUtilisateur" method="post">
             <table class="table table-bordered">
                 <tr>
                     <th class="col-lg-3">Ville de départ</th>
@@ -44,16 +43,17 @@
                     <th class="col-lg-3">Heure</th>
                 </tr>
                 <c:forEach items="${listeTrajetEffectues}" var="trajet">
-                    <tr>
-                        <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
-                        <td>${trajet.villeArrivee}(${trajet.departementArrivee})</td>
-                        <td>${trajet.date}</td>
-                        <td>${trajet.heure}</td>
-                        <input type="hidden" name="idTrajet" value="${trajet.id}"/>
-                        <td><button class="btn btn-primary" type="submit" name="afaire" value="apprecierTrajet">Noter</button> </td>
-                    </tr>
+                    <form action="ControleurUtilisateur" method="post">
+                        <tr>
+                            <td>${trajet.villeDepart}(${trajet.departementDepart})</td>
+                            <td>${trajet.villeArrivee}(${trajet.departementArrivee})</td>
+                            <td>${trajet.date}</td>
+                            <td>${trajet.heure}</td>
+                            <input type="hidden" name="idTrajet" value="${trajet.id}"/>
+                            <td><button class="btn btn-primary" type="submit" name="afaire" value="apprecierTrajet">Noter</button> </td>
+                        </tr>
+                    </form>
                 </c:forEach>
             </table>
-        </form>
     </li>
 </ul>
