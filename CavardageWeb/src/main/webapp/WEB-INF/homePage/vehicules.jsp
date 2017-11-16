@@ -14,26 +14,34 @@
 
 <form action="ControleurUtilisateur" method="post">
     <legend>Ajouter un véhicule</legend>
-    <div class="form-group">
-        <label for="nomVehicule">Nom du véhicule : </label>
-        <input class="form-control" type="text" id="nomVehicule" name="nomVehicule" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <label for="nomVehicule">Nom du véhicule : </label>
+            <input class="form-control" type="text" id="nomVehicule" name="nomVehicule" autocomplete="off" required>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="modeleVehicule">Modèle du véhicule : </label>
-        <input class="form-control" type="text" id="modeleVehicule" name="modeleVehicule" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <label for="modeleVehicule">Modèle du véhicule : </label>
+            <input class="form-control" type="text" id="modeleVehicule" name="modeleVehicule" autocomplete="off" required>
+        </div>
     </div>
-    <div class="form-group">
-        <datalist id="listeGabarit">
-            <c:forEach items="${listeGabarits}" var="gabarit">
-                <option value="${gabarit.type}"></option>
-            </c:forEach>
-        </datalist>
-        <label for="gabaritVehicule">Gabarit du véhicule : </label>
-        <input class="form-control" type="text" list="listeGabarit" id="gabaritVehicule" name="gabaritVehicule" autocomplete="off" required>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <datalist id="listeGabarit">
+                <c:forEach items="${listeGabarits}" var="gabarit">
+                    <option value="${gabarit.type}"></option>
+                </c:forEach>
+            </datalist>
+            <label for="gabaritVehicule">Gabarit du véhicule : </label>
+            <input class="form-control" type="text" list="listeGabarit" id="gabaritVehicule" name="gabaritVehicule" autocomplete="off" required>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="nbPlaces">Nombre de places (hors conducteur) : </label>
-        <input class="form-control" type="text" id="nbPlaces" name="nbPlaces" autocomplete="off" pattern="[0-9]{1,2}" required>
+    <div class="row">
+        <div class="form-group col-lg-6">
+            <label for="nbPlaces">Nombre de places (hors conducteur) : </label>
+            <input class="form-control" type="text" id="nbPlaces" name="nbPlaces" autocomplete="off" pattern="[0-9]{1,2}" required>
+        </div>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary" name="afaire" value="enregistrerVehicule">Ajouter</button>
