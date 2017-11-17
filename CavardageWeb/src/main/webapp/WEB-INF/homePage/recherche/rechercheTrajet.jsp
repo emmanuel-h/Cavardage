@@ -29,7 +29,7 @@
     <div class="row">
         <div class="form-group col-lg-3">
             <label for="date">Date : </label>
-            <input type="text" class="form-control" name="date" id="date" placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off"/>
+            <input type="date" class="form-control" name="date" id="date" placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off"/>
         </div>
         <div class="form-group col-lg-3">
             <label for="prix">Prix : (Optionnel)</label>

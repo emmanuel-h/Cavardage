@@ -50,12 +50,13 @@
             </div>
             <div class="form-group">
                 <label for="date">Le : </label>
-                <input class="form-control" type="text" id="date" name="date" required placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off">
+                <input class="form-control" type="date" id="date" name="date" required placeholder="dd/mm/yyyy" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" autocomplete="off">
             </div>
             <div class="form-group">
                 <label for="heure">À : </label>
-                <input style="width: 50px" class="form-control" type="text" id="heure" name="heure" placeholder="hh" autocomplete="off" required pattern="[0-9]{2}"> :
-                <input style="width: 50px" class="form-control" type="text" id="minute" name="minute" placeholder="mm" autocomplete="off" required pattern="[0-9]{2}">
+                    <input class="form-control" type="time" id="heure" name="heure" >
+              <!--  <input style="width: 50px" class="form-control" type="text" id="heure" name="heure" placeholder="hh" autocomplete="off" required pattern="[0-9]{2}"> :
+                <input style="width: 50px" class="form-control" type="text" id="minute" name="minute" placeholder="mm" autocomplete="off" required pattern="[0-9]{2}"> -->
             </div>
             <div class="form-group">
                 <label for="vehicule">Choix du véhicule : </label>

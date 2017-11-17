@@ -72,21 +72,61 @@ public class Automate {
     }
 
     /**
+     * Transforme un string en date pour la base
+     * @param date_string le string
+     * @return la date en type Date
+     * @throws ParseException Si le format ne correspond pas
+     */
+    @PermitAll
+    public Date stringToDate(String date_string) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = format.parse(date_string);
+        return date;
+    }
+
+    /**
+     * Transforme un string en heure pour la base
+     * @param heure_string le string
+     * @return l'heure en type Date
+     * @throws ParseException Si le format ne correspond pas
+     */
+    @PermitAll
+    public Date stringToTime(String heure_string) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        Date date = format.parse(heure_string);
+        return date;
+    }
+
+    /**
+     * Recupère l'heure actuelle
+     * @return l'heure dans le bon format
+     */
+    @PermitAll
+    public Date heureCourante() {
+        SimpleDateFormat formatHeure = new SimpleDateFormat("HH:mm:ss");
+        Date heureCourante = new Date();
+        formatHeure.format(heureCourante);
+        Date temp = new Date(3600 * 1000);
+        Date dateFinale = new Date(heureCourante.getTime() + temp.getTime());
+        return dateFinale;
+    }
+
+    /**
      * Teste si une date est postérieure à aujourd'hui
-     * @param dateTest          La date à tester
+     * @param string_dateTest          La date à tester
      * @return                  true si la date est postérieure, alse si elle est antérieure
      * @throws ParseException   Si la date n'est pas dans un format valide
      */
     @PermitAll
-    public boolean datePosterieure(String dateTest) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    public boolean datePosterieure(String string_dateTest) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
         format.setLenient(false);
         boolean result = false;
         Date current_date = new Date();
-        Date date = format.parse(dateTest);
+        Date dateTest =format.parse(string_dateTest);
         Date temp = new Date(3600 * 1000);
         Date dateFinale = new Date(current_date.getTime() + temp.getTime());
-        if (date.compareTo(dateFinale) >= 0) {
+        if (dateTest.compareTo(dateFinale) >= 0) {
             result = true;
         }
         return result;
@@ -94,20 +134,20 @@ public class Automate {
 
     /**
      * Teste si une date est dans le bon format, et si elle est au moins une heure plus tard que la date actuelle
-     * @param dateString        La date à tester
+     * @param string_dateTest       La date à tester
      * @return                  true si le test est passé, false sinon
      * @throws ParseException   Si le format de la date n'est pas valide
      */
     @PermitAll
-    public boolean testDate(String dateString) throws ParseException {
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    public boolean testDate(String string_dateTest) throws ParseException {
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         formatDate.setLenient(false);
         Date dateCourante = new Date();
-        SimpleDateFormat formatHeure = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat formatHeure = new SimpleDateFormat("HH:mm:ss");
         Date heureCourante = new Date();
         String heure2 = formatHeure.format(heureCourante);
         formatDate.format(dateCourante);
-        Date dateTest = formatDate.parse(dateString+" "+heure2);
+        Date dateTest = formatDate.parse(string_dateTest + " "+heure2);
         Date temp = new Date(3600 * 1000);
         Date dateFinale = new Date(dateTest.getTime() + temp.getTime());
         return dateFinale.compareTo(dateCourante)>=0;
@@ -137,4 +177,5 @@ public class Automate {
         }
         return hashCodeBuffer.toString();
     }
+
 }

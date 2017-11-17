@@ -210,16 +210,17 @@ public class ControleurUtilisateur extends HttpServlet {
         String villeArrivee = request.getParameter("villeArrivee");
         String date = request.getParameter("date");
         String heure = request.getParameter("heure");
-        String minute = request.getParameter("minute");
+        heure = heure+":00";
         String nomVehicule = request.getParameter("vehicule");
         String prixVoyage = request.getParameter("prixVoyage");
         String[] etapes = request.getParameterValues("etape");
         String message = "";
         String messageErreur = null;
+        System.out.println(heure);
         try {
-            if (maFacade.datePosterieure(date + " " + heure + ":" + minute)) {
+            if (maFacade.datePosterieure(date + " " + heure )) {
                 try {
-                    maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, minute, prixVoyage);
+                    maFacade.ajouterTrajet(login, villeDepart, villeArrivee, nomVehicule, etapes, date, heure, prixVoyage);
                     message = "Trajet créé";
                 } catch (PrixInferieurException | VehiculeException | EtapeException e) {
                     messageErreur = e.getMessage();

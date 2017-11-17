@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings({"unused", "RedundantIfStatement"})
@@ -10,8 +12,10 @@ public class Trajet {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idTrajet;
-    private String date;
-    private String heure;
+    @Temporal(TemporalType.DATE)
+    private Date date;
+    @Temporal(TemporalType.TIME)
+    private Date heure;
     // aVenir, fini, annule
     private String statut;
     private int prix;
@@ -33,7 +37,7 @@ public class Trajet {
     public Trajet() {
     }
 
-    public Trajet(String date, String heure) {
+    public Trajet(Date date, Date heure) {
         this.date = date;
         this.heure = heure;
     }
@@ -46,19 +50,19 @@ public class Trajet {
         this.idTrajet = idTrajet;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getHeure() {
+    public Date getHeure() {
         return heure;
     }
 
-    public void setHeure(String heure) {
+    public void setHeure(Date heure) {
         this.heure = heure;
     }
 
@@ -118,6 +122,16 @@ public class Trajet {
         this.prix = prix;
     }
 
+    public String getStringDate(){
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+        return formatDate.format(getDate()).toString();
+    }
+
+    public String getStringHeure(){
+        SimpleDateFormat formatDate = new SimpleDateFormat("HH:mm");
+        return formatDate.format(getHeure()).toString();
+    }
+
     public boolean supprimerReservation(Reservation reservation){
         if(getListeReservation().contains(reservation)){
            listeReservation.remove(reservation);
@@ -154,7 +168,6 @@ public class Trajet {
         return "Trajet{" +
                 "idTrajet=" + idTrajet +
                 ", date='" + date + '\'' +
-                ", heure='" + heure + '\'' +
                 ", statut='" + statut + '\'' +
                 ", prix=" + prix +
                 ", villeDepart=" + villeDepart +

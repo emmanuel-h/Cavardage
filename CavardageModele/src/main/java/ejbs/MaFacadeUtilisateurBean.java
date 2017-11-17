@@ -341,7 +341,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                 if(t.getStatut().equals("fini")){
                     HistoriqueDTO hist = new HistoriqueDTO(t.getIdTrajet(), v.getNom(), 0,
                             "conducteur", t.getVilleDepart().getNomVille(),
-                            t.getVilleArrivee().getNomVille(), t.getDate());
+                            t.getVilleArrivee().getNomVille(), t.getStringDate());
                     listeHisto.add(hist);
                 }
             }
@@ -350,7 +350,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             if(v.getTrajetReservation().getStatut().equals("fini") && v.getStatut().equals("accepte")){
                 Trajet t = v.getTrajetReservation();
                 HistoriqueDTO hist = new HistoriqueDTO(t.getIdTrajet(), "", v.getNbPlace(),
-                        "passager", t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille(), t.getDate());
+                        "passager", t.getVilleDepart().getNomVille(), t.getVilleArrivee().getNomVille(), t.getStringDate());
                 listeHisto.add(hist);
             }
         }
@@ -420,7 +420,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
                     while (iterator.hasNext()){
                         reservation = iterator.next();
                         creerNotification(reservation.getUtilisateurReservation().getLogin()," Le trajet "+t.getVilleDepart().getNomPropre()+"-"+
-                                t.getVilleArrivee().getNomPropre()+" le "+t.getDate()+":"+t.getHeure()+" a été supprimé par son conducteur");
+                                t.getVilleArrivee().getNomPropre()+" le "+t.getStringDate()+":"+t.getStringHeure()+" a été supprimé par son conducteur");
                         t.supprimerReservation(reservation);
                         utilisateurReservation = reservation.getUtilisateurReservation();
                         em.persist(t);
@@ -521,7 +521,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @RolesAllowed("utilisateur")
     @Override
-    public void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException, EtapeException, VehiculeException {
+    public void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException, EtapeException, VehiculeException, ParseException {
         Utilisateur user = em.find(Utilisateur.class, login);
         List<Vehicule> vListe = user.getListeVehicule();
 
@@ -537,8 +537,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         if(null == vehicule){
             throw new VehiculeException("vehicule non existant");
         }
-
-        Trajet trajet = new Trajet(date, heure+":"+minute);
+        Trajet trajet = new Trajet(automate.stringToDate(date),automate.stringToTime(heure));
         // On crée une map associant les villes-étapes à leur prix.
         StringTokenizer st;
         st = new StringTokenizer(villeDepart, "()");
@@ -673,7 +672,7 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
     public Map<String, Object> avoirListeTrajetAVenir(String login){
         // On recherche tous les trajets faits en tant que conducteur
         Query q = em.createQuery("SELECT DISTINCT t FROM Trajet t WHERE t.statut=:statutTrajet " +
-                "AND t.vehiculeTrajet.utilisateur.login=:loginUtilisateur");
+                "AND t.vehiculeTrajet.utilisateur.login=:loginUtilisateur ORDER BY t.date,t.heure");
         q.setParameter("statutTrajet", "aVenir");
         q.setParameter("loginUtilisateur", login);
         Map<String,Object> map = new TreeMap<>();
@@ -693,7 +692,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             reservationEnAttente.put(t.getIdTrajet(),enAttente);
             enAttente = 0;
         }
-        Collections.sort(listeTrajetsDTO);
         map.put("conducteur",listeTrajetsDTO);
         map.put("reservationEnAttente",reservationEnAttente);
 
@@ -738,13 +736,13 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
         Query q = em.createQuery("SELECT DISTINCT t FROM Trajet t, Reservation r, Appreciation a WHERE" +
                 "((t.statut='fini' or t.statut='aVenir') and ((t.vehiculeTrajet.utilisateur=:utilisateur)" +
                 " or (r.trajetReservation=t and r.statut='accepte' and " +
-                "r.utilisateurReservation=:utilisateur)))");
+                "r.utilisateurReservation=:utilisateur))) ORDER BY t.date,t.heure");
         q.setParameter("utilisateur",utilisateur);
         List<TrajetDTO> trajetDTOList = new ArrayList<>();
         List<Trajet> trajets =  q.getResultList();
 
         for(Trajet t : trajets) {
-            String date_trajet = t.getDate()+" "+t.getHeure();
+            Date date_trajet = t.getDate();
             // Si le statut est aVenir alors qu'il est passé, on le change en fini
             if((t.getStatut().equals("aVenir") && compareDate(date_trajet)<=0)){
                 t.setStatut("fini");
@@ -766,7 +764,6 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
             }
 
         }
-        Collections.sort(trajetDTOList);
         return trajetDTOList;
     }
 
@@ -838,26 +835,22 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     /**
      * Compare une date avec aujourd'hui
-     * @param string_date   La date à tester
+     * @param date   La date à tester
      * @return              Le résultat de la comparaison des dates
      */
     @RolesAllowed("utilisateur")
-    private int compareDate(String string_date) {
+    private int compareDate(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         int result=0;
-        try {
-            Date current_date= new Date();
-            format.format(current_date);
-            Date date = format.parse((string_date));
-            if (date.compareTo(current_date) > 0) {
-                result=1;
-            } else if (date.compareTo(current_date) < 0) {
-                result=-1;
-            } else if (date.compareTo(current_date) == 0) {
-                result=0;
-            }
-        }catch(ParseException e){
-            Logger.getAnonymousLogger().log(Level.INFO,"La date n'a pas pu être parsée");
+        Date current_date= new Date();
+        format.format(current_date);
+        format.format(date);
+        if (date.compareTo(current_date) > 0) {
+            result=1;
+        } else if (date.compareTo(current_date) < 0) {
+            result=-1;
+        } else if (date.compareTo(current_date) == 0) {
+            result=0;
         }
         return result;
     }

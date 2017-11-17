@@ -5,6 +5,7 @@ import dtos.*;
 import entities.*;
 import exceptions.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Local;
 import java.text.ParseException;
 import java.util.List;
@@ -217,13 +218,13 @@ public interface MaFacadeUtilisateur {
      * @param etapes                    Les différentes étapes du trajet (non obligatoire)
      * @param date                      La date du trajet
      * @param heure                     L'heure du trajet
-     * @param minute                    La minute du trajet
      * @param prix                      Le prix du trajet
      * @throws PrixInferieurException   Si le prix du trajet est inférieur au prix d'une étape
      * @throws EtapeException           S'il y a une erreur dans la saisie d'une étape
      * @throws VehiculeException        Si le véhicule n'existe pas
      */
-    void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String minute, String prix) throws PrixInferieurException, EtapeException, VehiculeException;
+    @RolesAllowed("utilisateur")
+    void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException, EtapeException, VehiculeException, ParseException;
 
     /**
      * Avoir les détails concernant un trajet

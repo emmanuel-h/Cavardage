@@ -52,134 +52,134 @@ INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabari
 INSERT INTO Vehicule (idVehicule,modele,nombrePlaces,statut,nom,gabarit_idGabarit,utilisateur_login) VALUES (10,'Combi Volkswagen',7,'actif','vamos a la playa',5,'gaston');
 
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (11,'02/01/2017','18:30','fini',5,5,'Marseille_13','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (11,'2017-01-02','18:30:00','fini',5,5,'Marseille_13','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (12,'07/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (12,'2017-07-07', '8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (57,1,'accepte',null,12,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (13,'07/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (13,'2017-07-07', '17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (8,1,'accepte',null,13,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (14,'08/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (14,'2017-07-08', '8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (9,1,'accepte',null,14,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (15,'08/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (15,'2017-07-08', '17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (10,1,'accepte',null,15,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (16,'09/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (16,'2017-07-09', '8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (11,1,'accepte',null,16,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (17,'09/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (17,'2017-07-09', '17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (12,1,'accepte',null,17,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (18,'10/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (18,'2017-07-10', '8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (13,1,'accepte',null,18,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (19,'10/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (19,'2017-07-10', '17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (14,1,'accepte',null,19,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (20,'11/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (20,'2017-07-11', '8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (15,1,'accepte',null,20,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (21,'11/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (21,'2017-07-11', '17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (16,1,'accepte',null,21,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (22,'12/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (22,'2017-07-12', '8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (17,1,'accepte',null,22,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (23,'12/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (23,'2017-07-12', '17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (18,1,'accepte',null,23,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (24,'13/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (24,'2017-07-13', '8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (19,1,'accepte',null,24,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (25,'13/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (25,'2017-07-13','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (20,1,'accepte',null,25,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (26,'14/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (26,'2017-07-14','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (21,1,'accepte',null,26,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (27,'14/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (27,'2017-07-14','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (22,1,'accepte',null,27,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (28,'15/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (28,'2017-07-15','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (23,1,'accepte',null,28,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (29,'15/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (29,'2017-07-15','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (24,1,'accepte',null,29,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (30,'16/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (30,'2017-07-16','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (25,1,'accepte',null,30,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (31,'16/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (31,'2017-07-16','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (26,1,'accepte',null,31,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (32,'17/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (32,'2017-07-17','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (27,1,'accepte',null,32,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (33,'17/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (33,'2017-07-17','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (28,1,'accepte',null,33,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (34,'18/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (34,'2017-07-18','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (29,1,'accepte',null,34,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (35,'18/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (35,'2017-07-18','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (30,1,'accepte',null,35,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (36,'19/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (36,'2017-07-19','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (31,1,'accepte',null,36,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (37,'19/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (37,'2017-07-19','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (32,1,'accepte',null,37,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (38,'20/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (38,'2017-07-20','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (33,1,'accepte',null,38,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (39,'20/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (39,'2017-07-20','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (34,1,'accepte',null,39,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (40,'21/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (40,'2017-07-21','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (35,1,'accepte',null,40,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (41,'21/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (41,'2017-07-21','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (36,1,'accepte',null,41,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (42,'22/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (42,'2017-07-22','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (37,1,'accepte',null,42,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (43,'22/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (43,'2017-07-22','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (38,1,'accepte',null,43,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (44,'23/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (44,'2017-07-23','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (39,1,'accepte',null,44,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (45,'23/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (45,'2017-07-23','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (40,1,'accepte',null,45,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (46,'24/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (46,'2017-07-24','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (41,1,'accepte',null,46,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (47,'24/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (47,'2017-07-24','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (42,1,'accepte',null,47,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (48,'25/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (48,'2017-07-25','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (43,1,'accepte',null,48,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (49,'25/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (49,'2017-07-25','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (44,1,'accepte',null,49,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (50,'26/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (50,'2017-07-26','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (45,1,'accepte',null,50,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (51,'26/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (51,'2017-07-26','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (46,1,'accepte',null,51,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (52,'27/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (52,'2017-07-27','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (47,1,'accepte',null,52,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (53,'27/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (53,'2017-07-27','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (48,1,'accepte',null,53,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (54,'28/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (54,'2017-07-28','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (49,1,'accepte',null,54,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (55,'28/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (55,'2017-07-28','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (50,1,'accepte',null,55,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (56,'29/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (56,'2017-07-29','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (51,1,'accepte',null,56,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (57,'29/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (57,'2017-07-29','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (52,1,'accepte',null,57,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (58,'30/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (58,'2017-07-30','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (53,1,'accepte',null,58,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (59,'30/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (59,'2017-07-30','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (54,1,'accepte',null,59,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (60,'31/07/2017','8:00','fini',30,4,'Paris_75','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (60,'2017-07-31','8:00:00','fini',30,4,'Paris_75','Orleans_45');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (55,1,'accepte',null,60,'alice');
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (61,'31/07/2017','17:30','fini',30,4,'Orleans_45','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (61,'2017-07-31','17:30:00','fini',30,4,'Orleans_45','Paris_75');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (56,1,'accepte',null,61,'alice');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (62,'01/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (62,'2018-02-01','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (58,1,'en attente',null,62,'gaston');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (59,1,'en attente',null,62,'eric');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (60,1,'en attente',null,62,'gaston');
@@ -213,7 +213,7 @@ INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetres
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (88,1,'en attente',null,62,'gaston');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (89,1,'en attente',null,62,'eric');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (63,'02/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (63,'2018-02-02','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (90,1,'en attente',null,63,'gaston');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (91,1,'en attente',null,63,'eric');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (92,1,'en attente',null,63,'gaston');
@@ -237,71 +237,71 @@ INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetres
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (110,1,'en attente',null,63,'gaston');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (111,1,'en attente',null,63,'eric');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (64,'03/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (64,'2018-02-03','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (65,'04/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (65,'2018-02-04','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (66,'05/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (66,'2018-02-05','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (67,'06/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (67,'2018-02-06','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (68,'07/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (68,'2018-02-07','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (69,'08/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (69,'2018-02-08','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (70,'09/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (70,'2018-02-09','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (71,'10/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (71,'2018-02-10','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (72,'11/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (72,'2018-02-11','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (73,'12/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (73,'2018-02-12','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (74,'13/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (74,'2018-02-13','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (75,'14/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (75,'2018-02-14','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (76,'15/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (76,'2018-02-15','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (77,'16/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (77,'2018-02-16','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (78,'17/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (78,'2018-02-17','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (79,'18/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (79,'2018-02-18','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (1,'19/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (1,'2018-02-19','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (2,'20/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (2,'2018-02-20','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (3,'21/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (3,'2018-02-21','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (4,'22/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (4,'2018-02-22','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (5,'23/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (5,'2018-02-23','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (6,'24/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (6,'2018-02-24','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (7,'25/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (7,'2018-02-25','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (8,'26/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (8,'2018-02-26','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (9,'27/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (9,'2018-02-27','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (10,'28/02/2018','8:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (10,'2018-02-28','8:00:00','aVenir',100,9,'La Rochelle_17','Chateaudun_28');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (80,'21/12/2017','12:00','aVenir',50,1,'Lille_59','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (80,'2017-12-21','12:00:00','aVenir',50,1,'Lille_59','Orleans_45');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (1,10,80,'Paris_75');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (2,30,80,'Amiens_80');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (1,1,'accepte',null,80,'bob');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (2,2,'en attente',2,80,'charlie');
 
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (81,'25/12/2017','17:00','aVenir',30,2,'Colmar_68','Nantes_44');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (81,'2017-12-25','17:00:00','aVenir',30,2,'Colmar_68','Nantes_44');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (3,5,81,'Lille_59');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (4,10,81,'Marseille_13');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (5,25,81,'Rouen_76');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (82,'10/07/2017','8:30','fini',150,5,'Perpignan_66','Blois_41');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (82,'2017-07-10','8:30:00','fini',150,5,'Perpignan_66','Blois_41');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (6,5,82,'Chateaudun_28');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (7,10,82,'La Rochelle_17');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (3,1,'accepte',7,82,'eric');
@@ -309,28 +309,28 @@ INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetres
 INSERT INTO Appreciation (idAppreciation, commentaire, note, donnenote_login, estnote_login, notetrajet_idtrajet) VALUES (1,'ok',3,'bob','eric',82);
 
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (83,'26/12/2017','0:00','aVenir',1050,3,'Lyon_69','Amiens_80');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (83,'2017-12-26','0:00:00','aVenir',1050,3,'Lyon_69','Amiens_80');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (84,'25/12/2017','5:00','aVenir',3,10,'Tours_37','Perpignan_66');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (84,'2017-12-25','5:00:00','aVenir',3,10,'Tours_37','Perpignan_66');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (8,1,84,'Corbie_80');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (9,2,84,'Lille_59');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (85,'21/12/2017','13:00','aVenir',45,7,'Lille_59','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (85,'2017-12-21','13:00:00','aVenir',45,7,'Lille_59','Orleans_45');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (86,'21/12/2017','12:15','aVenir',75,8,'Amiens_80','Orleans_45');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (86,'2017-12-21','12:15:00','aVenir',75,8,'Amiens_80','Orleans_45');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (10,25,86,'Lille_59');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (4,1,'accepte',null,86,'bob');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (5,1,'en attente',null,86,'alice');
 INSERT INTO Reservation (idReservation,nbplace,statut,descenda_idetape,trajetreservation_idtrajet,utilisateurreservation_login) VALUES (6,1,'refuse',null,86,'charlie');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (87,'21/12/2017','15:00','aVenir',30,6,'Amiens_80','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (87,'2017-12-21','15:00:00','aVenir',30,6,'Amiens_80','Paris_75');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (11,15,87,'Orleans_45');
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (88,'21/12/2017','14:02','aVenir',50,10,'Evry_91','Paris_75');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (88,'2017-12-21','14:02:00','aVenir',50,10,'Evry_91','Paris_75');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (12,25,88,'Lille_59');
 
 
-INSERT INTO Trajet (idTrajet, date, heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (89,'17/08/2017','1:00','annule',102,2,'Lyon_69','Nantes_44');
+INSERT INTO Trajet (idTrajet,date,heure,statut,prix,vehiculetrajet_idvehicule,villearrivee_nomville,villedepart_nomville) VALUES (89,'2017-08-17','1:00:00','annule',102,2,'Lyon_69','Nantes_44');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (13,10,89,'Chateaudun_28');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (14,30,89,'Strasbourg_67');
 INSERT INTO Etape (idEtape,prix,trajet_idtrajet,villeetape_nomville) VALUES (15,70,89,'Blois_41');

@@ -41,7 +41,7 @@ public class ReservationDTO implements Comparable{
         }
         this.loginUtilisateur = reservation.getUtilisateurReservation().getLogin();
         this.nomUtilisateur =reservation.getUtilisateurReservation().getNom();
-        this.date = reservation.getTrajetReservation().getDate()+ " "+reservation.getTrajetReservation().getHeure();
+        this.date = reservation.getTrajetReservation().getStringDate()+ " "+reservation.getTrajetReservation().getStringHeure();
     }
 
     @Override
@@ -54,7 +54,6 @@ public class ReservationDTO implements Comparable{
             result = dateThis.compareTo(dateObject);
         }catch(Exception e){
             e.printStackTrace();
-            System.out.println(e.toString());
         }
         return result;
     }

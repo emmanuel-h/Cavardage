@@ -36,8 +36,8 @@ public class TrajetDTO implements Comparable{
         tab = t.getVilleArrivee().getNomVille().split("_");
         this.villeArrivee = tab[0];
         this.departementArrivee = tab[1];
-        this.date = t.getDate();
-        this.heure = t.getHeure();
+        this.date = t.getStringDate();
+        this.heure = t.getStringHeure();
         this.vehicule = t.getVehiculeTrajet().getModele();
         this.loginConducteur = t.getVehiculeTrajet().getUtilisateur().getLogin();
         this.id = t.getIdTrajet();
@@ -172,7 +172,6 @@ public class TrajetDTO implements Comparable{
             result = dateThis.compareTo(dateObject);
         }catch(Exception e){
             e.printStackTrace();
-            System.out.println(e.toString());
         }
         return result;
     }
