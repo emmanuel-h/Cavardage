@@ -223,7 +223,6 @@ public interface MaFacadeUtilisateur {
      * @throws EtapeException           S'il y a une erreur dans la saisie d'une étape
      * @throws VehiculeException        Si le véhicule n'existe pas
      */
-    @RolesAllowed("utilisateur")
     void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException, EtapeException, VehiculeException, ParseException;
 
     /**

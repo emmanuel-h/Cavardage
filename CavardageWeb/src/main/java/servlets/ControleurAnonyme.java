@@ -103,7 +103,6 @@ public class ControleurAnonyme extends HttpServlet {
         String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-4);
         String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
         String date = request.getParameter("date");
-        System.out.println(date);
         String prix = request.getParameter("prix");
         List<TrajetDTO> listeTrajetRecherche;
         try {

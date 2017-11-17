@@ -92,7 +92,6 @@ public class RechercheBean {
             query.setParameter("villeArrivee", villeArrivee+"_"+departementArrivee);
             query.setParameter("date",automate.stringToDate(date));
             List<Trajet> lt = query.getResultList();
-        System.out.println("taille "+lt.size());
             List<TrajetDTO> ltd = new ArrayList<>();
             for(Trajet t :lt){
                 ltd.add(new TrajetDTO(t));

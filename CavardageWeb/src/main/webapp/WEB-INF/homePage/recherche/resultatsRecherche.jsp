@@ -69,6 +69,5 @@
                     </table>
                 </li>
         </ul>
-
     </c:otherwise>
 </c:choose>

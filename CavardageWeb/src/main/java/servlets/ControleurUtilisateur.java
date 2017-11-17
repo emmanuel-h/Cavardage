@@ -216,7 +216,6 @@ public class ControleurUtilisateur extends HttpServlet {
         String[] etapes = request.getParameterValues("etape");
         String message = "";
         String messageErreur = null;
-        System.out.println(heure);
         try {
             if (maFacade.datePosterieure(date + " " + heure )) {
                 try {
