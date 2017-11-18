@@ -27,14 +27,15 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     @RolesAllowed("admin")
     @Override
     public boolean ajouterVille(String nomVille,String departement) throws VilleExistante {
-        Ville v = em.find(Ville.class,nomVille + "_" + departement);
-        if(null == v){
-            v = new Ville(nomVille,Integer.parseInt(departement));
-            em.persist(v);
-            return true;
-        }else{
+        String ville = nomVille+"_"+departement;
+        System.out.println(ville);
+        Ville v = em.find(Ville.class,ville);
+        if(null != v){
             throw new VilleExistante("Cette ville existe déjà");
         }
+        v = new Ville(nomVille,departement);
+        em.persist(v);
+        return true;
     }
 
     @RolesAllowed("admin")

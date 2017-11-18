@@ -14,10 +14,6 @@ public class Ville {
     public Ville() {
     }
 
-    public Ville(String nomVille,int departement) {
-        this.nomVille = nomVille + "_" + departement;
-    }
-
     public Ville(String nom, String departement){
         this.nomVille = nom + "_" + departement;
     }
