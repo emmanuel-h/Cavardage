@@ -4,7 +4,7 @@ public class VilleDTO {
 
     private String idVille;
     private String nomVille;
-    private int departement;
+    private String departement;
 
     public VilleDTO(){
 
@@ -14,18 +14,14 @@ public class VilleDTO {
         String[] id = idVille.split("_");
         this.idVille = idVille;
         this.nomVille = id[0];
-        this.departement = Integer.parseInt(id[1]);
+        this.departement = id[1];
     }
 
     public VilleDTO(String nom, String departement){
         this.nomVille = nom;
-        this.departement = Integer.parseInt(departement);
-    }
-
-    public VilleDTO(String nom, int departement){
-        this.nomVille = nom;
         this.departement = departement;
     }
+
 
     public String getIdVille() {
         return idVille;
@@ -35,7 +31,7 @@ public class VilleDTO {
         String[] id = idVille.split("_");
         this.idVille = idVille;
         this.nomVille = id[0];
-        this.departement = Integer.parseInt(id[1]);
+        this.departement = id[1];
     }
 
     public String getNomVille() {
@@ -46,11 +42,11 @@ public class VilleDTO {
         this.nomVille = nomVille;
     }
 
-    public int getDepartement() {
+    public String getDepartement() {
         return departement;
     }
 
-    public void setDepartement(int departement) {
+    public void setDepartement(String departement) {
         this.departement = departement;
     }
 }
