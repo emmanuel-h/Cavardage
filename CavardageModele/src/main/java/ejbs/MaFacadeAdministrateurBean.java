@@ -28,7 +28,6 @@ public class MaFacadeAdministrateurBean implements MaFacadeAdministrateur {
     @Override
     public boolean ajouterVille(String nomVille,String departement) throws VilleExistante {
         String ville = nomVille+"_"+departement;
-        System.out.println(ville);
         Ville v = em.find(Ville.class,ville);
         if(null != v){
             throw new VilleExistante("Cette ville existe déjà");

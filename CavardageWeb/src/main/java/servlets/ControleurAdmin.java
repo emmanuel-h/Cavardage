@@ -178,7 +178,6 @@ public class ControleurAdmin extends HttpServlet {
     private void ajouterVille(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nomVille = request.getParameter("nomVilleAAjouter");
         String departementVille = request.getParameter("departementVilleAAjouter");
-        System.out.println(departementVille);
         try {
             ejb.ajouterVille(nomVille,departementVille);
             request.setAttribute("messageSucces", "La ville " + nomVille + "(" + departementVille + ") a bien été ajoutée à la base de données");
