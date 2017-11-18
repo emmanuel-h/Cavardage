@@ -521,6 +521,12 @@ public class MaFacadeUtilisateurBean implements MaFacadeUtilisateur {
 
     @RolesAllowed("utilisateur")
     @Override
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String heure, String prix) throws DateAnterieureException, ParseException, VilleNonTrouvee {
+        return recherche.rechercheTrajetHeure(villeDepart,departementDepart,villeArrive,departementArrive,date,heure,prix);
+    }
+
+    @RolesAllowed("utilisateur")
+    @Override
     public void ajouterTrajet(String login, String villeDepart, String villeArrivee, String nomVehicule, String[] etapes, String date, String heure, String prix) throws PrixInferieurException, EtapeException, VehiculeException, ParseException {
         Utilisateur user = em.find(Utilisateur.class, login);
         List<Vehicule> vListe = user.getListeVehicule();

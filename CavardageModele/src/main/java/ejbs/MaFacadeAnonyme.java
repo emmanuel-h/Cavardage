@@ -28,6 +28,21 @@ public interface MaFacadeAnonyme {
     boolean inscription(String login,String nom,String mdp) throws LoginExistantException;
 
     /**
+     * Recherche un trajet selon différents critères
+     * @param villeDepart               La ville de départ du trajet
+     * @param departementDepart         Le département de la ville de départ
+     * @param villeArrive               La ville d'arrivée du trajet
+     * @param departementArrive         Le département de la ville d'arrivée
+     * @param date                      La date de départ
+     * @param heure                     L'heure du trajet
+     * @param prix                      Le prix maximum (non obligatoire)
+     * @return                          La liste des trajets correspondants aux critères
+     * @throws DateAnterieureException  Si la date rentrée est antérieure à aujourd'hui
+     * @throws ParseException           Si le format de la date n'était pas valide
+     */
+    List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String heure, String prix) throws DateAnterieureException, ParseException, VilleNonTrouvee;
+
+    /**
      * Renvoie la liste des dix derniers trajets créés sur le site
      * @return la liste des trajets
      */

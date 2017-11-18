@@ -158,6 +158,9 @@ public class ControleurUtilisateur extends HttpServlet {
                 case "toutSupprimer":
                     toutSupprimer(request, response);
                     break;
+                case "apres":
+                    getResultatApres(request,response);
+                    break;
                 default:
                     afficherNotification(request);
                     request.setAttribute("aAfficher", "accueil");
@@ -165,6 +168,7 @@ public class ControleurUtilisateur extends HttpServlet {
             }
         }
     }
+
 
     /**
      * Supprime toutes les notifications de l'utilisateur
@@ -527,6 +531,12 @@ public class ControleurUtilisateur extends HttpServlet {
             if (!prix.equals("")) {
                 request.setAttribute("prix", prix);
             }
+            if(listeTrajetRecherche.size()==10) {
+                request.setAttribute("apresDate", listeTrajetRecherche.get(listeTrajetRecherche.size() - 1).getDate());
+                request.setAttribute("apresHeure", listeTrajetRecherche.get(listeTrajetRecherche.size() - 1).getHeure());
+            }else{
+                request.setAttribute("pasSuivant",true);
+            }
             request.setAttribute("aAfficher", "rechercherTrajet");
             request.setAttribute("resultatsRecherche", "afficher");
             request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
@@ -535,6 +545,55 @@ public class ControleurUtilisateur extends HttpServlet {
             rechercherTrajet(request, response);
         } catch (ParseException e) {
             request.setAttribute("messageErreur", "Merci de rentrer une date valide (jj/mm/aaaa)");
+            rechercherTrajet(request, response);
+        }
+    }
+
+    /**
+     * Permet de récupérer la liste des trajets après la recherche actuelle
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
+    @RolesAllowed("utilisateur")
+    private void getResultatApres(HttpServletRequest request , HttpServletResponse response)throws ServletException, IOException{
+        String heure =  request.getParameter("apresHeure");
+        String dateApres =  request.getParameter("apresDate");
+        String date = request.getParameter("date");
+        String villeDepart = request.getParameter("nomVilleDepart");
+        String nomVilleDepart = villeDepart.substring(0,villeDepart.length()-4);
+        String departementVilleDepart = villeDepart.substring(villeDepart.length()-3,villeDepart.length()-1);
+        String villeArrive =  request.getParameter("nomVilleArrivee");
+        String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-4);
+        String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
+        String prix="";
+        if(request.getAttribute("prix") != null) {
+            prix = (String) request.getAttribute("prix");
+        }
+        List<TrajetDTO> listeTrajetRecherche;
+        try{
+            listeTrajetRecherche = maFacade.rechercheTrajet(nomVilleDepart,departementVilleDepart,nomVilleArrivee,departementVilleArrivee,dateApres,heure,prix);
+            request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
+            List<VilleDTO> listeVilles = maFacade.getListeVilleDTO();
+            request.setAttribute("listeVilles", listeVilles);
+            request.setAttribute("villeDepart",villeDepart);
+            request.setAttribute("villeArrivee",villeArrive);
+            request.setAttribute("date",date);
+            if(!prix.equals("")) {
+                request.getSession().setAttribute("prix", prix);
+            }
+            if(listeTrajetRecherche.size()==10) {
+                request.setAttribute("apresDate", listeTrajetRecherche.get(listeTrajetRecherche.size() - 1).getDate());
+                request.setAttribute("apresHeure", listeTrajetRecherche.get(listeTrajetRecherche.size() - 1).getHeure());
+            }else{
+                request.setAttribute("pasSuivant",true);
+            }
+            request.setAttribute("aAfficher", "rechercherTrajet");
+            request.setAttribute("resultatsRecherche", "afficher");
+            request.getRequestDispatcher("/WEB-INF/homePage/homePage.jsp").forward(request, response);
+        }catch (ParseException | DateAnterieureException | VilleNonTrouvee e){
+            e.printStackTrace();
             rechercherTrajet(request, response);
         }
     }

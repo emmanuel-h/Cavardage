@@ -54,6 +54,11 @@ public class MaFacadeAnonymeBean implements MaFacadeAnonyme {
     }
 
     @Override
+    public List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String heure, String prix) throws DateAnterieureException, ParseException, VilleNonTrouvee {
+        return rechercheBean.rechercheTrajetHeure(villeDepart,departementDepart,villeArrive,departementArrive,date,heure,prix);
+    }
+
+    @Override
     public List<TrajetDTO> dernierAjout() {
 
         List<Trajet>lt = em.createQuery("SELECT t FROM Trajet t WHERE t.statut='aVenir' ORDER BY t.idTrajet DESC").setMaxResults(10).getResultList();

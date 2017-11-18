@@ -210,6 +210,22 @@ public interface MaFacadeUtilisateur {
     List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String prix) throws DateAnterieureException, ParseException, VilleNonTrouvee;
 
     /**
+     * Recherche un trajet par rapport à certains critères
+     * @param villeDepart               La ville de départ du trajet
+     * @param departementDepart         Le département de la ville de départ
+     * @param villeArrive               La ville d'arrivée du trajet
+     * @param departementArrive         Le département de la ville d'arrivée
+     * @param date                      La date du trajet
+     * @param heure                     l'heure du trajet
+     * @param prix                      Le prix maximum (non obligatoire)
+     * @return                          La liste des trajets correspondants aux critères
+     * @throws DateAnterieureException  Si la date est antérieure à aujourd'hui
+     * @throws ParseException           Si la date n'est pas dans un format valide
+     */
+    @RolesAllowed("utilisateur")
+    List<TrajetDTO> rechercheTrajet(String villeDepart, String departementDepart, String villeArrive, String departementArrive, String date, String heure, String prix) throws DateAnterieureException, ParseException, VilleNonTrouvee;
+
+    /**
      * Ajoute un trajet dans la base de données
      * @param login                     L'identifiant de l'utilisateur
      * @param villeDepart               La ville de départ du trajet

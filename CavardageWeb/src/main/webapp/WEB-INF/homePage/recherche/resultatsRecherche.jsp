@@ -69,5 +69,33 @@
                     </table>
                 </li>
         </ul>
+
+        <c:if test="${!empty pageContext.request.remoteUser}">
+                <c:if test="${!pasSuivant}">
+                    <form action="ControleurUtilisateur" method="post">
+                        <input type="hidden" name="nomVilleDepart" value="${villeDepart}">
+                        <input type="hidden" name="nomVilleArrivee" value="${villeArrivee}">
+                        <input type="hidden" name="date" value="${date}">
+                        <input type="hidden" name="apresDate" value="${apresDate}">
+                        <input type="hidden" name="apresHeure" value="${apresHeure}">
+                        <input type="hidden" name="prix" value="${prix}">
+                        <button class="btn btn-primary" style="width: 100%" type="submit" name="afaire" value="apres">Suivant</button>
+                    </form>
+                </c:if>
+        </c:if>
+        <c:if test="${empty pageContext.request.remoteUser}">
+            <c:if test="${!pasSuivant}">
+                <form action="ControleurAnonyme" method="post">
+                    <input type="hidden" name="nomVilleDepart" value="${villeDepart}">
+                    <input type="hidden" name="nomVilleArrivee" value="${villeArrivee}">
+                    <input type="hidden" name="date" value="${date}">
+                    <input type="hidden" name="apresDate" value="${apresDate}">
+                    <input type="hidden" name="apresHeure" value="${apresHeure}">
+                    <input type="hidden" name="prix" value="${prix}">
+                    <button class="btn btn-primary" style="width: 100%" type="submit" name="afaire" value="apres">Suivant</button>
+                </form>
+            </c:if>
+         </c:if>
+
     </c:otherwise>
 </c:choose>

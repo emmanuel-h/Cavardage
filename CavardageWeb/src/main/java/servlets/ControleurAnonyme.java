@@ -78,6 +78,9 @@ public class ControleurAnonyme extends HttpServlet {
                     getResultatRecherche(request,response);
                     getListeDernierTrajet(request);
                     break;
+                case "apres":
+                    getResultatApres(request,response);
+                    break;
                 default:
                     getListeVilles(request);
                     getListeDernierTrajet(request);
@@ -86,6 +89,56 @@ public class ControleurAnonyme extends HttpServlet {
             }
         }
     }
+
+
+    /**
+     * Permet de récupérer la liste des trajets après la recherche actuelle
+     * @param request la requête
+     * @param response la réponse
+     * @throws ServletException servlet exception
+     * @throws IOException entrée/sortie exception
+     */
+    @PermitAll
+    private void getResultatApres(HttpServletRequest request , HttpServletResponse response)throws ServletException, IOException{
+        String heure =  request.getParameter("apresHeure");
+        String dateApres =  request.getParameter("apresDate");
+        String date = request.getParameter("date");
+        String villeDepart = request.getParameter("nomVilleDepart");
+        String nomVilleDepart = villeDepart.substring(0,villeDepart.length()-4);
+        String departementVilleDepart = villeDepart.substring(villeDepart.length()-3,villeDepart.length()-1);
+        String villeArrive =  request.getParameter("nomVilleArrivee");
+        String nomVilleArrivee = villeArrive.substring(0,villeArrive.length()-4);
+        String departementVilleArrivee = villeArrive.substring(villeArrive.length()-3,villeArrive.length()-1);
+        String prix="";
+        if(request.getAttribute("prix") != null) {
+            prix = (String) request.getAttribute("prix");
+        }
+        List<TrajetDTO> listeTrajetRecherche;
+        try{
+            listeTrajetRecherche = ejb.rechercheTrajet(nomVilleDepart,departementVilleDepart,nomVilleArrivee,departementVilleArrivee,dateApres,heure,prix);
+            request.setAttribute("listeTrajetRecherche", listeTrajetRecherche);
+            getListeDernierTrajet(request);
+            getListeVilles(request);
+            request.setAttribute("villeDepart",villeDepart);
+            request.setAttribute("villeArrivee",villeArrive);
+            request.setAttribute("date",date);
+            if(!prix.equals("")) {
+                request.getSession().setAttribute("prix", prix);
+            }
+            if(listeTrajetRecherche.size()==10) {
+                request.setAttribute("apresDate", listeTrajetRecherche.get(listeTrajetRecherche.size() - 1).getDate());
+                request.setAttribute("apresHeure", listeTrajetRecherche.get(listeTrajetRecherche.size() - 1).getHeure());
+            }else{
+                request.setAttribute("pasSuivant",true);
+            }
+            request.setAttribute("resultatsRecherche","afficher");
+            request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
+        }catch (ParseException | DateAnterieureException | VilleNonTrouvee e){
+            e.printStackTrace();
+            retournerAccueil(request, response);
+        }
+    }
+
 
     /**
      * Permet de lister tous les résultats de la recherche faite par l'utilisateur
@@ -115,6 +168,12 @@ public class ControleurAnonyme extends HttpServlet {
             request.setAttribute("date",date);
             if(!prix.equals("")) {
                 request.setAttribute("prix", prix);
+            }
+            if(listeTrajetRecherche.size()==10) {
+                    request.setAttribute("apresDate", listeTrajetRecherche.get(listeTrajetRecherche.size() - 1).getDate());
+                    request.setAttribute("apresHeure", listeTrajetRecherche.get(listeTrajetRecherche.size() - 1).getHeure());
+            }else{
+                    request.setAttribute("pasSuivant",true);
             }
             request.setAttribute("resultatsRecherche","afficher");
             request.getRequestDispatcher("/WEB-INF/accueil.jsp").forward(request, response);
